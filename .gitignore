@@ -186,7 +186,7 @@
 # https://forums.alliedmods.net/showthread.php?p=1310287#post1310287 
 !/left4dead2/addons/sourcemod/plugins/pluginmanager.smx
 
-# SteamWorks
+# SteamWorks 1.2.3c
 # https://forums.alliedmods.net/showthread.php?t=229556
 !/left4dead2/addons/metamod/bin/libtier0_s.so
 !/left4dead2/addons/metamod/bin/libvstdlib_s.so
@@ -195,6 +195,22 @@
 !/left4dead2/addons/sourcemod/extensions/SteamWorks.ext.so
 !/left4dead2/addons/sourcemod/scripting/swag.sp
 !/left4dead2/addons/sourcemod/scripting/include/SteamWorks.inc
+
+# SteamTools 0.10.0-54fdc51
+# https://forums.alliedmods.net/showthread.php?t=236206
+# https://builds.limetech.io/?p=steamtools
+# https://forums.alliedmods.net/showthread.php?t=129763
+!/left4dead2/addons/sourcemod/extensions/steamtools.ext.2.ep2v.so
+!/left4dead2/addons/sourcemod/scripting/include/steamtools.inc
+!/left4dead2/addons/sourcemod/scripting/steamtools.sp
+
+# cURL Extension (1.3.0.0)
+# https://forums.alliedmods.net/showthread.php?p=2197681#post2197681
+!/left4dead2/addons/sourcemod/extensions/curl.autoload
+!/left4dead2/addons/sourcemod/extensions/curl.ext.so
+!/left4dead2/addons/sourcemod/scripting/curl_self_test.sp
+!/left4dead2/addons/sourcemod/scripting/include/cURL_header.inc
+!/left4dead2/addons/sourcemod/scripting/include/cURL.inc
 
 # Server Whitelist Advanced 1.5.0
 # https://forums.alliedmods.net/showthread.php?p=1830686 
