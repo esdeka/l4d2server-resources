@@ -1,0 +1,277 @@
+*
+
+# These are the custom plugins and config that should be versioned
+
+#### Server config ####
+!/left4dead2/cfg/server.cfg
+!/left4dead2/cfg/sourcemod/sourcemod.cfg
+
+# Custom sm_admin menu's
+!/left4dead2/addons/sourcemod/configs/adminmenu_custom.txt
+!/left4dead2/addons/sourcemod/configs/adminmenu_sorting.txt
+
+# Admins
+!/left4dead2/addons/sourcemod/configs/admins_simple.ini
+
+# ion's Vocalizer 06/16/21 v17.2
+# https://www.gamemaps.com/details/17488
+!/left4dead2/addons/ion_vocalizer.vpk
+
+# Left4DToolZ 1.0.0.9h 07-06-2013 
+# https://forums.alliedmods.net/showthread.php?p=1984946#post1984946 
+!/left4dead2/addons/l4dtoolz/
+!/left4dead2/addons/l4dtoolz/l4dtoolz_mm.dll
+!/left4dead2/addons/l4dtoolz/l4dtoolz_mm.so
+!/left4dead2/addons/metamod/l4dtoolz.vdf
+# Updated signatures for L4D2 Jun '21 update 
+# https://forums.alliedmods.net/showthread.php?p=2750255#post2750255
+!/left4dead2/addons/l4dtoolz/l4dtoolz_mm_i486.so
+
+# DHooks 2.2.0-detours16 - 28.01.2021 (Experimental Dynamic Detour support) dhooks-2.2.0-detours16-sm110.zip
+# https://forums.alliedmods.net/showthread.php?p=2588686#post2588686
+!/left4dead2/addons/sourcemod/extensions/dhooks.ext.dll
+!/left4dead2/addons/sourcemod/extensions/dhooks.ext.so
+!/left4dead2/addons/sourcemod/gamedata/dhooks-test.games.txt
+!/left4dead2/addons/sourcemod/scripting/include/dhooks.inc
+!/left4dead2/addons/sourcemod/scripting/dhooks-test.sp
+
+# Left 4 DHooks Direct (1.42) [23-Jun-2021]
+# https://forums.alliedmods.net/showthread.php?t=321696
+!/left4dead2/addons/sourcemod/data/left4dhooks.l4d1.cfg
+!/left4dead2/addons/sourcemod/data/left4dhooks.l4d2.cfg
+!/left4dead2/addons/sourcemod/gamedata/left4dhooks.l4d1.txt
+!/left4dead2/addons/sourcemod/gamedata/left4dhooks.l4d2.txt
+!/left4dead2/addons/sourcemod/plugins/left4dhooks.smx
+!/left4dead2/addons/sourcemod/scripting/include/left4dhooks.inc
+!/left4dead2/addons/sourcemod/scripting/left4dhooks_test.sp
+!/left4dead2/addons/sourcemod/scripting/left4dhooks.sp
+
+# Geoip2 v1.1.2 (22 apr 2020)  Accelerator74
+# https://forums.alliedmods.net/showthread.php?t=311477
+# https://forums.alliedmods.net/showthread.php?p=2744192#post2744192
+!/left4dead2/addons/sourcemod/configs/geoip/
+!/left4dead2/addons/sourcemod/configs/geoip/GeoIP.dat
+!/left4dead2/addons/sourcemod/configs/geoip/*.mmdb
+!/left4dead2/addons/sourcemod/extensions/x64/geoip.ext.*
+!/left4dead2/addons/sourcemod/extensions/geoip.ext.*
+!/left4dead2/addons/sourcemod/scripting/include/geoip.inc
+!/left4dead2/cfg/sourcemod/configs/geoip/
+!/left4dead2/cfg/sourcemod/configs/geoip/*.mmdb
+
+# Connect Announce 1.8.2 (21-10-2020) Ja-Forces (requires Geoip2)
+# https://forums.alliedmods.net/showthread.php?p=2651148#post2651148 
+!/left4dead2/addons/sourcemod/extensions/geoip.ext.*
+!/left4dead2/addons/sourcemod/plugins/cannounce.smx
+!/left4dead2/addons/sourcemod/scripting/cannounce/
+!/left4dead2/addons/sourcemod/scripting/cannounce/**
+!/left4dead2/addons/sourcemod/scripting/include/multicolors
+!/left4dead2/addons/sourcemod/scripting/include/multicolors/**
+!/left4dead2/addons/sourcemod/scripting/include/geoip.inc
+!/left4dead2/addons/sourcemod/scripting/include/multicolors.inc
+!/left4dead2/addons/sourcemod/scripting/cannounce.sp
+!/left4dead2/addons/sourcemod/scripting/multicolors_example.sp
+!/left4dead2/addons/sourcemod/translations/cannounce.phrases.txt
+# config
+!/left4dead2/cfg/sourcemod/cannounce.cfg
+!/left4dead2/addons/sourcemod/data/cannounce_settings.txt
+
+# ABM 09-25-2020 needs Left 4 DHooks
+# new TLS gamedata
+# https://forums.alliedmods.net/showthread.php?p=2718772#post2718772
+!/left4dead2/addons/sourcemod/gamedata/abm.txt
+# updated smx plugin for l4dhooks
+# https://forums.alliedmods.net/showthread.php?p=2725116#post2725116
+!/left4dead2/addons/sourcemod/plugins/abm.smx
+# Config
+!/left4dead2/cfg/sourcemod/abm.cfg
+
+# Accelerator crashlog 2.5.0-cd575aa
+# https://forums.alliedmods.net/showthread.php?t=277703
+!/left4dead2/addons/sourcemod/configs/test-crash-dump-generation
+!/left4dead2/addons/sourcemod/extensions/accelerator.autoload
+!/left4dead2/addons/sourcemod/extensions/accelerator.ext.so
+!/left4dead2/addons/sourcemod/gamedata/accelerator.games.txt
+
+# Grenade transfer 1.0 03-25-2010
+# https://forums.alliedmods.net/showthread.php?p=1128204
+!/left4dead2/addons/sourcemod/plugins/l4d_grenade_transfer.smx
+
+# Gear transfer Gear Transfer 2.13 (26-Feb-2021) (for medkit transfer)
+# https://forums.alliedmods.net/showthread.php?p=1294082
+!/left4dead2/addons/sourcemod/plugins/l4d_gear_transfer.smx
+!/left4dead2/addons/sourcemod/translations/gear_transfer.phrases.txt
+# config
+!/left4dead2/cfg/sourcemod/l4d_gear_transfer.cfg
+
+# Witch fixes 16-06-2021 
+# https://forums.alliedmods.net/showthread.php?t=315481 
+# witch_allow_in_safezone
+!/left4dead2/addons/sourcemod/gamedata/witch_allow_in_safezone.txt
+!/left4dead2/addons/sourcemod/plugins/witch_allow_in_safezone.smx
+!/left4dead2/addons/sourcemod/scripting/witch_allow_in_safezone.sp
+# Witch_Double_Startle_Fix
+!/left4dead2/addons/sourcemod/scripting/Witch_Double_Startle_Fix.sp
+!/left4dead2/addons/sourcemod/plugins/Witch_Double_Startle_Fix.smx
+# witch_prevent_target_loss
+!/left4dead2/addons/sourcemod/gamedata/witch_prevent_target_loss.txt
+!/left4dead2/addons/sourcemod/plugins/witch_prevent_target_loss.smx
+!/left4dead2/addons/sourcemod/scripting/witch_prevent_target_loss.sp
+# witch_target_patch
+!/left4dead2/addons/sourcemod/gamedata/witch_target_patch.txt
+!/left4dead2/addons/sourcemod/plugins/Witch_Target_patch.smx
+!/left4dead2/addons/sourcemod/scripting/Witch_Target_patch.sp
+
+# Physics Object Pushfix 09-24-2020 
+# https://forums.alliedmods.net/showthread.php?p=2705656#post2705656
+!/left4dead2/addons/sourcemod/gamedata/physics_object_pushfix.txt
+!/left4dead2/addons/sourcemod/plugins/physics_object_pushfix.smx
+!/left4dead2/addons/sourcemod/scripting/physics_object_pushfix.sp
+
+# Various Exploit Fixes (requires DHooks) 2.1 (10-May-2020) 
+# https://forums.alliedmods.net/showthread.php?t=322661
+!/left4dead2/addons/sourcemod/plugins/l4d_exploit_fixes.smx
+
+# Defib_fix 2.0.1 05-11-2020 (requires DHooks) 
+# https://forums.alliedmods.net/showthread.php?t=315483 
+!/left4dead2/addons/sourcemod/gamedata/defib_fix.txt
+!/left4dead2/addons/sourcemod/plugins/Defib_Fix.smx
+!/left4dead2/addons/sourcemod/scripting/include/Defib_Fix.inc
+!/left4dead2/addons/sourcemod/scripting/Defib_Fix.sp
+
+# [L4D2]hunter_pounce_alignment_fix (2.0) by Lux
+# https://forums.alliedmods.net/showthread.php?p=2711955
+!/left4dead2/addons/sourcemod/gamedata/hunter_pounce_alignment_fix.txt
+!/left4dead2/addons/sourcemod/plugins/Hunter_pounce_alignment_fix.smx
+
+# Weapon/Zombie Spawner 03-16-2021 v1.3c
+# https://forums.alliedmods.net/showthread.php?p=2732571#post2732571 
+!/left4dead2/addons/sourcemod/plugins/l4d2_weaponspawner.smx
+!/left4dead2/addons/sourcemod/translations/weaponspawner.phrases.txt
+
+# New, edited custom commands v1.3.8 05-24-2021 
+# https://forums.alliedmods.net/showthread.php?p=2704580#post2704580 
+!/left4dead2/addons/sourcemod/plugins/l4d2_custom_commands.smx
+!/left4dead2/addons/sourcemod/gamedata/l4d2customcmds.txt
+
+# Respawn Improved 3.0 (15-Apr-2021)
+# https://forums.alliedmods.net/showthread.php?t=323220 
+!/left4dead2/addons/sourcemod/gamedata/l4d_respawn_improved.txt
+!/left4dead2/addons/sourcemod/plugins/l4d_sm_respawn.smx
+!/left4dead2/addons/sourcemod/scripting/include/l4d_sm_respawn.inc
+!/left4dead2/addons/sourcemod/scripting/l4d_sm_respawn.sp
+!/left4dead2/addons/sourcemod/translations/l4d_sm_respawn.phrases.txt
+!/left4dead2/cfg/sourcemod/l4d_sm_respawn.cfg
+
+# Weapons Skins RNG [v1.0.5 | 10-November-2020] 
+# https://forums.alliedmods.net/showthread.php?p=2719546 
+# edit to be <10% chance on line 458: if (GetRandomInt(0, 100) > 15) return;   // 15% chance to randomize skin
+!/left4dead2/addons/sourcemod/plugins/l4d2_wskin_rng_edit15.smx
+
+# Vote Blocker 1.3.4 (06-Nov-2014)
+# https://forums.alliedmods.net/showthread.php?p=2082240?p=2082240 
+!/left4dead2/addons/sourcemod/plugins/voteblocker.smx
+#config
+!/left4dead2/cfg/sourcemod/VoteBlocker.cfg
+
+# Survivor Chat Select" (1.6.1.1) by DeatChaos25, Mi123456 & Merudo (fixes weapon animation bug) 
+# https://forums.alliedmods.net/showthread.php?p=2739045#post2739045 
+!/left4dead2/addons/sourcemod/plugins/survivor_chat_select.smx
+!/left4dead2/cfg/sourcemod/l4dscs.cfg
+
+# The Passing CSM Fix 2.0 	04-02-2016 
+# https://forums.alliedmods.net/showthread.php?p=2407497#post2407497
+!/left4dead2/addons/sourcemod/plugins/thePassingCSMFix.smx
+
+# "Plugin Manager" (1.1.0B) by R-Hehl modded by Jameless
+# https://forums.alliedmods.net/showthread.php?p=1310287#post1310287 
+!/left4dead2/addons/sourcemod/plugins/pluginmanager.smx
+
+# SteamWorks
+# https://forums.alliedmods.net/showthread.php?t=229556
+!/left4dead2/addons/metamod/bin/libtier0_s.so
+!/left4dead2/addons/metamod/bin/libvstdlib_s.so
+!/left4dead2/addons/metamod/bin/steamclient.so
+# https://github.com/KyleSanderson/SteamWorks/releases
+!/left4dead2/addons/sourcemod/extensions/SteamWorks.ext.so
+!/left4dead2/addons/sourcemod/scripting/swag.sp
+!/left4dead2/addons/sourcemod/scripting/include/SteamWorks.inc
+
+# Server Whitelist Advanced 1.5.0
+# https://forums.alliedmods.net/showthread.php?p=1830686 
+!/left4dead2/addons/sourcemod/plugins/serverwhitelistadvanced.smx
+#config
+!/left4dead2/addons/sourcemod/configs/whitelist
+!/left4dead2/addons/sourcemod/configs/whitelist/whitelist.txt
+!/left4dead2/cfg/sourcemod/serverwhitelistadvanced.cfg
+
+# Plane crash (1.7) [10-May-2020]
+# https://forums.alliedmods.net/showthread.php?p=1678503
+!/left4dead2/addons/sourcemod/plugins/l4d_plane_crash.smx
+!/left4dead2/cfg/sourcemod/l4d_plane_crash.cfg
+
+# Restart Empty Server 2.3
+# https://forums.alliedmods.net/showthread.php?t=315367 
+!/left4dead2/addons/sourcemod/data/restart_empty_maps.txt
+!/left4dead2/addons/sourcemod/plugins/sm_RestartEmpty.smx
+!/left4dead2/addons/sourcemod/scripting/sm_RestartEmpty.sp
+#config
+!/left4dead2/cfg/sourcemod/sm_restart_empty.cfg
+
+# Scene Processor
+# https://forums.alliedmods.net/showthread.php?t=241585
+!/left4dead2/addons/sourcemod/plugins/sceneprocessor.smx
+!/left4dead2/addons/sourcemod/scripting/include/sceneprocessor.inc
+!/left4dead2/addons/sourcemod/scripting/sceneprocessor.sp
+
+# QuickBan 1.2 (12/12/15)
+# https://forums.alliedmods.net/showthread.php?p=2179347
+!/left4dead2/addons/sourcemod/plugins/quickban.smx
+
+##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
+
+# Vocalize Anti-Flood 1.0.2  2014-06-29 (needs Scene Processor)
+# https://forums.alliedmods.net/showthread.php?t=241588 
+!/left4dead2/addons/sourcemod/plugins/disabled/vocalizeantiflood.smx
+!/left4dead2/addons/sourcemod/scripting/vocalizeantiflood.sp
+# config
+!/left4dead2/cfg/sourcemod/plugin.vocalizeantiflood.cfg
+
+# BHOP
+!/left4dead2/addons/sourcemod/plugins/disabled/sm_bhop.smx
+
+# Hats (1.24) [01-Oct-2020] https://forums.alliedmods.net/showthread.php?t=153781 
+!/left4dead2/cfg/sourcemod/l4d_hats.cfg
+!/left4dead2/addons/sourcemod/plugins/disabled/l4d_hats.smx
+!/left4dead2/addons/sourcemod/scripting/l4d_hats.sp
+
+# Zombie Character Select" (0.9.6) by XBetaAlpha
+# https://forums.alliedmods.net/showthread.php?t=121461 
+!/left4dead2/addons/sourcemod/plugins/disabled/l4d2_zcs.smx
+!/left4dead2/addons/sourcemod/gamedata/l4d2_zcs.txt
+!/left4dead2/cfg/sourcemod/l4d2_zcs.cfg
+
+
+
+
+#### Directory includes ####
+!/left4dead2/
+!/left4dead2/bin/
+!/left4dead2/addons/
+!/left4dead2/addons/metamod/
+!/left4dead2/addons/metamod/bin/
+!/left4dead2/addons/sourcemod/
+!/left4dead2/addons/sourcemod/configs/
+!/left4dead2/addons/sourcemod/data/
+!/left4dead2/addons/sourcemod/extensions/
+!/left4dead2/addons/sourcemod/extensions/x64/
+!/left4dead2/addons/sourcemod/gamedata/
+!/left4dead2/addons/sourcemod/plugins/
+!/left4dead2/addons/sourcemod/plugins/disabled/
+!/left4dead2/addons/sourcemod/scripting/
+!/left4dead2/addons/sourcemod/scripting/include/
+!/left4dead2/addons/sourcemod/translations
+!/left4dead2/cfg/
+!/left4dead2/cfg/sourcemod/
+!/left4dead2/cfg/sourcemod/configs/
+
+!.gitignore

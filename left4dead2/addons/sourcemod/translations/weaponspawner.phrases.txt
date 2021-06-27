@@ -1,0 +1,591 @@
+"Phrases"
+{
+// Commands
+	"CommandError_01"
+	{
+		"en"		"[WS] Command is in-game only"
+	}
+
+	"SpawnWeaponUsage"
+	{
+		"en"		"[WS] Usage: sm_spawnweapon [weapon_name] <amount>"
+	}
+
+	"SpawnError"
+	{
+		"en"		"[WS] Could not find spawn point"
+	}
+
+	"GiveWeaponUsage"
+	{
+		"en"		"[WS] Usage: sm_giveweapon <#userid|name> [weapon_name]"
+	}
+
+	"UncorrectWeaponName"
+	{
+		"en"		"[WS] Uncorrect weapon name"
+	}
+
+	"SpawnSpecialInfectedUsage"
+	{
+		"en"		"[WS] Usage: sm_zspawn [zombie_name] <amount>"
+	}
+
+	"SpawnUncommonZombieUsage"
+	{
+		"en"		"[WS] Usage: sm_uispawn [zombie_name] <amount>"
+	}
+
+	"UncorrectZombieName"
+	{
+		"en"		"[WS] Uncorrect zombie name"
+	}
+
+	"MinigunError_01"
+	{
+		"en"		"[WS] Failed to create Machine Gun ;("
+	}
+
+	"AimTargetError_01"
+	{
+		"en"		"[WS] You are not looking at any entity or entity is not valid"
+	}
+
+	"RemoveMinigunError_01"
+	{
+		"en"		"[WS] This is not a Machine Gun"
+	}
+// Player Select
+	"SelectPlayer"
+	{
+		"en"		"Select Player:"
+	}
+
+	"PlayerSelectError_01"
+	{
+		"en"		"[WS] Player no longer available"
+	}
+
+	"PlayerSelectError_02"
+	{
+		"en"		"[WS] Unable to target"
+	}
+// Weapon Spawner Menu
+	"WeaponSpawner"
+	{
+		"en"		"Weapon Spawner"
+	}
+
+	"WeaponSpawnerTitle"
+	{
+		"en"		"Weapon Spawner:"
+	}
+
+	"SpawnWeapon"
+	{
+		"en"		"Spawn Weapon"
+	}
+
+	"GiveWeapon"
+	{
+		"en"		"Give Weapon"
+	}
+
+	"SpawnSpecialInfected"
+	{
+		"en"		"Spawn Special Infected"
+	}
+
+	"SpawnUncommonZombie"
+	{
+		"en"		"Spawn Uncommon Zombie"
+	}
+
+	"MinigunMenu"
+	{
+		"en"		"Minigun Menu"
+	}
+// Weapon Spawner SubMenu Title
+	"SpawnWeaponMenuTitle"
+	{
+		"en"		"Spawn Weapon:"
+	}
+
+	"GiveWeaponMenuTitle"
+	{
+		"en"		"Give Weapon:"
+	}
+
+	"SpawnSpecialInfectedTitle"
+	{
+		"en"		"Spawn Special Infected:"
+	}
+
+	"SpawnUncommonZombieTitle"
+	{
+		"en"		"Spawn Uncommon Zombie:"
+	}
+
+	"MinigunMenuTitle"
+	{
+		"en"		"Minigun Menu:"
+	}
+//  Spawn Weapons and Give Weapons SubMenu Title
+	"MeleeMenuTitle"
+	{
+		"en"		"Melee Weapons:"
+	}
+
+	"BulletBasedMenuTitle"
+	{
+		"en"		"Bullet Based Weapons:"
+	}
+
+	"ShellBasedMenuTitle"
+	{
+		"en"		"Shell Based Weapons:"
+	}
+
+	"ExplosiveBasedMenuTitle"
+	{
+		"en"		"Explosive Based Weapons:"
+	}
+
+	"HealthMenuTitle"
+	{
+		"en"		"Health Related:"
+	}
+
+	"MiscMenuTitle"
+	{
+		"en"		"Misc Weapons/Addons:"
+	}
+// Spawn Weapons and Give Weapons
+	"MeleeWeapons"
+	{
+		"en"		"Melee Weapons"
+	}
+
+	"BulletBased"
+	{
+		"en"		"Bullet Based"
+	}
+
+	"ShellBased"
+	{
+		"en"		"Shell Based"
+	}
+
+	"ExplosiveBased"
+	{
+		"en"		"Explosive Based"
+	}
+
+	"HealthRelated"
+	{
+		"en"		"Health Related"
+	}
+
+	"Misc"
+	{
+		"en"		"Misc"
+	}
+// Melee Weapons
+	"BaseballBat"
+	{
+		"en"		"Baseball Bat"
+	}
+
+	"CricketBat"
+	{
+		"en"		"Cricket Bat"
+	}
+
+	"Crowbar"
+	{
+		"en"		"Crowbar"
+	}
+
+	"ElectricGuitar"
+	{
+		"en"		"Electric Guitar"
+	}
+
+	"FireAxe"
+	{
+		"en"		"Fire Axe"
+	}
+
+	"FryingPan"
+	{
+		"en"		"Frying Pan"
+	}
+
+	"Golfclub"
+	{
+		"en"		"Golf Club"
+	}
+
+	"Katana"
+	{
+		"en"		"Katana"
+	}
+
+	"Knife"
+	{
+		"en"		"Knife"
+	}
+
+	"Machete"
+	{
+		"en"		"Machete"
+	}
+
+	"Tonfa"
+	{
+		"en"		"Tonfa"
+	}
+	"Pitchfork"
+	{
+		"en"		"Pitchfork"
+	}
+	"Shovel"
+	{
+		"en"		"Shovel"
+	}
+// Bullet Based
+	"HuntingRifle"
+	{
+		"en"		"Hunting Rifle"
+	}
+
+	"Pistol"
+	{
+		"en"		"Pistol"
+	}
+
+	"DesertEagle"
+	{
+		"en"		"Desert Eagle"
+	}
+
+	"Rifle"
+	{
+		"en"		"Rifle"
+	}
+
+	"DesertRifle"
+	{
+		"en"		"Desert Rifle"
+	}
+
+	"SubmachineGun"
+	{
+		"en"		"Submachine Gun"
+	}
+
+	"SilencedSubmachineGun"
+	{
+		"en"		"Silenced Submachine Gun"
+	}
+
+	"MilitarySniper"
+	{
+		"en"		"Military Sniper"
+	}
+
+	"AvtomatKalashnikova"
+	{
+		"en"		"Avtomat Kalashnikova"
+	}
+
+	"SIGSG550"
+	{
+		"en"		"SIG SG 550"
+	}
+
+	"RifleM60"
+	{
+		"en"		"Rifle M60"
+	}
+
+	"SubmachineGunMP5"
+	{
+		"en"		"Submachine Gun MP5"
+	}
+
+	"AWP"
+	{
+		"en"		"Accuracy International Arctic Warfare"
+	}
+
+	"ScoutSniper"
+	{
+		"en"		"Scout Sniper"
+	}
+
+	"LaserSightBox"
+	{
+		"en"		"Laser Sight Box"
+	}
+// Shell Based
+	"AutoShotgun"
+	{
+		"en"		"Auto Shotgun"
+	}
+
+	"ChromeShotgun"
+	{
+		"en"		"Chrome Shotgun"
+	}
+
+	"SpasShotgun"
+	{
+		"en"		"Spas Shotgun"
+	}
+
+	"PumpShotgun"
+	{
+		"en"		"Pump Shotgun"
+	}
+// Explosive Based
+	"GrenadeLauncher"
+	{
+		"en"		"Grenade Launcher"
+	}
+
+	"ExplosiveBarrel"
+	{
+		"en"		"Explosive Barrel"
+	}
+
+	"FireworksCrate"
+	{
+		"en"		"Fireworks Crate"
+	}
+
+	"Gascan"
+	{
+		"en"		"Gascan"
+	}
+
+	"Molotov"
+	{
+		"en"		"Molotov"
+	}
+
+	"OxygenTank"
+	{
+		"en"		"Oxygen Tank"
+	}
+
+	"PipeBomb"
+	{
+		"en"		"Pipe Bomb"
+	}
+
+	"PropaneTank"
+	{
+		"en"		"Propane Tank"
+	}
+// Health Related
+	"FullHealth"
+	{
+		"en"		"Full Health"
+	}
+
+	"Adrenaline"
+	{
+		"en"		"Adrenaline"
+	}
+
+	"Defibrillator"
+	{
+		"en"		"Defibrillator"
+	}
+
+	"FirstAidKit"
+	{
+		"en"		"First Aid Kit"
+	}
+
+	"PainPills"
+	{
+		"en"		"Pain Pills"
+	}
+// Misc
+	"AmmoStackCoffee"
+	{
+		"en"		"Ammo Stack Coffee"
+	}
+
+	"AmmoStack"
+	{
+		"en"		"Ammo Stack"
+	}
+
+	"Ammo"
+	{
+		"en"		"Refill Ammo"
+	}
+
+	"LaserSight"
+	{
+		"en"		"Laser Sight"
+	}
+
+	"ExplosiveAmmoPack"
+	{
+		"en"		"Explosive Ammo Pack"
+	}
+
+	"ExplosiveAmmo"
+	{
+		"en"		"Explosive Ammo"
+	}
+
+	"IncendiaryAmmoPack"
+	{
+		"en"		"Incendiary Ammo Pack"
+	}
+
+	"IncendiaryAmmo"
+	{
+		"en"		"Incendiary Ammo"
+	}
+
+	"VomitJar"
+	{
+		"en"		"Vomit Jar"
+	}
+
+	"ChainSaw"
+	{
+		"en"		"Chain Saw"
+	}
+
+	"Gnome"
+	{
+		"en"		"Gnome"
+	}
+
+	"Cola"
+	{
+		"en"		"Cola Bottles"
+	}
+// Spawn Special Infected 
+	"Boomer"
+	{
+		"en"		"Boomer"
+	}
+
+	"Hunter"
+	{
+		"en"		"Hunter"
+	}
+
+	"Smoker"
+	{
+		"en"		"Smoker"
+	}
+
+	"Spitter"
+	{
+		"en"		"Spitter"
+	}
+
+	"Charger"
+	{
+		"en"		"Charger"
+	}
+
+	"Tank"
+	{
+		"en"		"Tank"
+	}
+
+	"Jockey"
+	{
+		"en"		"Jockey"
+	}
+
+	"Witch"
+	{
+		"en"		"Witch"
+	}
+
+	"BrideWitch"
+	{
+		"en"		"Bride Witch"
+	}
+
+	"OneZombie"
+	{
+		"en"		"One Zombie"
+	}
+
+	"ZombieMob"
+	{
+		"en"		"Zombie Mob"
+	}
+// Spawn Uncommon Zombie 
+	"Riot"
+	{
+		"en"		"Riot"
+	}
+
+	"Ceda"
+	{
+		"en"		"Ceda"
+	}
+
+	"Clown"
+	{
+		"en"		"Clown"
+	}
+
+	"Mud"
+	{
+		"en"		"Mud"
+	}
+
+	"Roadcrew"
+	{
+		"en"		"Roadcrew"
+	}
+
+	"Jimmy"
+	{
+		"en"		"Jimmy"
+	}
+
+	"Fallen"
+	{
+		"en"		"Fallen"
+	}
+
+	"SetAmountInfected"
+	{
+		"en"		"Set amount infected"
+	}
+
+	"SetAmountInfectedTitle"
+	{
+		"en"		"Set amount infected:"
+	}
+// Minigun Menu
+	"SpawnMiniGun"
+	{
+		"en"		"Spawn .50 Cal"
+	}
+
+	"SpawnMiniGun2"
+	{
+		"en"		"Spawn Mini Gun"
+	}
+
+	"RemoveMiniGun"
+	{
+		"en"		"Remove Machine Gun"
+	}
+}

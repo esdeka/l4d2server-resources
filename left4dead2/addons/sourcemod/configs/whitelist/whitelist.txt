@@ -1,0 +1,13 @@
+; You can use ';' to have comments (not read by the plugin)
+; Write directly to insert either a SteamID or an IP
+; Don't put more than 250 char on a line
+; ';auto' tags gives various information surrounding an added user
+127.0.0.1 ; IP; and comments can continue after them
+10.10.10.3
+;STEAM_0:1:23456789 ; SteamID
+;STEAM_9:8:76543210
+STEAM_1:1:19890060			; SDK
+STEAM_1:1:5650275			; Uni
+STEAM_1:1:68859885			; Tack
+;[U:1:2345678] ; SteamId
+;876543210 ; this would be a small SteamGroupId (< 2^31); every member/officer will be whitelisted

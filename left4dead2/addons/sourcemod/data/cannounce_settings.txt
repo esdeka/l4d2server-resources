@@ -1,0 +1,13 @@
+"CountryShow"
+{
+	"messages"
+	{
+		"playerjoin"		""
+		"playerdisc"		""
+	}
+	"messages_admin"
+	{
+		"playerjoin"		"{GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> connected {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT})"
+		"playerdisc"		""
+	}
+}

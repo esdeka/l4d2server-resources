@@ -1,0 +1,151 @@
+// Custom admin menu commands.
+// For more information:
+//
+// http://wiki.alliedmods.net/Custom_Admin_Menu_%28SourceMod%29
+//
+// Note: This file must be in Valve KeyValues format (no multiline comments)
+//
+
+"Commands"
+{
+	"ABM Multislots"
+	{
+		"ABM manager"
+		{
+			"cmd"			"abm-menu"
+			"admin"			"sm_ban"
+		}
+		"Add a bot"
+		{
+			"cmd"			"abm-mk 1 2"
+			"admin"			"sm_ban"
+		}
+		"Remove a bot"
+		{
+			"cmd"			"abm-rm 1 2"
+			"admin"			"sm_ban"
+		}
+		"Remove all extra survivors"
+		{
+			"cmd"			"abm-rm -4 2"
+			"admin"			"sm_ban"
+		}
+	}
+	
+	"Quick CMD"
+	{ 
+		"Character selector"
+		{
+			"cmd"			"sm_csc"
+			"admin"			"sm_ban"
+		}
+		"Respawn"
+		{
+			"cmd"			"sm_respawn #1"
+			"1"
+			{
+				"type"		"player"
+				"method"	"userid"
+				"title"		"Respawn player"
+			}
+		}
+		"Teleport"
+		{
+			"cmd"			"sm_teleport #1"
+			"1"
+			{
+				"type"		"player"
+				"method"	"userid"
+				"title"		"Teleport player"
+			}
+		}
+		"Noclip"
+		{
+			"cmd"			"sm_noclip #1"
+			"1"
+			{
+				"type"		"player"
+				"method"	"userid"
+				"title"		"NoClip player"
+			}
+		}
+		"God"
+		{
+			"cmd"			"sm_godmode #1"
+			"1"
+			{
+				"type"		"player"
+				"method"	"userid"
+				"title"		"Godmode player"
+			}
+		}
+		"Kick"
+		{
+			"cmd"			"sm_kick"
+		}
+		"Ban"
+		{
+			"cmd"			"sm_ban"
+		}
+		"Server pausable"
+		{
+			"cmd"			"sv_pausable @1; sm_chat sv_pausable = @1 untill next chapter"
+			"admin"			"sm_ban"
+			"execute"		"server"
+			"1"
+			{
+				"title"		"Pausable? (default=off)"
+				"type"		"onoff"
+			}
+		}
+		"Specials 5+ players scaling"
+		{
+			"cmd"			"abm_autohard @1; sm_chat abm_autohard = @1 untill next chapter"
+			"admin"			"sm_ban"
+			"execute"		"server"
+			"1"
+			{
+				"title"		"Scaling? (default=on)"
+				"type"		"onoff"
+			}
+		}
+		"Auto spawn 5+ joiners"
+		{
+			"cmd"			"abm_teamlimit @1; sm_chat abm_teamlimit = @1 untill next chapter"
+			"admin"			"sm_ban"
+			"execute"		"server"
+			"1"
+			{
+				"type"		"list"
+				"title"		"Autospawn? (def=off)"
+				"1"			"4"
+				"1."		"Off (max=4)"
+				"2"			"16"
+				"2."		"On (max=16)"
+			}
+		}
+		"Allow all bot"
+		{
+			"cmd"			"sm_cvar sb_all_bot_game @1; sm_cvar allow_all_bot_survivor_team @1; sm_chat sb_all_bot_game = allow_all_bot_survivor_team = @1 untill next chapter"
+			"admin"			"sm_ban"
+			"execute"		"server"
+			"1"
+			{
+				"title"		"Allow all bots? (def=off)"
+				"type"		"onoff"
+			}
+		}
+		"Director: disable (needs cheats)"
+		{
+			"cmd"			"sv_cheats 1; director_stop; sm_chat director_stop untill next chapter"
+			"admin"			"sm_ban"
+			"execute"		"server"
+		}
+		"Director: enable"
+		{
+			"cmd"			"sv_cheats 0"
+			"admin"			"sm_ban"
+			"execute"		"server"
+		}
+	}
+}
