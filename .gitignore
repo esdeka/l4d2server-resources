@@ -266,7 +266,7 @@
 !/left4dead2/addons/sourcemod/gamedata/l4d2_zcs.txt
 !/left4dead2/cfg/sourcemod/l4d2_zcs.cfg
 
-
+!left4dead2/motd.txt
 
 
 #### Directory includes ####
