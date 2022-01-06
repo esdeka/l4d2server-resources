@@ -109,12 +109,8 @@
 # config
 !/left4dead2/cfg/sourcemod/l4d_gear_transfer.cfg
 
-# Witch fixes 16-06-2021 
+# Witch fixes 06-01-2022 
 # https://forums.alliedmods.net/showthread.php?t=315481 
-# witch_allow_in_safezone
-!/left4dead2/addons/sourcemod/gamedata/witch_allow_in_safezone.txt
-!/left4dead2/addons/sourcemod/plugins/witch_allow_in_safezone.smx
-!/left4dead2/addons/sourcemod/scripting/witch_allow_in_safezone.sp
 # Witch_Double_Startle_Fix
 !/left4dead2/addons/sourcemod/scripting/Witch_Double_Startle_Fix.sp
 !/left4dead2/addons/sourcemod/plugins/Witch_Double_Startle_Fix.smx
