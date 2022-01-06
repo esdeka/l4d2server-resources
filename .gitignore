@@ -169,6 +169,11 @@
 # edit to be <10% chance on line 458: if (GetRandomInt(0, 100) > 15) return;   // 15% chance to randomize skin
 !/left4dead2/addons/sourcemod/plugins/l4d2_wskin_rng_edit15.smx
 
+# Plugin Updates Checker (1.4) [07-Nov-2021]
+# https://forums.alliedmods.net/showthread.php?p=2752585
+!/left4dead2/addons/sourcemod/plugins/plugin_updates_checker.smx
+!/left4dead2/cfg/sourcemod/sm_updates_checker.cfg
+
 # Vote Blocker 1.3.4 (06-Nov-2014)
 # https://forums.alliedmods.net/showthread.php?p=2082240?p=2082240 
 !/left4dead2/addons/sourcemod/plugins/voteblocker.smx
