@@ -169,7 +169,7 @@
 # edit to be <10% chance on line 458: if (GetRandomInt(0, 100) > 15) return;   // 15% chance to randomize skin
 !/left4dead2/addons/sourcemod/plugins/l4d2_wskin_rng_edit15.smx
 
-# Plugin Updates Checker (1.4) [07-Nov-2021]
+# Plugin Updates Checker (1.4) [07-Nov-2021] requires steamworks
 # https://forums.alliedmods.net/showthread.php?p=2752585
 !/left4dead2/addons/sourcemod/plugins/plugin_updates_checker.smx
 !/left4dead2/cfg/sourcemod/sm_updates_checker.cfg
@@ -227,7 +227,7 @@
 !/left4dead2/addons/sourcemod/configs/whitelist/whitelist.txt
 !/left4dead2/cfg/sourcemod/serverwhitelistadvanced.cfg
 
-# Plane crash (1.7) [10-May-2020]
+# Plane crash 1.8 (19-Oct-2021)
 # https://forums.alliedmods.net/showthread.php?p=1678503
 !/left4dead2/addons/sourcemod/plugins/l4d_plane_crash.smx
 !/left4dead2/cfg/sourcemod/l4d_plane_crash.cfg
