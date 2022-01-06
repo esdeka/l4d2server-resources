@@ -240,7 +240,7 @@
 #config
 !/left4dead2/cfg/sourcemod/sm_restart_empty.cfg
 
-# Scene Processor
+# Scene Processor 1.33.3 	15th Dec 2021 Dragokas
 # https://forums.alliedmods.net/showthread.php?t=241585
 !/left4dead2/addons/sourcemod/plugins/sceneprocessor.smx
 !/left4dead2/addons/sourcemod/scripting/include/sceneprocessor.inc

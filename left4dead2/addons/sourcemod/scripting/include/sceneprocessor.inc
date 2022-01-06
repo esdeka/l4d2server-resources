@@ -3,10 +3,7 @@
 #endif
 #define _sceneprocessor_included
 
-#define SCENEPROCESSOR_VERSION "1.0.1"
-#define SCENEPROCESSOR_LIBRARY "sceneprocessor"
-
-#define MAX_SCENEFILE_LENGTH	PLATFORM_MAX_PATH // Maximum length of scene files
+#define MAX_SCENEFILE_LENGTH PLATFORM_MAX_PATH // Maximum length of scene files
 #define MAX_VOCALIZE_LENGTH	128 // Maximum length of vocalize strings
 
 #define SCENE_INITIATOR_WORLD	0	/* All scenes created by the map (such as landmarks, "Down this way", "Through here") 
@@ -22,6 +19,9 @@
 
 enum SceneStages
 {
+	SceneStage_Unknown = 0,		/* Scene has not been created nor processed. Either something went wrong, the
+					 * scene is not valid, incorrectly formatted, or a round just started recently. */
+	
 	SceneStage_Created = 1,		/* When scene is created. Contains no information about the scene that is about to
 					 * be played out. Guaranteed to occur. */
 	
@@ -42,7 +42,7 @@ enum SceneStages
 	
 	SceneStage_Killed		/* When scene is killed. Entity index is no longer valid but information is retained
 					 * until end of forward. Guaranteed to occur */
-}
+};
 
 /**
  * Called on scene stage changed.
@@ -51,7 +51,7 @@ enum SceneStages
  * @param stage		SceneStages value.
  * @noreturn
  */
-forward OnSceneStageChanged(scene, SceneStages:stage);
+forward void OnSceneStageChanged(int scene, SceneStages stage);
 
 /**
  * Called on vocalize command send.
@@ -65,7 +65,7 @@ forward OnSceneStageChanged(scene, SceneStages:stage);
  * @return		Plugin_Stop to stop vocalize command.
  *			Plugin_Continue to allow vocalize command.
  */
-forward Action:OnVocalizeCommand(client, const String:vocalize[], initiator);
+forward Action OnVocalizeCommand(int client, const char[] vocalize, int initiator);
 
 /**
  * Returns scene stage.
@@ -73,7 +73,7 @@ forward Action:OnVocalizeCommand(client, const String:vocalize[], initiator);
  * @param scene		Scene entity index.
  * @return		SceneStages value or 0 if scene is not valid.
  */
-native SceneStages:GetSceneStage(scene);
+native SceneStages GetSceneStage(int scene);
 
 /**
  * Returns whether scene is valid as a scene.
@@ -83,9 +83,9 @@ native SceneStages:GetSceneStage(scene);
  * @param scene		Scene entity index.
  * @return		True if a valid scene, false otherwise.
  */
-stock bool:IsValidScene(scene)
+stock bool IsValidScene(int scene)
 {
-	return GetSceneStage(scene) != SceneStages:0
+	return GetSceneStage(scene) != SceneStage_Unknown;
 }
 
 /**
@@ -94,7 +94,7 @@ stock bool:IsValidScene(scene)
  * @param scene		Scene entity index.
  * @return		Scene start engine time stamp. 0.0 if the scene has not started yet.
  */
-native Float:GetSceneStartTimeStamp(scene);
+native float GetSceneStartTimeStamp(int scene);
 
 /**
  * Returns scene actor.
@@ -102,7 +102,7 @@ native Float:GetSceneStartTimeStamp(scene);
  * @param scene		Scene entity index.
  * @return		Actor of the scene. 0 if no one is playing it.
  */
-native GetActorFromScene(scene);
+native int GetActorFromScene(int scene);
 
 /**
  * Returns actor's scene.
@@ -112,7 +112,7 @@ native GetActorFromScene(scene);
  * @param actor		Client index of actor.
  * @return		Scene entity index. INVALID_ENT_REFERENCE if actor currently aren't playing.
  */
-native GetSceneFromActor(actor);
+native int GetSceneFromActor(int actor);
 
 /**
  * Returns whether actor is already playing a scene.
@@ -120,9 +120,9 @@ native GetSceneFromActor(actor);
  * @param actor		Client index of actor.
  * @return		True if actor is busy, false otherwise.
  */
-stock bool:IsActorBusy(actor)
+stock bool IsActorBusy(int actor)
 {
-	return GetSceneFromActor(actor) != INVALID_ENT_REFERENCE
+	return GetSceneFromActor(actor) != INVALID_ENT_REFERENCE;
 }
 
 /**
@@ -134,7 +134,7 @@ stock bool:IsActorBusy(actor)
  * @param scene		Scene entity index.
  * @return		Initiator of the scene.
  */
-native GetSceneInitiator(scene);
+native int GetSceneInitiator(int scene);
 
 /**
  * Returns scene file.
@@ -144,7 +144,7 @@ native GetSceneInitiator(scene);
  * @param len		Destination buffer length (includes null terminator).
  * @return		Number of bytes written
  */
-native GetSceneFile(scene, String:dest[], len);
+native int GetSceneFile(int scene, char[] dest, int len);
 
 /**
  * Returns scene vocalize.
@@ -157,7 +157,7 @@ native GetSceneFile(scene, String:dest[], len);
  * @param len		Destination buffer length (includes null terminator).
  * @return		Number of bytes written
  */
-native GetSceneVocalize(scene, String:dest[], len);
+native int GetSceneVocalize(int scene, char[] dest, int len);
 
 /**
  * Returns scene pre-delay.
@@ -168,7 +168,7 @@ native GetSceneVocalize(scene, String:dest[], len);
  * @param scene		Scene entity index.
  * @return		Scene pre-delay in seconds.
  */
-native Float:GetScenePreDelay(scene);
+native float GetScenePreDelay(int scene);
 
 /**
  * Sets scene pre-delay.
@@ -181,7 +181,7 @@ native Float:GetScenePreDelay(scene);
  * @param preDelay	Scene pre-delay in seconds.
  * @noreturn
  */
-native SetScenePreDelay(scene, Float:preDelay);
+native void SetScenePreDelay(int scene, float preDelay);
 
 /**
  * Returns scene pitch.
@@ -189,7 +189,7 @@ native SetScenePreDelay(scene, Float:preDelay);
  * @param scene		Scene entity index.
  * @return		Scene pitch.
  */
-native Float:GetScenePitch(scene);
+native float GetScenePitch(int scene);
 
 /**
  * Sets scene pitch
@@ -202,7 +202,7 @@ native Float:GetScenePitch(scene);
  * @param pitch		Scene pitch.
  * @noreturn
  */
-native SetScenePitch(scene, Float:pitch);
+native void SetScenePitch(int scene, float pitch);
 
 /**
  * Cancels scene.
@@ -213,7 +213,7 @@ native SetScenePitch(scene, Float:pitch);
  * @param scene		Scene entity index.
  * @noreturn
  */
-native CancelScene(scene);
+native void CancelScene(int scene);
 
 /**
  * Performs a scene.
@@ -232,7 +232,7 @@ native CancelScene(scene);
  * @param initiator	Initiator of the scene.
  * @noreturn
  */
-native PerformScene(client, const String:vocalize[], const String:file[] = "", Float:preDelay = DEFAULT_SCENE_PREDELAY, Float:pitch = DEFAULT_SCENE_PITCH, initiator = SCENE_INITIATOR_PLUGIN);
+native void PerformScene(int client, const char[] vocalize, const char[] file = "", float preDelay = DEFAULT_SCENE_PREDELAY, float pitch = DEFAULT_SCENE_PITCH, int initiator = SCENE_INITIATOR_PLUGIN);
 
 /**
  * Performs a scene.
@@ -249,9 +249,9 @@ native PerformScene(client, const String:vocalize[], const String:file[] = "", F
  * @param initiator	Initiator of the scene.
  * @noreturn
  */
-native PerformSceneEx(client, const String:vocalize[], const String:file[] = "", Float:preDelay = DEFAULT_SCENE_PREDELAY, Float:pitch = DEFAULT_SCENE_PITCH, initiator = SCENE_INITIATOR_PLUGIN);
+native void PerformSceneEx(int client, const char[] vocalize, const char[] file = "", float preDelay = DEFAULT_SCENE_PREDELAY, float pitch = DEFAULT_SCENE_PITCH, int initiator = SCENE_INITIATOR_PLUGIN);
 
-public SharedPlugin:__pl_sceneproces = 
+public SharedPlugin __pl_sceneproces = 
 {
 	name = "sceneprocessor",
 	file = "sceneprocessor.smx",
@@ -263,7 +263,7 @@ public SharedPlugin:__pl_sceneproces =
 };
 
 #if !defined REQUIRE_PLUGIN
-public __pl_sceneproces_SetNTVOptional()
+public void __pl_sceneproces_SetNTVOptional()
 {
 	MarkNativeAsOptional("GetSceneStage");
 	MarkNativeAsOptional("GetSceneStartTimeStamp");
