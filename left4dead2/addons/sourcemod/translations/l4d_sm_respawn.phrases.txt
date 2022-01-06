@@ -40,26 +40,31 @@
 	{
 		"en"		" (spectator)"
 		"ru"		" (зритель)"
+		"hu"		" (néző)"
 	}
 	"Dead"
 	{
 		"en"		" (dead)"
 		"ru"		" (мёртв)"
+		"hu"		" (halott)"
 	}
 	"List_Teams"
 	{
 		"en"		"Selects the team:"
 		"ru"		"Выберите команду:"
+		"hu"		"Válasz csapatott:"
 	}
 	"Survivors" // team
 	{
 		"en"		"Survivors"
 		"ru"		"Выжившие"
+		"hu"		"Túlélők"
 	}
 	"Infected" // team
 	{
 		"en"		"Infected"
 		"ru"		"Заражённые"
+		"hu"		"Fertőzött"
 	}
 	
 	"Dummy" // Dummy. Don't touch!

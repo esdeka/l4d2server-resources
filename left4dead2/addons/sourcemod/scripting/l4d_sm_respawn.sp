@@ -5,7 +5,7 @@
 #include <sdktools>
 #include <adminmenu>
 
-#define PLUGIN_VERSION "3.1"
+#define PLUGIN_VERSION "3.6"
 
 #define CVAR_FLAGS	FCVAR_NOTIFY
 
@@ -190,7 +190,7 @@ public void OnPluginStart()
 		HookEvent("dead_survivor_visible", Event_DeadSurvivorVisible);
 	}
 	
-	RegConsoleCmd("sm_respawn", 		CmdRespawn, 	"<opt.target> Respawn a player at your crosshair. Without argument - opens menu to select players");
+	RegConsoleCmd("sm_respawn", 		CmdRespawn, 	"<opt.target(s)> Respawn player(s) at your crosshair. Without argument - opens menu to select players");
 	RegConsoleCmd("sm_respawnex", 		CmdRespawnEx,	"<arguments of native>. This command respawns the player with additional options, identical to SM_Respawn() native.");
 	
 	#if( DEBUG )
@@ -530,7 +530,7 @@ public Action CmdRespawnEx(int client, int numParams)
 	}
 	
 	GetCmdArg(1, arg, sizeof(arg));
-
+	
 	if( (target_count = ProcessTargetString(arg, client, target_list, MAXPLAYERS, 0, target_name, sizeof(target_name), tn_is_ml)) <= 0 )
 	{
 		ReplyToTargetError(client, target_count);
@@ -562,6 +562,7 @@ public Action CmdRespawn(int client, int args)
 	char arg1[MAX_TARGET_LENGTH], target_name[MAX_TARGET_LENGTH];
 	int target_list[MAXPLAYERS], target_count, target;
 	bool tn_is_ml;
+	int goal_team = GetClientTeam(client);
 	
 	GetCmdArg(1, arg1, sizeof(arg1));
 	if( (target_count = ProcessTargetString(arg1, client, target_list, MAXPLAYERS, 0, target_name, sizeof(target_name), tn_is_ml)) <= 0 )
@@ -575,7 +576,10 @@ public Action CmdRespawn(int client, int args)
 		
 		if( target && IsClientInGame(target) )
 		{
-			vRespawnPlayer(client, target);
+			if( goal_team == 1 || goal_team == GetClientTeam(target) )
+			{
+				vRespawnPlayer(client, target);
+			}
 		}
 	}
 	return Plugin_Handled;
@@ -589,9 +593,10 @@ bool vRespawnPlayer(
 	float vec[3] = {0.0, 0.0, 0.0}
 	)
 {
-	int desiredTeam;
+	int desiredTeam, iCharacter;
 	float ang[3];
-	bool bShouldTeleport, bShouldRespawn = true;
+	bool bShouldTeleport, bShouldModel, bShouldRespawn = true;
+	static char sModel[PLATFORM_MAX_PATH];
 	
 	SPAWN_POSITION spawnPos;
 	
@@ -704,6 +709,10 @@ bool vRespawnPlayer(
 			if( IsPlayerAlive(target) )
 			{
 				AcceptEntityInput(target, "clearparent"); // clearparent jockey bug switching teams (thanks to Lux)
+				
+				iCharacter = GetEntProp(client, Prop_Send, "m_survivorCharacter");
+				GetClientModel(client, sModel, sizeof(sModel));
+				bShouldModel = true;
 			}
 			if( desiredTeam == TEAM_INFECTED )
 			{
@@ -735,6 +744,12 @@ bool vRespawnPlayer(
 				PatchAddress(false);
 				
 				GiveLoadOut(target);
+				
+				if( bShouldModel )
+				{
+					SetEntProp(client, Prop_Send, "m_survivorCharacter", iCharacter);
+					SetEntityModel(client, sModel);
+				}
 				
 				SetEntProp(target, Prop_Send, "m_bDucked", 1); // force crouch pose to allow respawn in transport / duct ...
 				SetEntProp(target, Prop_Send, "m_fFlags", GetEntProp(target, Prop_Send, "m_fFlags") | FL_DUCKING);
@@ -1131,6 +1146,8 @@ bool HasCommandAccessFlag(int client)
 
 int FindBotToTakeOver(int target, int team)
 {
+	static char sNetClass[16];
+
 	int targetUId = GetClientUserId(target);
 	
 	if( team == TEAM_SURVIVORS ) // if a survivor bot is already belongs to our target (IDLE)
@@ -1139,9 +1156,14 @@ int FindBotToTakeOver(int target, int team)
 		{
 			if( IsClientInGame(i) && GetClientTeam(i) == team && IsFakeClient(i) && IsPlayerAlive(i) )
 			{
-				if( targetUId == GetEntProp(i, Prop_Send, "m_humanSpectatorUserID") )
+				GetEntityNetClass(i, sNetClass, sizeof(sNetClass));
+				
+				if( strcmp(sNetClass, "SurvivorBot") == 0 ) // there are reports, that team + IsFakeClient check are not enough for some (?) reason. What kind of bot is that???
 				{
-					return i;
+					if( targetUId == GetEntProp(i, Prop_Send, "m_humanSpectatorUserID") )
+					{
+						return i;
+					}
 				}
 			}
 		}
@@ -1152,9 +1174,14 @@ int FindBotToTakeOver(int target, int team)
 		{
 			if( team == TEAM_SURVIVORS )
 			{
-				if( 0 == GetEntProp(i, Prop_Send, "m_humanSpectatorUserID")) // forbid takeover other people's bot
+				GetEntityNetClass(i, sNetClass, sizeof(sNetClass));
+				
+				if( strcmp(sNetClass, "SurvivorBot") == 0 )
 				{
-					return i;
+					if( 0 == GetEntProp(i, Prop_Send, "m_humanSpectatorUserID")) // forbid takeover other people's bot
+					{
+						return i;
+					}
 				}
 			}
 			else {
