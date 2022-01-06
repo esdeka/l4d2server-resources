@@ -31,14 +31,15 @@
 # https://forums.alliedmods.net/showthread.php?p=2588686#post2588686
 # DHooks is now included with SourceMod 1.11.6820
 
-# Left 4 DHooks Direct (1.42) [23-Jun-2021]
+# Left 4 DHooks Direct 1.83 (25-Dec-2021)
 # https://forums.alliedmods.net/showthread.php?t=321696
 !/left4dead2/addons/sourcemod/data/left4dhooks.l4d1.cfg
 !/left4dead2/addons/sourcemod/data/left4dhooks.l4d2.cfg
 !/left4dead2/addons/sourcemod/gamedata/left4dhooks.l4d1.txt
 !/left4dead2/addons/sourcemod/gamedata/left4dhooks.l4d2.txt
+!/left4dead2/addons/sourcemod/gamedata/lux_library.txt
 !/left4dead2/addons/sourcemod/plugins/left4dhooks.smx
-!/left4dead2/addons/sourcemod/scripting/include/left4dhooks.inc
+!/left4dead2/addons/sourcemod/scripting/include/left4dhooks*.inc
 !/left4dead2/addons/sourcemod/scripting/left4dhooks_test.sp
 !/left4dead2/addons/sourcemod/scripting/left4dhooks.sp
 
@@ -80,6 +81,18 @@
 !/left4dead2/addons/sourcemod/plugins/abm.smx
 # Config
 !/left4dead2/cfg/sourcemod/abm.cfg
+
+# Mission and Weapons - Info Editor (1.12) [01-Oct-2020]
+# https://forums.alliedmods.net/showthread.php?t=310586
+# Enables katana on all maps, mari!
+!/left4dead2/addons/sourcemod/data/l4d_info_editor_mission.cfg
+!/left4dead2/addons/sourcemod/data/l4d_info_editor_weapons.cfg
+!/left4dead2/addons/sourcemod/gamedata/l4d_info_editor.txt
+!/left4dead2/addons/sourcemod/plugins/l4d_info_editor.smx
+!/left4dead2/addons/sourcemod/scripting/include/l4d_info_editor.inc
+!/left4dead2/addons/sourcemod/scripting/l4d_info_test.sp
+!/left4dead2/addons/sourcemod/scripting/l4d_info_editor_weapons.sp
+!/left4dead2/addons/sourcemod/scripting/l4d_info_editor.sp
 
 # Accelerator crashlog 2.5.0-cd575aa
 # https://forums.alliedmods.net/showthread.php?t=277703
