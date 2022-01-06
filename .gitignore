@@ -155,7 +155,7 @@
 !/left4dead2/addons/sourcemod/plugins/l4d2_custom_commands.smx
 !/left4dead2/addons/sourcemod/gamedata/l4d2customcmds.txt
 
-# Respawn Improved 3.0 (15-Apr-2021)
+# Respawn Improved  3.6 (04-Jan-2022)
 # https://forums.alliedmods.net/showthread.php?t=323220 
 !/left4dead2/addons/sourcemod/gamedata/l4d_respawn_improved.txt
 !/left4dead2/addons/sourcemod/plugins/l4d_sm_respawn.smx
