@@ -101,14 +101,11 @@
 !/left4dead2/addons/sourcemod/extensions/accelerator.ext.so
 !/left4dead2/addons/sourcemod/gamedata/accelerator.games.txt
 
-# Grenade transfer 1.0 03-25-2010
-# https://forums.alliedmods.net/showthread.php?p=1128204
-!/left4dead2/addons/sourcemod/plugins/l4d_grenade_transfer.smx
-
-# Gear transfer Gear Transfer 2.13 (26-Feb-2021) (for medkit transfer)
+# Gear Transfer (2.19) [19-Oct-2021]
 # https://forums.alliedmods.net/showthread.php?p=1294082
 !/left4dead2/addons/sourcemod/plugins/l4d_gear_transfer.smx
 !/left4dead2/addons/sourcemod/translations/gear_transfer.phrases.txt
+!/left4dead2/addons/sourcemod/translations/gear_transfer.new.phrases.txt
 # config
 !/left4dead2/cfg/sourcemod/l4d_gear_transfer.cfg
 
