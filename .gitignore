@@ -262,13 +262,16 @@
 # BHOP
 !/left4dead2/addons/sourcemod/plugins/disabled/sm_bhop.smx
 
-# Hats (1.24) [01-Oct-2020] https://forums.alliedmods.net/showthread.php?t=153781 
+# Hats (1.42) [16-Dec-2021]
+# https://forums.alliedmods.net/showthread.php?t=153781 
 !/left4dead2/cfg/sourcemod/l4d_hats.cfg
 !/left4dead2/addons/sourcemod/plugins/disabled/l4d_hats.smx
 !/left4dead2/addons/sourcemod/scripting/l4d_hats.sp
+!/left4dead2/addons/sourcemod/translations/hatnames.phrases.txt
+!/left4dead2/addons/sourcemod/translations/hats.phrases.txt
 
 # Zombie Character Select" (0.9.6) by XBetaAlpha
-# https://forums.alliedmods.net/showthread.php?t=121461 
+# https://forums.alliedmods.net/showthread.php?t=121461 https://forums.alliedmods.net/showpost.php?p=2666755&postcount=345 ?
 !/left4dead2/addons/sourcemod/plugins/disabled/l4d2_zcs.smx
 !/left4dead2/addons/sourcemod/gamedata/l4d2_zcs.txt
 !/left4dead2/cfg/sourcemod/l4d2_zcs.cfg
