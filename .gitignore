@@ -29,11 +29,7 @@
 
 # DHooks 2.2.0-detours16 - 28.01.2021 (Experimental Dynamic Detour support) dhooks-2.2.0-detours16-sm110.zip
 # https://forums.alliedmods.net/showthread.php?p=2588686#post2588686
-!/left4dead2/addons/sourcemod/extensions/dhooks.ext.dll
-!/left4dead2/addons/sourcemod/extensions/dhooks.ext.so
-!/left4dead2/addons/sourcemod/gamedata/dhooks-test.games.txt
-!/left4dead2/addons/sourcemod/scripting/include/dhooks.inc
-!/left4dead2/addons/sourcemod/scripting/dhooks-test.sp
+# DHooks is now included with SourceMod 1.11.6820
 
 # Left 4 DHooks Direct (1.42) [23-Jun-2021]
 # https://forums.alliedmods.net/showthread.php?t=321696
