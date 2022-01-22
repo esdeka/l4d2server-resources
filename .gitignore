@@ -82,6 +82,8 @@
 # Config
 !/left4dead2/cfg/sourcemod/abm.cfg
 
+# https://forums.alliedmods.net/showthread.php?p=2768266#post2768266 ?
+
 # Mission and Weapons - Info Editor (1.12) [01-Oct-2020]
 # https://forums.alliedmods.net/showthread.php?t=310586
 # Enables katana on all maps, mari!
@@ -231,6 +233,11 @@
 # https://forums.alliedmods.net/showthread.php?p=1678503
 !/left4dead2/addons/sourcemod/plugins/l4d_plane_crash.smx
 !/left4dead2/cfg/sourcemod/l4d_plane_crash.cfg
+
+# Weather Control (1.13) [30-Nov-2021]
+# https://forums.alliedmods.net/showthread.php?t=184890
+!/left4dead2/addons/sourcemod/plugins/l4d2_storm.smx
+!/left4dead2/addons/sourcemod/data/l4d2_storm.cfg
 
 # Restart Empty Server 2.3
 # https://forums.alliedmods.net/showthread.php?t=315367 

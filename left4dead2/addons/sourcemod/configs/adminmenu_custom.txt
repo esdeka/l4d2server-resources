@@ -147,5 +147,11 @@
 			"admin"			"sm_ban"
 			"execute"		"server"
 		}
+		"Weather"
+		{
+			"cmd"			"sm_storm"
+			"admin"			"sm_ban"
+			"execute"		"server"
+		}
 	}
 }
