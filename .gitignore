@@ -257,6 +257,10 @@
 # https://forums.alliedmods.net/showthread.php?p=2179347
 !/left4dead2/addons/sourcemod/plugins/quickban.smx
 
+# Edited basechat for team to admin chat
+!/left4dead2/addons/sourcemod/plugins/basechat.sp
+!/left4dead2/addons/sourcemod/plugins/basechat.smx
+
 ##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
 
 # Vocalize Anti-Flood 1.0.2  2014-06-29 (needs Scene Processor)
