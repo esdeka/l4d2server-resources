@@ -139,7 +139,7 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
 	// else if (strcmp(command, "say_team", false) == 0 || strcmp(command, "say_squad", false) == 0)
 	if (strcmp(command, "say_team", false) == 0 || strcmp(command, "say_squad", false) == 0)
 	{
-		if (!CheckCommandAccess(client, "sm_chat", ADMFLAG_CHAT) && !g_Cvar_Chatmode.BoolValue)
+		if (!CheckCommandAccess(client, "sm_chat", ADMFLAG_CHAT) || (sArgs[startidx] == CHAT_SYMBOL))
 		{
 			return Plugin_Continue;
 		}
