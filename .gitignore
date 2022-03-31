@@ -256,6 +256,18 @@
 !/left4dead2/addons/sourcemod/plugins/basechat.sp
 !/left4dead2/addons/sourcemod/plugins/basechat.smx
 
+# Source Scramble (memory patching and allocation natives) Peach (0.7.0) 12 Jul 2021
+# https://forums.alliedmods.net/showthread.php?t=317175
+!/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
+!/left4dead2/addons/sourcemod/extensions/sourcescramble.ext.so
+
+# [L4D2] Transition Restore Fix 1.1.7 (30-Mar-2022)
+# needs Source Scramble
+# ./left4dead2/addons/sourcemod/scripting/compile.sh transition_restore_fix.sp
+!/left4dead2/addons/sourcemod/gamedata/transition_restore_fix.txt
+!/left4dead2/addons/sourcemod/scripting/transition_restore_fix.sp
+!/left4dead2/addons/sourcemod/plugins/transition_restore_fix.smx
+
 ##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
 
 # Vocalize Anti-Flood 1.0.2  2014-06-29 (needs Scene Processor)
