@@ -13,9 +13,9 @@
 # Admins
 !/left4dead2/addons/sourcemod/configs/admins_simple.ini
 
-# ion's Vocalizer 06/16/21 v17.2
-# https://www.gamemaps.com/details/17488
-!/left4dead2/addons/ion_vocalizer.vpk
+# server .vpk plugins:
+!/left4dead2/addons/workshop/
+!/left4dead2/addons/workshop/workshop.py
 
 # Left4DToolZ 1.0.0.9h 07-06-2013 
 # https://forums.alliedmods.net/showthread.php?p=1984946#post1984946 
