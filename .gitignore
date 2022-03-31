@@ -234,11 +234,6 @@
 !/left4dead2/addons/sourcemod/plugins/l4d_plane_crash.smx
 !/left4dead2/cfg/sourcemod/l4d_plane_crash.cfg
 
-# Weather Control (1.13) [30-Nov-2021]
-# https://forums.alliedmods.net/showthread.php?t=184890
-!/left4dead2/addons/sourcemod/plugins/l4d2_storm.smx
-!/left4dead2/addons/sourcemod/data/l4d2_storm.cfg
-
 # Restart Empty Server 2.3
 # https://forums.alliedmods.net/showthread.php?t=315367 
 !/left4dead2/addons/sourcemod/data/restart_empty_maps.txt
@@ -280,6 +275,12 @@
 !/left4dead2/addons/sourcemod/scripting/l4d_hats.sp
 !/left4dead2/addons/sourcemod/translations/hatnames.phrases.txt
 !/left4dead2/addons/sourcemod/translations/hats.phrases.txt
+
+
+# Weather Control (1.13) [30-Nov-2021]
+# https://forums.alliedmods.net/showthread.php?t=184890
+#!/left4dead2/addons/sourcemod/plugins/l4d2_storm.smx
+!/left4dead2/addons/sourcemod/data/l4d2_storm.cfg
 
 # Zombie Character Select" (0.9.6) by XBetaAlpha
 # https://forums.alliedmods.net/showthread.php?t=121461 https://forums.alliedmods.net/showpost.php?p=2666755&postcount=345 ?
