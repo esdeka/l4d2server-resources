@@ -114,16 +114,16 @@
 # Witch fixes 06-01-2022 
 # https://forums.alliedmods.net/showthread.php?t=315481 
 # Witch_Double_Startle_Fix
-!/left4dead2/addons/sourcemod/scripting/Witch_Double_Startle_Fix.sp
-!/left4dead2/addons/sourcemod/plugins/Witch_Double_Startle_Fix.smx
+# !/left4dead2/addons/sourcemod/scripting/Witch_Double_Startle_Fix.sp
+# !/left4dead2/addons/sourcemod/plugins/Witch_Double_Startle_Fix.smx
 # witch_prevent_target_loss
 # !/left4dead2/addons/sourcemod/gamedata/witch_prevent_target_loss.txt
 # !/left4dead2/addons/sourcemod/plugins/witch_prevent_target_loss.smx
 # !/left4dead2/addons/sourcemod/scripting/witch_prevent_target_loss.sp
 # witch_target_patch
-# !/left4dead2/addons/sourcemod/gamedata/witch_target_patch.txt
-# !/left4dead2/addons/sourcemod/plugins/Witch_Target_patch.smx
-# !/left4dead2/addons/sourcemod/scripting/Witch_Target_patch.sp
+!/left4dead2/addons/sourcemod/gamedata/witch_target_patch.txt
+!/left4dead2/addons/sourcemod/plugins/Witch_Target_patch.smx
+!/left4dead2/addons/sourcemod/scripting/Witch_Target_patch.sp
 
 # Physics Object Pushfix 09-24-2020 
 # https://forums.alliedmods.net/showthread.php?p=2705656#post2705656
