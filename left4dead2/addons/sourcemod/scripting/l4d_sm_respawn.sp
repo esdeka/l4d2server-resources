@@ -5,7 +5,7 @@
 #include <sdktools>
 #include <adminmenu>
 
-#define PLUGIN_VERSION "3.6"
+#define PLUGIN_VERSION "3.7"
 
 #define CVAR_FLAGS	FCVAR_NOTIFY
 
@@ -50,7 +50,7 @@ enum SPAWN_POSITION
 const float DUCK_HEIGHT_DELTA = 18.0;
 
 ConVar g_cvLoadout, g_cvShowAction, g_cvAddTopMenu, g_cvPosition, g_cvTeams, g_cvAccessFlag, g_cvGameMode, g_cvAsGhost;
-bool g_bLeft4dead2, g_bMenuAdded, g_bHeartbeatPlugin, g_bVersus;
+bool g_bLeft4dead2, g_bMenuAdded, g_bHeartbeatPlugin, g_bVersus, g_bDedicated;
 Handle g_hSDK_RespawnPlayer, g_hSDK_GhostPlayer, g_hSDK_StateTransition, g_hSDK_TakeOverBot, g_hSDK_SetHumanSpec; //, g_hSDK_TakeOverZombieBot;
 Address g_Address_Respawn, g_Address_ResetStatCondition;
 TopMenuObject hAdminSpawnItem;
@@ -67,6 +67,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 		return APLRes_SilentFailure;
 	}
 	g_bLeft4dead2 = (evEngine == Engine_Left4Dead2);
+	g_bDedicated = IsDedicatedServer();
 	CreateNative("SM_Respawn", NATIVE_Respawn);
 	MarkNativeAsOptional("Heartbeat_SetRevives");
 	return APLRes_Success;
@@ -484,7 +485,9 @@ public Action CmdInf(int client, int args)
 
 public Action CmdRespawnEx(int client, int numParams)
 {
-	if( !HasCommandAccessFlag(client) )
+	client = iGetListenServerHost(client, g_bDedicated);
+	
+	if( client && !HasCommandAccessFlag(client) )
 	{
 		ReplyToCommand(client, "No access.");
 		return Plugin_Handled;
@@ -545,7 +548,9 @@ public Action CmdRespawnEx(int client, int numParams)
 
 public Action CmdRespawn(int client, int args)
 {
-	if( !HasCommandAccessFlag(client) )
+	client = iGetListenServerHost(client, g_bDedicated);
+
+	if( client && !HasCommandAccessFlag(client) )
 	{
 		ReplyToCommand(client, "No access.");
 		return Plugin_Handled;
@@ -634,7 +639,7 @@ bool vRespawnPlayer(
 	
 	if( spawnPos & SPAWN_POSITION_CROSSHAIR )
 	{
-		if( GetSpawnEndPoint(client, desiredTeam, vec) )
+		if( client && GetSpawnEndPoint(client, desiredTeam, vec) )
 		{
 			bShouldTeleport = true;
 		}
@@ -666,7 +671,7 @@ bool vRespawnPlayer(
 		}
 	}
 	
-	if( client && IsClientInGame(client) )
+	if( client )
 	{
 		GetClientEyeAngles(client, ang);
 	}
@@ -710,8 +715,8 @@ bool vRespawnPlayer(
 			{
 				AcceptEntityInput(target, "clearparent"); // clearparent jockey bug switching teams (thanks to Lux)
 				
-				iCharacter = GetEntProp(client, Prop_Send, "m_survivorCharacter");
-				GetClientModel(client, sModel, sizeof(sModel));
+				iCharacter = GetEntProp(target, Prop_Send, "m_survivorCharacter");
+				GetClientModel(target, sModel, sizeof(sModel));
 				bShouldModel = true;
 			}
 			if( desiredTeam == TEAM_INFECTED )
@@ -747,13 +752,13 @@ bool vRespawnPlayer(
 				
 				if( bShouldModel )
 				{
-					SetEntProp(client, Prop_Send, "m_survivorCharacter", iCharacter);
-					SetEntityModel(client, sModel);
+					SetEntProp(target, Prop_Send, "m_survivorCharacter", iCharacter);
+					SetEntityModel(target, sModel);
 				}
 				
 				SetEntProp(target, Prop_Send, "m_bDucked", 1); // force crouch pose to allow respawn in transport / duct ...
 				SetEntProp(target, Prop_Send, "m_fFlags", GetEntProp(target, Prop_Send, "m_fFlags") | FL_DUCKING);
-
+				
 				if( g_bHeartbeatPlugin )
 				{
 					Heartbeat_SetRevives(target, 0, false);
@@ -792,7 +797,7 @@ bool vRespawnPlayer(
 		{
 			vPerformTeleport(client, target, vec, ang);
 		}
-		if( g_cvShowAction.BoolValue && client && IsClientInGame(client) )
+		if( g_cvShowAction.BoolValue && client )
 		{
 			ShowActivity2(client, "[SM] ", "%t", "Respawn_Info", target); // "Respawned player '%N'"
 		}
@@ -833,10 +838,6 @@ public bool TraceRay_NoPlayers(int entity, int contentsMask)
 
 bool GetSpawnEndPoint(int client, int team, float vSpawnVec[3]) // Returns the position for respawn which is located at the end of client's eyes view angle direction.
 {
-	if( !client )
-	{
-		return false;
-	}
 	float vEnd[3], vEye[3];
 	if( GetDirectionEndPoint(client, vEnd) )
 	{
@@ -984,7 +985,7 @@ bool GetRandomSpawnPos(int client, int target, int team, float vec[3]) // return
 void vPerformTeleport(int client, int target, float pos[3], float ang[3])
 {
 	TeleportEntity(target, pos, ang, NULL_VECTOR);
-	if( g_cvShowAction.BoolValue && client && IsClientInGame(client) )
+	if( g_cvShowAction.BoolValue && client )
 	{
 		LogAction(client, target, "\"%L\" teleported \"%L\" after respawning him" , client, target);
 	}
@@ -1198,4 +1199,29 @@ stock char[] Translate(int client, const char[] format, any ...) // inline trans
 	SetGlobalTransTarget(client);
 	VFormat(buffer, sizeof(buffer), format, 3);
 	return buffer;
+}
+
+int iGetListenServerHost(int client, bool dedicated) // Thanks to @Marttt
+{
+	if( client == 0 && !dedicated )
+	{
+		int iManager = FindEntityByClassname(-1, "terror_player_manager");
+		if( iManager != -1 && IsValidEntity(iManager) )
+		{
+			int iHostOffset = FindSendPropInfo("CTerrorPlayerResource", "m_listenServerHost");
+			if( iHostOffset != -1 )
+			{
+				bool bHost[MAXPLAYERS + 1];
+				GetEntDataArray(iManager, iHostOffset, bHost, (MAXPLAYERS + 1), 1);
+				for( int iPlayer = 1; iPlayer < sizeof(bHost); iPlayer++ )
+				{
+					if( bHost[iPlayer] )
+					{
+						return iPlayer;
+					}
+				}
+			}
+		}
+	}
+	return client;
 }
