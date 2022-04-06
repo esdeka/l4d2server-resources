@@ -147,11 +147,9 @@
 			"admin"			"sm_ban"
 			"execute"		"server"
 		}
-		"Weather"
+		"Plane"
 		{
-			"cmd"			"sm_storm"
-			"admin"			"sm_ban"
-			"execute"		"server"
+			"cmd"			"sm_plane"
 		}
 	}
 }
