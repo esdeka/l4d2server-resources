@@ -18,7 +18,7 @@
 
 
 
-#define PLUGIN_VERSION		"1.94"
+#define PLUGIN_VERSION		"1.97"
 
 #define DEBUG				0
 // #define DEBUG			1	// Prints addresses + detour info (only use for debugging, slows server down)
@@ -41,6 +41,30 @@
 
 ========================================================================================
 	Change Log:
+
+1.97 (15-Apr-2022)
+	- Fixed removing animation detours in the same frame as the detour callback, crashing the server. Thanks to "Red Flame" and "fdxx" for reporting and helping.
+	- Fixed not erasing all animation hooks on client disconnect. Thanks to "sorallll" for reporting and fixing.
+	- Fixed not hooking pre hooks when only post forwards were used. Thanks to "Beatles" for reporting.
+
+1.96 (11-Apr-2022)
+	- Fixed error on client disconnect. Thanks to "sorallll" for reporting.
+
+1.95 (10-Apr-2022)
+	- Added stock "GetRandomClient" in the "left4dhooks_silver.inc" include file.
+	- Added forward "L4D_OnWitchSetHarasser" to fire when a Witch has been startled. Requested by "ProjectSky".
+	- Added post hook forward "L4D_OnTryOfferingTankBot_Post" to compliment it's related forward "L4D_OnTryOfferingTankBot".
+
+	- Fixed animation hooks not removing the detour when no longer required.
+	- Fixed animation hooks not cleaning up when a client disconnects.
+	- Fixed animation hooks triggering on clients other than those specified. Thanks to "JoinedSenses", "nosoop" and "Impact" for helping.
+	- Fixed forward "L4D2_OnPummelVictim" bugging out the victim when blocking the pummel.
+	- Fixed some description errors in the "left4dhooks.inc" include file. Thanks to "Eyal282" for reporting.
+	- Fixed a compile warning in 1.11 from the "left4dhooks_silver.inc" include file.
+
+	- Updated: Plugin and test plugin.
+	- Updated: "left4dhooks.inc" and "left4dhooks_silver.inc" Include files.
+	- Updated: "left4dhooks.l4d1.txt" and "left4dhooks.l4d2.txt" GameData files.
 
 1.94 (29-Mar-2022)
 	- Added natives "L4D_GetReserveAmmo" and "L4D_SetReserveAmmo" to get and set a players weapons reserve ammo.
@@ -1018,7 +1042,8 @@ ArrayList g_aForwardNames;					// Stores Forward names
 ArrayList g_aUseLastIndex;					// Use last index
 ArrayList g_aForwardIndex;					// Stores Detour indexes
 ArrayList g_aForceDetours;					// Determines if a detour should be forced on without any forward using it
-int g_iCurrentIndex;						// Index for each detour while created
+int g_iSmallIndex;							// Index for each detour while created
+int g_iLargeIndex;							// Index for each detour while created
 bool g_bCreatedDetours;						// To determine first time creation of detours, or if enabling or disabling
 float g_fLoadTime;							// When the plugin was loaded, to ignore when "AP_OnPluginUpdate" fires
 Handle g_hThisPlugin;						// Ignore checking this plugin
@@ -1028,11 +1053,12 @@ GameData g_hGameData;						// GameData file - to speed up loading
 
 // Animation Hook
 int g_iAnimationDetourIndex;
+bool g_bAnimationRemoveHook;
 ArrayList g_iAnimationHookedClients;
 ArrayList g_iAnimationHookedPlugins;
 ArrayList g_hAnimationActivityList;
-PrivateForward g_hAnimationCallbackPre;
-PrivateForward g_hAnimationCallbackPost;
+PrivateForward g_hAnimationCallbackPre[MAXPLAYERS+1];
+PrivateForward g_hAnimationCallbackPost[MAXPLAYERS+1];
 
 
 
@@ -1076,6 +1102,7 @@ GlobalForward g_hFWD_CTankClaw_OnPlayerHit_Post;
 GlobalForward g_hFWD_CTankRock_Detonate;
 GlobalForward g_hFWD_CTankRock_OnRelease;
 GlobalForward g_hFWD_CDirector_TryOfferingTankBot;
+GlobalForward g_hFWD_CDirector_TryOfferingTankBot_Post;
 GlobalForward g_hFWD_CDirector_MobRushStart;
 GlobalForward g_hFWD_CDirector_MobRushStart_Post;
 GlobalForward g_hFWD_ZombieManager_SpawnITMob;
@@ -1148,6 +1175,7 @@ GlobalForward g_hFWD_CTerrorPlayer_Fling;
 GlobalForward g_hFWD_CTerrorPlayer_Fling_Post;
 GlobalForward g_hFWD_CDeathFallCamera_Enable;
 GlobalForward g_hFWD_CTerrorPlayer_OnFalling_Post;
+GlobalForward g_hFWD_Witch_SetHarasser;
 GlobalForward g_hFWD_Tank_EnterStasis_Post;
 GlobalForward g_hFWD_Tank_LeaveStasis_Post;
 GlobalForward g_hFWD_AddonsDisabler;
@@ -1174,6 +1202,8 @@ Handle g_hSDK_CBaseEntity_ApplyLocalAngularVelocityImpulse;
 Handle g_hSDK_SurvivorBot_IsReachable;
 Handle g_hSDK_CTerrorGameRules_HasPlayerControlledZombies;
 Handle g_hSDK_CTerrorGameRules_GetSurvivorSet;
+Handle g_hSDK_CBaseGrenade_Detonate;
+// Handle g_hSDK_CInferno_StartBurning;
 Handle g_hSDK_CPipeBombProjectile_Create;
 Handle g_hSDK_CMolotovProjectile_Create;
 Handle g_hSDK_CVomitJarProjectile_Create;
@@ -1231,7 +1261,6 @@ Handle g_hSDK_CNavMesh_GetNavArea;
 Handle g_hSDK_CTerrorPlayer_GetFlowDistance;
 Handle g_hSDK_CTerrorPlayer_SetShovePenalty;
 Handle g_hSDK_CTerrorPlayer_SetNextShoveTime;
-Handle g_hSDK_CBaseGrenade_Detonate;
 Handle g_hSDK_CTerrorPlayer_DoAnimationEvent;
 Handle g_hSDK_CTerrorGameRules_RecomputeTeamScores;
 Handle g_hSDK_CBaseServer_SetReservationCookie;
@@ -1452,6 +1481,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	g_hFWD_CTankRock_Detonate											= new GlobalForward("L4D_TankRock_OnDetonate",					ET_Event, Param_Cell, Param_Cell);
 	g_hFWD_CTankRock_OnRelease											= new GlobalForward("L4D_TankRock_OnRelease",					ET_Event, Param_Cell, Param_Cell, Param_Array, Param_Array, Param_Array, Param_Array);
 	g_hFWD_CDirector_TryOfferingTankBot									= new GlobalForward("L4D_OnTryOfferingTankBot",					ET_Event, Param_Cell, Param_CellByRef);
+	g_hFWD_CDirector_TryOfferingTankBot_Post							= new GlobalForward("L4D_OnTryOfferingTankBot_Post",			ET_Event, Param_Cell, Param_Cell);
 	g_hFWD_CThrow_ActivateAbililty										= new GlobalForward("L4D_OnCThrowActivate",						ET_Event, Param_Cell);
 	g_hFWD_CBaseAnimating_SelectWeightedSequence_Pre					= new GlobalForward("L4D2_OnSelectTankAttackPre",				ET_Event, Param_Cell, Param_CellByRef);
 	g_hFWD_CBaseAnimating_SelectWeightedSequence_Post					= new GlobalForward("L4D2_OnSelectTankAttack",					ET_Event, Param_Cell, Param_CellByRef);
@@ -1477,6 +1507,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	g_hFWD_CTerrorPlayer_Fling_Post										= new GlobalForward("L4D2_OnPlayerFling_Post",					ET_Event, Param_Cell, Param_Cell, Param_Array);
 	g_hFWD_CDeathFallCamera_Enable										= new GlobalForward("L4D_OnFatalFalling",						ET_Event, Param_Cell, Param_Cell);
 	g_hFWD_CTerrorPlayer_OnFalling_Post									= new GlobalForward("L4D_OnFalling",							ET_Event, Param_Cell);
+	g_hFWD_Witch_SetHarasser											= new GlobalForward("L4D_OnWitchSetHarasser",					ET_Event, Param_Cell, Param_Cell);
 	g_hFWD_Tank_EnterStasis_Post										= new GlobalForward("L4D_OnEnterStasis",						ET_Event, Param_Cell);
 	g_hFWD_Tank_LeaveStasis_Post										= new GlobalForward("L4D_OnLeaveStasis",						ET_Event, Param_Cell);
 	g_hFWD_CInferno_Spread												= new GlobalForward("L4D2_OnSpitSpread",						ET_Event, Param_Cell, Param_Cell, Param_FloatByRef, Param_FloatByRef, Param_FloatByRef);
@@ -1581,6 +1612,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	CreateNative("L4D_IsInLastCheckpoint",		 					Native_IsInLastCheckpoint);
 	CreateNative("L4D_HasPlayerControlledZombies",		 			Native_CTerrorGameRules_HasPlayerControlledZombies);
 	CreateNative("L4D_DetonateProjectile",		 					Native_CBaseGrenade_Detonate);
+	// CreateNative("L4D_StartBurning",		 						Native_CInferno_StartBurning);
 	CreateNative("L4D_TankRockPrj",		 							Native_CTankRock_Create);
 	CreateNative("L4D_PipeBombPrj",		 							Native_CPipeBombProjectile_Create);
 	CreateNative("L4D_MolotovPrj",		 							Native_CMolotovProjectile_Create);
@@ -1828,8 +1860,12 @@ public void OnPluginStart()
 
 	g_iAnimationHookedClients = new ArrayList();
 	g_iAnimationHookedPlugins = new ArrayList(2);
-	g_hAnimationCallbackPre = new PrivateForward(ET_Event, Param_Cell, Param_CellByRef);
-	g_hAnimationCallbackPost = new PrivateForward(ET_Event, Param_Cell, Param_CellByRef);
+
+	for( int i = 1; i <= MaxClients; i++ )
+	{
+		g_hAnimationCallbackPre[i]		= new PrivateForward(ET_Event, Param_Cell, Param_CellByRef);
+		g_hAnimationCallbackPost[i]		= new PrivateForward(ET_Event, Param_Cell, Param_CellByRef);
+	}
 
 
 	// NULL PTR - METHOD (kept for demonstration)
@@ -2685,11 +2721,58 @@ public void OnMapEnd()
 	while( MorePlugins(hIter) )
 	{
 		hPlug = ReadPlugin(hIter);
-		g_hAnimationCallbackPre.RemoveAllFunctions(hPlug);
-		g_hAnimationCallbackPost.RemoveAllFunctions(hPlug);
+
+		for( int i = 1; i <= MaxClients; i++ )
+		{
+			g_hAnimationCallbackPre[i].RemoveAllFunctions(hPlug);
+			g_hAnimationCallbackPost[i].RemoveAllFunctions(hPlug);
+		}
 	}
 
 	delete hIter;
+}
+
+public void OnClientDisconnect(int client)
+{
+	// Remove client from hooked list
+	int index = g_iAnimationHookedClients.FindValue(client);
+	if( index != -1 )
+	{
+		g_iAnimationHookedClients.Erase(index);
+
+		// Remove PrivateForward for client
+		Handle hIter = GetPluginIterator();
+		Handle hPlug;
+
+		while( MorePlugins(hIter) )
+		{
+			hPlug = ReadPlugin(hIter);
+
+			g_hAnimationCallbackPre[client].RemoveAllFunctions(hPlug);
+			g_hAnimationCallbackPost[client].RemoveAllFunctions(hPlug);
+		}
+	}
+
+	// Loop through all anim hooks for specific client
+	int length = g_iAnimationHookedPlugins.Length;
+
+	int i, target;
+	while( i < length )
+	{
+		// Get hooked client
+		target = g_iAnimationHookedPlugins.Get(i, 1);
+
+		// Verify client to unhook
+		if( client == target )
+		{
+			g_iAnimationHookedPlugins.Erase(i);
+			length--;
+		}
+		else
+		{
+			i++;
+		}
+	}
 }
 
 
@@ -2704,21 +2787,28 @@ public int Native_AnimHookEnable(Handle plugin, int numParams)
 	if( client < 1 || client > MaxClients || !IsClientInGame(client) ) return false;
 
 	// Check if detour enabled, otherwise enable.
-	if( g_aDetoursHooked.Get(g_iAnimationDetourIndex) == 0 )
+	int index = g_aForwardIndex.Get(g_iAnimationDetourIndex);
+	if( g_aDetoursHooked.Get(index) == 0 )
 	{
-		Handle hDetour = g_aDetourHandles.Get(g_iAnimationDetourIndex);
+		g_aDetoursHooked.Set(index, 1);
+		g_aForceDetours.Set(g_iAnimationDetourIndex, 1);
+
+		Handle hDetour = g_aDetourHandles.Get(index);
 		DHookEnableDetour(hDetour, false, DTR_CBaseAnimating_SelectWeightedSequence_Pre);
 		DHookEnableDetour(hDetour, true, DTR_CBaseAnimating_SelectWeightedSequence_Post);
 	}
 
 	// Add callback
-	if( GetNativeFunction(2) != INVALID_FUNCTION ) g_hAnimationCallbackPre.AddFunction(plugin, GetNativeFunction(2));
-	if( GetNativeFunction(3) != INVALID_FUNCTION ) g_hAnimationCallbackPost.AddFunction(plugin, GetNativeFunction(3));
-	g_iAnimationHookedClients.Push(GetClientUserId(client));
+	if( GetNativeFunction(2) != INVALID_FUNCTION ) g_hAnimationCallbackPre[client].AddFunction(plugin, GetNativeFunction(2));
+	if( GetNativeFunction(3) != INVALID_FUNCTION ) g_hAnimationCallbackPost[client].AddFunction(plugin, GetNativeFunction(3));
+
+	g_iAnimationHookedClients.Push(client);
 
 	// Add multiple callbacks, validate by client
-	int index = g_iAnimationHookedPlugins.Push(plugin);
-	g_iAnimationHookedPlugins.Set(index, GetClientUserId(client), 1);
+	index = g_iAnimationHookedPlugins.Push(plugin);
+	g_iAnimationHookedPlugins.Set(index, client, 1);
+
+	g_bAnimationRemoveHook = false;
 
 	return true;
 }
@@ -2744,10 +2834,9 @@ public int Native_AnimHookDisable(Handle plugin, int numParams)
 		{
 			// Get hooked client from that plugin
 			entity = g_iAnimationHookedPlugins.Get(i, 1);
-			entity = GetClientOfUserId(entity);
 
-			// Verify client to unhook, or invalid client, else keep hooks
-			if( client == entity || !entity || IsClientInGame(entity) )
+			// Verify client to unhook
+			if( client == entity )
 			{
 				g_iAnimationHookedPlugins.Erase(i);
 				if( i > 0 ) i--;
@@ -2758,18 +2847,24 @@ public int Native_AnimHookDisable(Handle plugin, int numParams)
 		}
 	}
 
-	// Delete callback, no more clients from target plugin using this hook
+	int index = g_aForwardIndex.Get(g_iAnimationDetourIndex);
+
+	// Delete callback, client not being hooked from target plugin any more
 	if( !keep )
 	{
-		if( GetNativeFunction(2) != INVALID_FUNCTION ) g_hAnimationCallbackPre.RemoveFunction(plugin, GetNativeFunction(2));
-		if( GetNativeFunction(3) != INVALID_FUNCTION ) g_hAnimationCallbackPost.RemoveFunction(plugin, GetNativeFunction(3));
+		if( GetNativeFunction(2) != INVALID_FUNCTION ) g_hAnimationCallbackPre[client].RemoveFunction(plugin, GetNativeFunction(2));
+		if( GetNativeFunction(3) != INVALID_FUNCTION ) g_hAnimationCallbackPost[client].RemoveFunction(plugin, GetNativeFunction(3));
 	}
 
-	// Validate client
-	if( !client || !IsClientInGame(client) ) return true; // Disconnected
+	// Remove detour, no more plugins using it
+	if( length == 0 && g_aDetoursHooked.Get(index) == 1 && g_aForceDetours.Get(g_iAnimationDetourIndex) == 1 )
+	{
+		g_bAnimationRemoveHook = true;
+		RequestFrame(OnFrameRemoveDetour);
+	}
 
 	// Remove client from checking array
-	int index = g_iAnimationHookedClients.FindValue(GetClientUserId(client));
+	index = g_iAnimationHookedClients.FindValue(client);
 	if( index != -1 )
 	{
 		g_iAnimationHookedClients.Erase(index);
@@ -2777,6 +2872,22 @@ public int Native_AnimHookDisable(Handle plugin, int numParams)
 	}
 
 	return false;
+}
+
+public void OnFrameRemoveDetour()
+{
+	if( g_bAnimationRemoveHook )
+	{
+		g_bAnimationRemoveHook = false;
+
+		int index = g_aForwardIndex.Get(g_iAnimationDetourIndex);
+		g_aDetoursHooked.Set(index, 0);
+		g_aForceDetours.Set(g_iAnimationDetourIndex, 0);
+
+		Handle hDetour = g_aDetourHandles.Get(index);
+		DHookDisableDetour(hDetour, false, DTR_CBaseAnimating_SelectWeightedSequence_Pre);
+		DHookDisableDetour(hDetour, true, DTR_CBaseAnimating_SelectWeightedSequence_Post);
+	}
 }
 
 public int Native_AnimGetActivity(Handle plugin, int numParams)
@@ -3025,7 +3136,8 @@ void SetupDetours(GameData hGameData = null)
 		g_aForwardNames = new ArrayList(ByteCountToCells(MAX_FWD_LEN));
 	}
 
-	g_iCurrentIndex = 0;
+	g_iSmallIndex = 0;
+	g_iLargeIndex = 0;
 
 
 
@@ -3048,8 +3160,8 @@ void SetupDetours(GameData hGameData = null)
 	CreateDetour(hGameData,			DTR_ZombieManager_SpawnITMob,								DTR_ZombieManager_SpawnITMob_Post,							"L4DD::ZombieManager::SpawnITMob",									"L4D_OnSpawnITMob_Post",				true);
 	CreateDetour(hGameData,			DTR_ZombieManager_SpawnMob,									DTR_ZombieManager_SpawnMob_Post,							"L4DD::ZombieManager::SpawnMob",									"L4D_OnSpawnMob");
 	CreateDetour(hGameData,			DTR_ZombieManager_SpawnMob,									DTR_ZombieManager_SpawnMob_Post,							"L4DD::ZombieManager::SpawnMob",									"L4D_OnSpawnMob_Post",					true);
-	CreateDetour(hGameData,			DTR_CTerrorPlayer_EnterGhostState_Pre,						DTR_CTerrorPlayer_EnterGhostState_Post,						"L4DD::CTerrorPlayer::OnEnterGhostState",							"L4D_OnEnterGhostState");
-	CreateDetour(hGameData,			DTR_CTerrorPlayer_EnterGhostState_Pre,						DTR_CTerrorPlayer_EnterGhostState_Post,						"L4DD::CTerrorPlayer::OnEnterGhostState",							"L4D_OnEnterGhostStatePre",				true);
+	CreateDetour(hGameData,			DTR_CTerrorPlayer_EnterGhostState_Pre,						DTR_CTerrorPlayer_EnterGhostState_Post,						"L4DD::CTerrorPlayer::OnEnterGhostState",							"L4D_OnEnterGhostStatePre");
+	CreateDetour(hGameData,			DTR_CTerrorPlayer_EnterGhostState_Pre,						DTR_CTerrorPlayer_EnterGhostState_Post,						"L4DD::CTerrorPlayer::OnEnterGhostState",							"L4D_OnEnterGhostState",				true);
 	CreateDetour(hGameData,			DTR_CDirector_IsTeamFull,									INVALID_FUNCTION,											"L4DD::CDirector::IsTeamFull",										"L4D_OnIsTeamFull");
 	CreateDetour(hGameData,			DTR_CTerrorGameRules_ClearTeamScores,						INVALID_FUNCTION,											"L4DD::CTerrorGameRules::ClearTeamScores",							"L4D_OnClearTeamScores");
 	CreateDetour(hGameData,			DTR_CTerrorGameRules_SetCampaignScores,						DTR_CTerrorGameRules_SetCampaignScores_Post,				"L4DD::CTerrorGameRules::SetCampaignScores",						"L4D_OnSetCampaignScores");
@@ -3078,9 +3190,9 @@ void SetupDetours(GameData hGameData = null)
 	CreateDetour(hGameData,			DTR_CTankRock_Detonate,										INVALID_FUNCTION,											"L4DD::CTankRock::Detonate",										"L4D_TankRock_OnDetonate");
 	CreateDetour(hGameData,			DTR_CTankRock_OnRelease,									INVALID_FUNCTION,											"L4DD::CTankRock::OnRelease",										"L4D_TankRock_OnRelease");
 	CreateDetour(hGameData,			DTR_CThrow_ActivateAbililty,								INVALID_FUNCTION,											"L4DD::CThrow::ActivateAbililty",									"L4D_OnCThrowActivate");
-	g_iAnimationDetourIndex = g_iCurrentIndex; // Animation Hook - detour index to enable when required.
-	CreateDetour(hGameData,			DTR_CBaseAnimating_SelectWeightedSequence_Pre,				DTR_CBaseAnimating_SelectWeightedSequence_Post,				"L4DD::CBaseAnimating::SelectWeightedSequence",						"L4D2_OnSelectTankAttack");						// Animation Hook
-	CreateDetour(hGameData,			DTR_CBaseAnimating_SelectWeightedSequence_Pre,				DTR_CBaseAnimating_SelectWeightedSequence_Post,				"L4DD::CBaseAnimating::SelectWeightedSequence",						"L4D2_OnSelectTankAttackPre",			true);	// Animation Hook
+	g_iAnimationDetourIndex = g_iLargeIndex; // Animation Hook - detour index to enable when required.
+	CreateDetour(hGameData,			DTR_CBaseAnimating_SelectWeightedSequence_Pre,				DTR_CBaseAnimating_SelectWeightedSequence_Post,				"L4DD::CBaseAnimating::SelectWeightedSequence",						"L4D2_OnSelectTankAttackPre");					// Animation Hook
+	CreateDetour(hGameData,			DTR_CBaseAnimating_SelectWeightedSequence_Pre,				DTR_CBaseAnimating_SelectWeightedSequence_Post,				"L4DD::CBaseAnimating::SelectWeightedSequence",						"L4D2_OnSelectTankAttack",				true);	// Animation Hook
 	CreateDetour(hGameData,			DTR_CDirectorVersusMode_EndVersusModeRound_Pre,				DTR_CDirectorVersusMode_EndVersusModeRound_Post,			"L4DD::CDirectorVersusMode::EndVersusModeRound",					"L4D2_OnEndVersusModeRound");
 	CreateDetour(hGameData,			DTR_CDirectorVersusMode_EndVersusModeRound_Pre,				DTR_CDirectorVersusMode_EndVersusModeRound_Post,			"L4DD::CDirectorVersusMode::EndVersusModeRound",					"L4D2_OnEndVersusModeRound_Post",		true);
 	CreateDetour(hGameData,			DTR_CTerrorPlayer_OnLedgeGrabbed,							INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnLedgeGrabbed",								"L4D_OnLedgeGrabbed");
@@ -3092,14 +3204,16 @@ void SetupDetours(GameData hGameData = null)
 		CreateDetour(hGameData,		DTR_CDirectorScriptedEventManager_SendInRescueVehicle,		INVALID_FUNCTION,											"L4DD::CDirectorScriptedEventManager::SendInRescueVehicle",			"L4D2_OnSendInRescueVehicle");
 	}
 
-	CreateDetour(hGameData,			DTR_CDirector_TryOfferingTankBot,							INVALID_FUNCTION,											"L4DD::CDirector::TryOfferingTankBot",								"L4D_OnTryOfferingTankBot");
+	CreateDetour(hGameData,			DTR_CDirector_TryOfferingTankBot,							DTR_CDirector_TryOfferingTankBot_Post,						"L4DD::CDirector::TryOfferingTankBot",								"L4D_OnTryOfferingTankBot");
+	CreateDetour(hGameData,			DTR_CDirector_TryOfferingTankBot,							DTR_CDirector_TryOfferingTankBot_Post,						"L4DD::CDirector::TryOfferingTankBot",								"L4D_OnTryOfferingTankBot_Post",		true);
 	CreateDetour(hGameData,			DTR_CTerrorPlayer_OnShovedBySurvivor,						INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnShovedBySurvivor",							"L4D_OnShovedBySurvivor");
 	CreateDetour(hGameData,			DTR_CTerrorPlayer_OnStaggered,								INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnStaggered",									"L4D2_OnStagger");
 	CreateDetour(hGameData,			DTR_CTerrorPlayer_OnStaggered_Post,							INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnStaggered",									"L4D2_OnStagger_Post",					true);
 
 	if( !g_bLeft4Dead2 && g_bLinuxOS )
 	{
-		CreateDetour(hGameData,		DTR_CDirector_TryOfferingTankBot_Clone,						INVALID_FUNCTION,											"L4DD::CDirector::TryOfferingTankBot_Clone",						"L4D_OnTryOfferingTankBot");
+		CreateDetour(hGameData,		DTR_CDirector_TryOfferingTankBot_Clone,						DTR_CDirector_TryOfferingTankBot_Clone_Post,				"L4DD::CDirector::TryOfferingTankBot_Clone",						"L4D_OnTryOfferingTankBot");
+		CreateDetour(hGameData,		DTR_CDirector_TryOfferingTankBot_Clone,						DTR_CDirector_TryOfferingTankBot_Clone_Post,				"L4DD::CDirector::TryOfferingTankBot_Clone",						"L4D_OnTryOfferingTankBot_Post",		true);
 		CreateDetour(hGameData,		DTR_CTerrorPlayer_OnShovedBySurvivor_Clone,					INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnShovedBySurvivor_Clone",					"L4D_OnShovedBySurvivor");
 		CreateDetour(hGameData,		DTR_CTerrorPlayer_OnStaggered_Clone,						INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnStaggered_Clone",							"L4D2_OnStagger");
 		CreateDetour(hGameData,		DTR_CTerrorPlayer_OnStaggered_Clone_Post,					INVALID_FUNCTION,											"L4DD::CTerrorPlayer::OnStaggered_Clone",							"L4D2_OnStagger_Post",					true);
@@ -3110,6 +3224,7 @@ void SetupDetours(GameData hGameData = null)
 	CreateDetour(hGameData,			DTR_CTerrorPlayer_OnShovedByPounceLanding,					DTR_CTerrorPlayer_OnShovedByPounceLanding_Post,				"L4DD::CTerrorPlayer::OnShovedByPounceLanding",						"L4D2_OnPounceOrLeapStumble_Post",		true);
 	CreateDetour(hGameData,			DTR_CDeathFallCamera_Enable,								INVALID_FUNCTION,											"L4DD::CDeathFallCamera::Enable",									"L4D_OnFatalFalling");
 	CreateDetour(hGameData,			DTR_CTerrorPlayer_OnFalling_Pre,							DTR_CTerrorPlayer_OnFalling_Post,							"L4DD::CTerrorPlayer::OnFalling",									"L4D_OnFalling");
+	CreateDetour(hGameData,			DTR_Witch_SetHarasser,										INVALID_FUNCTION,											"L4DD::Witch::SetHarasser",											"L4D_OnWitchSetHarasser");
 	CreateDetour(hGameData,			DTR_Tank_EnterStasis_Pre,									DTR_Tank_EnterStasis_Post,									"L4DD::Tank::EnterStasis",											"L4D_OnEnterStasis");
 	CreateDetour(hGameData,			DTR_Tank_LeaveStasis_Pre,									DTR_Tank_LeaveStasis_Post,									"L4DD::Tank::LeaveStasis",											"L4D_OnLeaveStasis");
 	CreateDetour(hGameData,			DTR_CInferno_Spread,										INVALID_FUNCTION,											"L4DD::CInferno::Spread",											"L4D2_OnSpitSpread");
@@ -3200,8 +3315,10 @@ void CreateDetour(GameData hGameData, DHookCallback fCallback, DHookCallback fPo
 		g_aGameDataSigs.PushString(sName);
 		g_aForwardNames.PushString(sForward);
 		g_aUseLastIndex.Push(useLast);
-		g_aForwardIndex.Push(index++);
+		g_aForwardIndex.Push(index);
 		g_aForceDetours.Push(forceOn);
+
+		index++;
 
 		// Setup detours
 		if( !useLast )
@@ -3218,26 +3335,25 @@ void CreateDetour(GameData hGameData, DHookCallback fCallback, DHookCallback fPo
 		// Enable detours
 		if( !useLast ) // When using the last index, the pre and post detours are already hooked. Pre is always hooked even when only using post, to avoid crashes from dhooks.
 		{
-			int index = g_iCurrentIndex++;
-			int current = g_aDetoursHooked.Get(index);
-			if( current < 0 ) // if( current == -1 || current == -2 )
+			int current = g_aDetoursHooked.Get(g_iSmallIndex);
+			if( current < 0 )
 			{
-				Handle hDetour = g_aDetourHandles.Get(index);
+				Handle hDetour = g_aDetourHandles.Get(g_iSmallIndex);
 				if( hDetour != null )
 				{
 					if( current == -1 )
 					{
-						g_aDetoursHooked.Set(index, 1);
+						g_aDetoursHooked.Set(g_iSmallIndex, 1);
 						#if DEBUG
-						PrintToServer("Enabling detour %d %s", index, sName);
+						PrintToServer("Enabling detour %d %s", g_iSmallIndex, sName);
 						#endif
 
 						if( fCallback != INVALID_FUNCTION && !DHookEnableDetour(hDetour, false, fCallback) ) LogError("Failed to detour pre \"%s\" (%s).", sName, g_sSystem);
 						if( fPostCallback != INVALID_FUNCTION && !DHookEnableDetour(hDetour, true, fPostCallback) ) LogError("Failed to detour post \"%s\" (%s).", sName, g_sSystem);
 					} else {
-						g_aDetoursHooked.Set(index, 0);
+						g_aDetoursHooked.Set(g_iSmallIndex, 0);
 						#if DEBUG
-						PrintToServer("Disabling detour %d %s", index, sName);
+						PrintToServer("Disabling detour %d %s", g_iSmallIndex, sName);
 						#endif
 
 						if( fCallback != INVALID_FUNCTION && !DHookDisableDetour(hDetour, false, fCallback) ) LogError("Failed to disable detour pre \"%s\" (%s).", sName, g_sSystem);
@@ -3245,7 +3361,11 @@ void CreateDetour(GameData hGameData, DHookCallback fCallback, DHookCallback fPo
 					}
 				}
 			}
+
+			g_iSmallIndex++;
 		}
+
+		g_iLargeIndex++;
 	}
 }
 
@@ -3257,8 +3377,8 @@ void CheckRequiredDetours(int client = 0)
 	#endif
 
 	bool useLast;
-	char signatures[MAX_FWD_LEN];
-	char forwards[MAX_FWD_LEN];
+	char sName[MAX_FWD_LEN];
+	char sForward[MAX_FWD_LEN];
 	ArrayList aHand = new ArrayList();
 	Handle hIter = GetPluginIterator();
 	Handle hPlug;
@@ -3289,8 +3409,8 @@ void CheckRequiredDetours(int client = 0)
 				if( g_aForceDetours.Get(i) )
 				{
 					// Get forward name
-					g_aForwardNames.GetString(i, forwards, sizeof(forwards));
-					g_aGameDataSigs.GetString(i, signatures, sizeof(signatures));
+					g_aForwardNames.GetString(i, sForward, sizeof(sForward));
+					g_aGameDataSigs.GetString(i, sName, sizeof(sName));
 
 					count++;
 
@@ -3302,24 +3422,25 @@ void CheckRequiredDetours(int client = 0)
 					{
 						StopProfiling(g_vProf);
 						g_fProf += GetProfilerTime(g_vProf);
-						PrintToServer("%2d %36s> %32s (%s)", count, "FORCED DETOUR", forwards, signatures[6]);
+
+						PrintToServer("%2d %36s> %32s (%s)", count, (i == g_iAnimationDetourIndex && g_aForceDetours.Get(g_iAnimationDetourIndex)) ? "FORCED ANIM" : "FORCED DETOUR", sForward, sName[6]);
 						StartProfiling(g_vProf);
 					}
 					#endif
 
 					if( client > 0 )
 					{
-						ReplyToCommand(client - 1, "%2d %36s> %32s (%s)", count, "FORCED DETOUR", forwards, signatures[6]);
+						ReplyToCommand(client - 1, "%2d %36s> %32s (%s)", count, (i == g_iAnimationDetourIndex && g_aForceDetours.Get(g_iAnimationDetourIndex)) ? "FORCED ANIM" : "FORCED DETOUR", sForward, sName[6]);
 					}
 				}
 				// Check if used
 				else
 				{
 					// Get forward name
-					g_aForwardNames.GetString(i, forwards, sizeof(forwards));
+					g_aForwardNames.GetString(i, sForward, sizeof(sForward));
 
 					#if !DETOUR_ALL
-					if( GetFunctionByName(hPlug, forwards) != INVALID_FUNCTION )
+					if( GetFunctionByName(hPlug, sForward) != INVALID_FUNCTION )
 					#else
 					if( aHand.FindValue(index) == -1 )
 					#endif
@@ -3337,24 +3458,24 @@ void CheckRequiredDetours(int client = 0)
 							GetPluginFilename(hPlug, filename, sizeof(filename));
 							#endif
 
-							g_aGameDataSigs.GetString(i, signatures, sizeof(signatures));
+							g_aGameDataSigs.GetString(i, sName, sizeof(sName));
 
 							StopProfiling(g_vProf);
 							g_fProf += GetProfilerTime(g_vProf);
-							PrintToServer("%2d %36s> %32s (%s)", count, filename, forwards, signatures[6]);
+							PrintToServer("%2d %36s> %32s (%s)", count, filename, sForward, sName[6]);
 							StartProfiling(g_vProf);
 						}
 						#endif
 
 						if( client > 0 )
 						{
-							g_aGameDataSigs.GetString(i, signatures, sizeof(signatures));
+							g_aGameDataSigs.GetString(i, sName, sizeof(sName));
 
 							#if DETOUR_ALL
-							ReplyToCommand(client - 1, "%2d %36s> %32s (%s)", count, "THIS_PLUGIN_TEST", forwards, signatures[6]);
+							ReplyToCommand(client - 1, "%2d %36s> %32s (%s)", count, "THIS_PLUGIN_TEST", sForward, sName[6]);
 							#else
 							GetPluginFilename(hPlug, filename, sizeof(filename));
-							ReplyToCommand(client - 1, "%2d %36s> %32s (%s)", count, filename, forwards, signatures[6]);
+							ReplyToCommand(client - 1, "%2d %36s> %32s (%s)", count, filename, sForward, sName[6]);
 							#endif
 						}
 					}
@@ -3364,11 +3485,12 @@ void CheckRequiredDetours(int client = 0)
 	}
 
 	// Iterate detours - enable and disable as required
+	int current;
 	int len = g_aDetoursHooked.Length;
 	for( int i = 0; i < len; i++ )
 	{
 		// ToDo: When using extra-api.ext - increment or decrement and only enable/disable when required
-		int current = g_aDetoursHooked.Get(i);
+		current = g_aDetoursHooked.Get(i);
 
 		// Detour not required
 		if( aHand.FindValue(i) == -1 )
@@ -3829,6 +3951,34 @@ void LoadGameData()
 		if( g_hSDK_ForceSurvivalStart == null )
 			LogError("Failed to create SDKCall: \"Script_ForceSurvivalStart\" (%s)", g_sSystem);
 	}
+
+	StartPrepSDKCall(SDKCall_Entity);
+	if( PrepSDKCall_SetFromConf(hGameData, SDKConf_Virtual, "CBaseGrenade::Detonate") == false )
+	{
+		LogError("Failed to find signature: \"CBaseGrenade::Detonate\" (%s)", g_sSystem);
+	} else {
+		g_hSDK_CBaseGrenade_Detonate = EndPrepSDKCall();
+		if( g_hSDK_CBaseGrenade_Detonate == null )
+			LogError("Failed to create SDKCall: \"CBaseGrenade::Detonate\" (%s)", g_sSystem);
+	}
+
+	/*
+	StartPrepSDKCall(SDKCall_Static);
+	// StartPrepSDKCall(SDKCall_Raw);
+	if( PrepSDKCall_SetFromConf(hGameData, SDKConf_Signature, "CInferno::StartBurning") == false )
+	{
+		LogError("Failed to find signature: \"CInferno::StartBurning\" (%s)", g_sSystem);
+	} else {
+		PrepSDKCall_AddParameter(SDKType_CBaseEntity, SDKPass_Pointer);
+		PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_ByRef);
+		PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_ByRef);
+		PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_ByRef);
+		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+		g_hSDK_CInferno_StartBurning = EndPrepSDKCall();
+		if( g_hSDK_CInferno_StartBurning == null )
+			LogError("Failed to create SDKCall: \"CInferno::StartBurning\" (%s)", g_sSystem);
+	}
+	// */
 
 	StartPrepSDKCall(SDKCall_Static);
 	if( PrepSDKCall_SetFromConf(hGameData, SDKConf_Signature, "CPipeBombProjectile::Create") == false )
@@ -4532,16 +4682,6 @@ void LoadGameData()
 		g_hSDK_CTerrorPlayer_SetNextShoveTime = EndPrepSDKCall();
 		if( g_hSDK_CTerrorPlayer_SetNextShoveTime == null )
 			LogError("Failed to create SDKCall: \"CTerrorPlayer::SetNextShoveTime\" (%s)", g_sSystem);
-	}
-
-	StartPrepSDKCall(SDKCall_Entity);
-	if( PrepSDKCall_SetFromConf(hGameData, SDKConf_Virtual, "CBaseGrenade::Detonate") == false )
-	{
-		LogError("Failed to find signature: \"CBaseGrenade::Detonate\" (%s)", g_sSystem);
-	} else {
-		g_hSDK_CBaseGrenade_Detonate = EndPrepSDKCall();
-		if( g_hSDK_CBaseGrenade_Detonate == null )
-			LogError("Failed to create SDKCall: \"CBaseGrenade::Detonate\" (%s)", g_sSystem);
 	}
 
 	StartPrepSDKCall(SDKCall_Player);
@@ -6242,6 +6382,23 @@ public int Native_CBaseGrenade_Detonate(Handle plugin, int numParams)
 
 	return 0;
 }
+
+/*
+public int Native_CInferno_StartBurning(Handle plugin, int numParams)
+{
+	ValidateNatives(g_hSDK_CInferno_StartBurning, "CInferno::StartBurning");
+
+	float vPos[3], vVel[3], vNorm[3];
+	int entity = GetNativeCell(1);
+	GetNativeArray(2, vPos, 3);
+	GetNativeArray(3, vNorm, 3);
+	GetNativeArray(4, vVel, 3);
+
+	PrintToChatAll("#### CALL g_hSDK_CInferno_StartBurning [%d] %f", entity, vPos[1]);
+	SDKCall(g_hSDK_CInferno_StartBurning, entity, vPos, vNorm, vVel, 1);
+	return 0;
+}
+// */
 
 // ==================================================
 // TANK ROCK NATIVE
@@ -10379,10 +10536,30 @@ public MRESReturn DTR_CDirector_TryOfferingTankBot(Handle hReturn, Handle hParam
 	return MRES_Ignored;
 }
 
-public MRESReturn DTR_CDirector_TryOfferingTankBot_Clone(Handle hReturn, Handle hParams)
+public MRESReturn DTR_CDirector_TryOfferingTankBot_Post(Handle hReturn, Handle hParams)
 {
 	if( g_bBlock_CDirector_TryOfferingTankBot ) return MRES_Ignored;
 
+	//PrintToServer("##### DTR_CDirector_TryOfferingTankBot_Post");
+	int a1, a2;
+
+	if( !DHookIsNullParam(hParams, 1) )
+		a1 = DHookGetParam(hParams, 1);
+
+	if( a1 == 0 ) return MRES_Ignored;
+
+	a2 = DHookGetParam(hParams, 2);
+
+	Call_StartForward(g_hFWD_CDirector_TryOfferingTankBot_Post);
+	Call_PushCell(a1);
+	Call_PushCell(a2);
+	Call_Finish();
+
+	return MRES_Ignored;
+}
+
+public MRESReturn DTR_CDirector_TryOfferingTankBot_Clone(Handle hReturn, Handle hParams)
+{
 	//PrintToServer("##### DTR_CDirector_TryOfferingTankBot_Clone");
 	int a1 = -1, a2;
 
@@ -10399,9 +10576,12 @@ public MRESReturn DTR_CDirector_TryOfferingTankBot_Clone(Handle hReturn, Handle 
 
 	if( aResult == Plugin_Handled )
 	{
+		g_bBlock_CDirector_TryOfferingTankBot = true;
 		DHookSetReturn(hReturn, 0);
 		return MRES_Supercede;
 	}
+
+	g_bBlock_CDirector_TryOfferingTankBot = false;
 
 	// UNKNOWN - PROBABLY WORKING
 	if( aResult == Plugin_Changed )
@@ -10410,6 +10590,26 @@ public MRESReturn DTR_CDirector_TryOfferingTankBot_Clone(Handle hReturn, Handle 
 
 		return MRES_ChangedOverride;
 	}
+
+	return MRES_Ignored;
+}
+
+public MRESReturn DTR_CDirector_TryOfferingTankBot_Clone_Post(Handle hReturn, Handle hParams)
+{
+	if( g_bBlock_CDirector_TryOfferingTankBot ) return MRES_Ignored;
+
+	//PrintToServer("##### DTR_CDirector_TryOfferingTankBot_Clone_Post");
+	int a1 = -1, a2;
+
+	if( !DHookIsNullParam(hParams, 2) )
+		a1 = DHookGetParam(hParams, 2);
+
+	a2 = DHookGetParam(hParams, 3);
+
+	Call_StartForward(g_hFWD_CDirector_TryOfferingTankBot_Post);
+	Call_PushCell(a1);
+	Call_PushCell(a2);
+	Call_Finish();
 
 	return MRES_Ignored;
 }
@@ -10442,10 +10642,10 @@ public MRESReturn DTR_CBaseAnimating_SelectWeightedSequence_Pre(int pThis, Handl
 
 
 	// ANIMATION HOOK
-	int index = g_iAnimationHookedClients.FindValue(GetClientUserId(pThis));
+	int index = g_iAnimationHookedClients.FindValue(pThis);
 	if( index != -1 )
 	{
-		Call_StartForward(g_hAnimationCallbackPre);
+		Call_StartForward(g_hAnimationCallbackPre[pThis]);
 		Call_PushCell(pThis);
 		Call_PushCellRef(a1);
 		Call_Finish(aResult);
@@ -10494,10 +10694,10 @@ public MRESReturn DTR_CBaseAnimating_SelectWeightedSequence_Post(int pThis, Hand
 
 
 	// ANIMATION HOOK
-	int index = g_iAnimationHookedClients.FindValue(GetClientUserId(pThis));
+	int index = g_iAnimationHookedClients.FindValue(pThis);
 	if( index != -1 )
 	{
-		Call_StartForward(g_hAnimationCallbackPost);
+		Call_StartForward(g_hAnimationCallbackPost[pThis]);
 		Call_PushCell(pThis);
 		Call_PushCellRef(a1);
 		Call_Finish(aResult);
@@ -10990,9 +11190,9 @@ bool g_bBlock_CTerrorPlayer_QueuePummelVictim;
 public MRESReturn DTR_CTerrorPlayer_QueuePummelVictim(int pThis, Handle hReturn, Handle hParams)
 {
 	//PrintToServer("##### DTR_CTerrorPlayer_QueuePummelVictim");
-	int victim;
-	if( !DHookIsNullParam(hParams, 1) )
-		victim = DHookGetParam(hParams, 1);
+	if( DHookIsNullParam(hParams, 1) ) return MRES_Ignored;
+
+	int victim = DHookGetParam(hParams, 1);
 
 	Action aResult = Plugin_Continue;
 	Call_StartForward(g_hFWD_CTerrorPlayer_QueuePummelVictim);
@@ -11003,6 +11203,8 @@ public MRESReturn DTR_CTerrorPlayer_QueuePummelVictim(int pThis, Handle hReturn,
 	if( aResult == Plugin_Handled )
 	{
 		g_bBlock_CTerrorPlayer_QueuePummelVictim = true;
+
+		SetEntityMoveType(victim, MOVETYPE_WALK); // Prevent frozen with constant walking on spot bug
 
 		DHookSetReturn(hReturn, 0);
 		return MRES_Supercede;
@@ -11147,6 +11349,21 @@ public MRESReturn DTR_CTerrorPlayer_OnFalling_Post(int pThis, Handle hReturn)
 	//PrintToServer("##### DTR_CTerrorPlayer_OnFalling_Post");
 	Call_StartForward(g_hFWD_CTerrorPlayer_OnFalling_Post);
 	Call_PushCell(pThis);
+	Call_Finish();
+
+	return MRES_Ignored;
+}
+
+public MRESReturn DTR_Witch_SetHarasser(int pThis, Handle hReturn, Handle hParams)
+{
+	//PrintToServer("##### DTR_Witch_SetHarasser");
+	int victim;
+	if( !DHookIsNullParam(hParams, 1) )
+		victim = DHookGetParam(hParams, 1);
+
+	Call_StartForward(g_hFWD_Witch_SetHarasser);
+	Call_PushCell(pThis);
+	Call_PushCell(victim);
 	Call_Finish();
 
 	return MRES_Ignored;
