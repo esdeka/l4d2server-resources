@@ -262,13 +262,14 @@
 !/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
 !/left4dead2/addons/sourcemod/extensions/sourcescramble.ext.so
 
-# [L4D2] Transition Restore Fix 1.1.7 (30-Mar-2022)
+# [L4D2] Transition Restore Fix 1.2.0 (19-Apr-2022)
 # needs Source Scramble
 # https://forums.alliedmods.net/showthread.php?t=336287
 # ./left4dead2/addons/sourcemod/scripting/compile.sh transition_restore_fix.sp
 !/left4dead2/addons/sourcemod/gamedata/transition_restore_fix.txt
 !/left4dead2/addons/sourcemod/scripting/transition_restore_fix.sp
 !/left4dead2/addons/sourcemod/plugins/transition_restore_fix.smx
+!/left4dead2/addons/sourcemod/scripting/compiled/transition_restore_fix.smx
 
 # [L4D/L4D2]ThirdPersonShoulder_Detect(1.5.3 - 08/06/2020)
 # https://forums.alliedmods.net/showthread.php?t=298649
@@ -329,6 +330,7 @@
 !/left4dead2/addons/sourcemod/plugins/disabled/
 !/left4dead2/addons/sourcemod/scripting/
 !/left4dead2/addons/sourcemod/scripting/include/
+!/left4dead2/addons/sourcemod/scripting/compiled/
 !/left4dead2/addons/sourcemod/translations
 !/left4dead2/cfg/
 !/left4dead2/cfg/sourcemod/
