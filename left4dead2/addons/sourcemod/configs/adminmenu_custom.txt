@@ -152,4 +152,47 @@
 			"cmd"			"sm_plane"
 		}
 	}
+
+	"Dev CMD"
+	{ 
+		"Return to lobby"
+		{
+			"cmd"			"sm_lobby"
+			"admin"			"sm_ban"
+		}
+		"Ledge hanging"
+		{
+			"cmd"			"sm_ledge"
+			"admin"			"sm_ban"
+		}
+		"Toggle all AI"
+		{
+			"cmd"			"sm_alloff"
+			"admin"			"sm_ban"
+		}
+		"Toggle hold bots"
+		{
+			"cmd"			"sm_hold"
+			"admin"			"sm_ban"
+		}
+		"Toggle halt bots"
+		{
+			"cmd"			"sm_halt"
+			"admin"			"sm_ban"
+		}
+		"Toggle infected"
+		{
+			"cmd"			"sm_nospawn"
+			"admin"			"sm_ban"
+		}
+		"Slay all infected"
+		{
+			"cmd"			"sm_slayall"
+			"admin"			"sm_ban"
+		}
+		"Toggle nightvision"
+		{
+			"cmd"			"sm_nv"
+			"admin"			"sm_ban"
+		}
 }
