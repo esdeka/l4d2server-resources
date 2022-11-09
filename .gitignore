@@ -196,12 +196,12 @@
 # https://forums.alliedmods.net/showthread.php?p=1310287#post1310287 
 !/left4dead2/addons/sourcemod/plugins/pluginmanager.smx
 
-# SteamWorks 1.2.3c
+# SteamWorks 1.2.4 (30th Oct 2022) - hexa-core-eu SDK 1.55, SM 11
 # https://forums.alliedmods.net/showthread.php?t=229556
 !/left4dead2/addons/metamod/bin/libtier0_s.so
 !/left4dead2/addons/metamod/bin/libvstdlib_s.so
 !/left4dead2/addons/metamod/bin/steamclient.so
-# https://github.com/KyleSanderson/SteamWorks/releases
+# https://github.com/hexa-core-eu/SteamWorks 
 !/left4dead2/addons/sourcemod/extensions/SteamWorks.ext.so
 !/left4dead2/addons/sourcemod/scripting/swag.sp
 !/left4dead2/addons/sourcemod/scripting/include/SteamWorks.inc
