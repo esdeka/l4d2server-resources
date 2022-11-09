@@ -44,17 +44,13 @@
 !/left4dead2/addons/sourcemod/scripting/left4dhooks_test.sp
 !/left4dead2/addons/sourcemod/scripting/left4dhooks.sp
 
-
-
-# Connect Announce 1.8.2 (21-10-2020) Ja-Forces (requires Geoip2)
+# Connect Announce 1.8.3 (26-09-2022) [Edited by Dosergen] Ja-Forces
 # https://forums.alliedmods.net/showthread.php?p=2651148#post2651148 
-!/left4dead2/addons/sourcemod/extensions/geoip.ext.*
 !/left4dead2/addons/sourcemod/plugins/cannounce.smx
 !/left4dead2/addons/sourcemod/scripting/cannounce/
 !/left4dead2/addons/sourcemod/scripting/cannounce/**
 !/left4dead2/addons/sourcemod/scripting/include/multicolors
 !/left4dead2/addons/sourcemod/scripting/include/multicolors/**
-!/left4dead2/addons/sourcemod/scripting/include/geoip.inc
 !/left4dead2/addons/sourcemod/scripting/include/multicolors.inc
 !/left4dead2/addons/sourcemod/scripting/cannounce.sp
 !/left4dead2/addons/sourcemod/scripting/multicolors_example.sp

@@ -41,6 +41,7 @@ stock void CSetPrefix(const char[] sPrefix, any ...) {
 		return;
 	}
 
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(g_sCPrefix, sizeof(g_sCPrefix) - strlen(PREFIX_SEPARATOR), sPrefix, 2);
 
 	// Add ending space
@@ -66,6 +67,7 @@ stock void CClearPrefix() {
  */
 stock void CPrintToChat(int client, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(client);
 	VFormat(buffer, sizeof(buffer), message, 3);
 
 	if (!g_bCFixColors) {
@@ -88,18 +90,41 @@ stock void CPrintToChat(int client, const char[] message, any ...) {
  * @param message     Message (formatting rules)
  */
 stock void CPrintToChatAll(const char[] message, any ...) {
-	char buffer[MAX_MESSAGE_LENGTH];
-	VFormat(buffer, sizeof(buffer), message, 2);
-
 	if (!g_bCFixColors) {
 		CFixColors();
 	}
 
+	char buffer[MAX_BUFFER_LENGTH];
 	if (!IsSource2009()) {
-		C_PrintToChatAll("%s%s", g_sCPrefix, buffer);
+		for (int i = 1; i <= MaxClients; ++i) {
+			if (IsClientInGame(i) && !IsFakeClient(i) && !C_SkipList[i]) {
+				SetGlobalTransTarget(i);
+				VFormat(buffer, sizeof(buffer), message, 2);
+
+				C_PrintToChat(i, "%s", buffer);
+			}
+
+			C_SkipList[i] = false;
+		}
 	}
 	else {
-		MC_PrintToChatAll("%s%s", g_sCPrefix, buffer);
+		MC_CheckTrie();
+
+		char buffer2[MAX_BUFFER_LENGTH];
+
+		for (int i = 1; i <= MaxClients; ++i) {
+			if (!IsClientInGame(i) || MC_SkipList[i]) {
+				MC_SkipList[i] = false;
+				continue;
+			}
+
+			SetGlobalTransTarget(i);
+			Format(buffer, sizeof(buffer), "\x01%s", message);
+			VFormat(buffer2, sizeof(buffer2), buffer, 2);
+
+			MC_ReplaceColorCodes(buffer2);
+			MC_SendMessage(i, buffer2);
+		}
 	}
 }
 
@@ -111,6 +136,7 @@ stock void CPrintToChatAll(const char[] message, any ...) {
  */
 stock void CPrintToChatObservers(int target, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 3);
 
 	if (!g_bCFixColors) {
@@ -140,6 +166,7 @@ stock void CPrintToChatObservers(int target, const char[] message, any ...) {
  */
 stock void CPrintToChatEx(int client, int author, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(client);
 	VFormat(buffer, sizeof(buffer), message, 4);
 
 	if (!g_bCFixColors) {
@@ -162,6 +189,7 @@ stock void CPrintToChatEx(int client, int author, const char[] message, any ...)
  */
 stock void CPrintToChatAllEx(int author, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 3);
 
 	if (!g_bCFixColors) {
@@ -185,6 +213,7 @@ stock void CPrintToChatAllEx(int author, const char[] message, any ...) {
  */
 stock void CPrintToChatObserversEx(int target, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 3);
 
 	if (!g_bCFixColors) {
@@ -209,8 +238,9 @@ stock void CPrintToChatObserversEx(int target, const char[] message, any ...) {
  * @param client		Client to reply to
  * @param message		Message (formatting rules)
  */
-stock void CReplyToCommand(int author, const char[] message, any ...) {
+stock void CReplyToCommand(int client, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(client);
 	VFormat(buffer, sizeof(buffer), message, 3);
 
 	if (!g_bCFixColors) {
@@ -218,10 +248,10 @@ stock void CReplyToCommand(int author, const char[] message, any ...) {
 	}
 
 	if (!IsSource2009()) {
-		C_ReplyToCommand(author, "%s%s", g_sCPrefix, buffer);
+		C_ReplyToCommand(client, "%s%s", g_sCPrefix, buffer);
 	}
 	else {
-		MC_ReplyToCommand(author, "%s%s", g_sCPrefix, buffer);
+		MC_ReplyToCommand(client, "%s%s", g_sCPrefix, buffer);
 	}
 }
 
@@ -234,7 +264,7 @@ stock void CReplyToCommand(int author, const char[] message, any ...) {
  */
 stock void CReplyToCommandEx(int client, int author, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
-
+	SetGlobalTransTarget(client);
 	VFormat(buffer, sizeof(buffer), message, 4);
 
 	if (!g_bCFixColors) {
@@ -257,7 +287,7 @@ stock void CReplyToCommandEx(int client, int author, const char[] message, any .
 stock void CPrintToServer(const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
 	char prefixBuffer[PREFIX_MAX_LENGTH];
-
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 2);
 	strcopy(prefixBuffer, sizeof(prefixBuffer), g_sCPrefix);
 
@@ -289,6 +319,7 @@ stock void CPrintToServer(const char[] message, any ...) {
  */
 stock void CShowActivity(int author, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 3);
 
 	if (!g_bCFixColors) {
@@ -316,6 +347,7 @@ stock void CShowActivity(int author, const char[] message, any ...) {
  */
 stock void CShowActivityEx(int author, const char[] tag, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 4);
 
 	if (!g_bCFixColors) {
@@ -345,6 +377,7 @@ stock void CShowActivityEx(int author, const char[] tag, const char[] message, a
  */
  stock void CShowActivity2(int author, const char[] tag, const char[] message, any ...) {
 	char buffer[MAX_MESSAGE_LENGTH];
+	SetGlobalTransTarget(LANG_SERVER);
 	VFormat(buffer, sizeof(buffer), message, 4);
 
 	if (!g_bCFixColors) {

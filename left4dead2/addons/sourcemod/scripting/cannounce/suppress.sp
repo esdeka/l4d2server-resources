@@ -5,8 +5,9 @@
 
 
 *****************************************************************/
-ConVar g_CvarShowConnectionMsg, g_CvarShowDisonnectionMsg;
 
+ConVar g_CvarShowConnectionMsg = null;
+ConVar g_CvarShowDisonnectionMsg = null;
 
 /*****************************************************************
 
@@ -15,19 +16,19 @@ ConVar g_CvarShowConnectionMsg, g_CvarShowDisonnectionMsg;
 
 
 *****************************************************************/
+
 void SetupSuppress()
 {
 	g_CvarShowConnectionMsg = CreateConVar("sm_ca_showstandard", "0", "shows standard player connected message");
 	g_CvarShowDisonnectionMsg = CreateConVar("sm_ca_showstandarddisc", "0", "shows standard player discconnected message");
-	
-	//player_connect_client replaced player_connect but the old event is still required for some older games. 
+
+	//player_connect_client replaced player_connect but the old event is still required for some older games.
 	//lets try the new event first then fallback if it dont worky
 	if(HookEventEx("player_connect_client", event_PlayerConnectClient, EventHookMode_Pre) == false)
 	{
 		HookEventEx("player_connect", event_PlayerConnect, EventHookMode_Pre);
 	}
 }
-
 
 /****************************************************************
 
@@ -36,6 +37,7 @@ void SetupSuppress()
 
 
 ****************************************************************/
+
 //For the newer event player_connect_client
 public Action event_PlayerConnectClient(Event event, const char[] name, bool dontBroadcast)
 {
@@ -84,7 +86,6 @@ public Action event_PlayerConnect(Event event, const char[] name, bool dontBroad
     return Plugin_Continue;
 }
 
-
 public Action event_PlayerDisconnect_Suppress(Event event, const char[] name, bool dontBroadcast)
 {
     if (!dontBroadcast && !GetConVarInt(g_CvarShowDisonnectionMsg))
@@ -97,7 +98,7 @@ public Action event_PlayerDisconnect_Suppress(Event event, const char[] name, bo
         Handle newEvent = CreateEvent("player_disconnect", true);
         SetEventInt(newEvent, "userid", GetEventInt(event, "userid"));
         SetEventString(newEvent, "reason", reason);
-        SetEventString(newEvent, "name", clientName);        
+        SetEventString(newEvent, "name", clientName);
         SetEventString(newEvent, "networkid", networkID);
 
         FireEvent(newEvent, true);

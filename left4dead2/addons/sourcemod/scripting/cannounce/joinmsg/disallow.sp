@@ -14,13 +14,11 @@ void SetupJoinMsg_DisAllow()
 
 void OnAdminMenuReady_JoinMsg_DAllow(TopMenuObject player_commands)
 {
-	AddToTopMenu(hTopMenu,
-		"sm_joinmsgoff",
-		TopMenuObject_Item,
-		AdminMenu_DisAllowJoinMsg,
-		player_commands,
-		"sm_joinmsgoff",
-		CHECKFLAG);	
+	hTopMenu.AddItem("sm_joinmsgoff",
+			AdminMenu_DisAllowJoinMsg,
+			player_commands,
+			"sm_joinmsgoff",
+			CHECKFLAG);
 }
 
 /****************************************************************
@@ -34,13 +32,13 @@ void OnAdminMenuReady_JoinMsg_DAllow(TopMenuObject player_commands)
 public Action Command_DisAllowJoinMsg(int client, int args)
 {
 	char target[65];
-	
+
 	char target_name[MAX_TARGET_LENGTH];
 	int target_list[MAXPLAYERS];
 	int target_count;
 	bool tn_is_ml;
 	char steamId[24];
-	
+
 	//not enough arguments, display usage
 	if (args < 1)
 	{
@@ -66,7 +64,7 @@ public Action Command_DisAllowJoinMsg(int client, int args)
 		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
-	
+
 
 	//remove allowed custom join in kv file	
 	if(target_count > 0 && GetClientAuthId(target_list[0], AuthId_Steam2, steamId, sizeof(steamId)))
@@ -81,18 +79,16 @@ public Action Command_DisAllowJoinMsg(int client, int args)
 	return Plugin_Handled;
 }
 
-
-
 public Action Command_DisAllowJoinMsgID(int client, int args)
 {
 	char steamId[24];
-	
+
 	//not enough arguments, display usage
 	if (args < 1)
 	{
 		ReplyToCommand(client, "[SM] Usage: sm_joinmsgoffid \"<steamId>\"");
 		return Plugin_Handled;
-	}	
+	}
 
 	//get command arguments
 	GetCmdArg(1, steamId, sizeof(steamId));
@@ -102,7 +98,6 @@ public Action Command_DisAllowJoinMsgID(int client, int args)
 
 	return Plugin_Handled;
 }
-
 
 /*****************************************************************
 
@@ -125,22 +120,21 @@ void DoDisAllowJoinMsg(char[] steamId, char[] target_name, int client)
 	}	
 }
 
-
 bool DisAllowJoinMsg(char[] steamId)
 {
 	if(KvJumpToKey(hKVCustomJoinMessages, steamId))
 	{	
 		KvDeleteThis(hKVCustomJoinMessages);
 
-		KvRewind(hKVCustomJoinMessages);			
+		KvRewind(hKVCustomJoinMessages);
 		KeyValuesToFile(hKVCustomJoinMessages, g_fileset);
-		
+
 		return true;
 	}
 	else
 	{
 		KvRewind(hKVCustomJoinMessages);
-		
+
 		return false;
 	}
 }
@@ -153,7 +147,7 @@ bool DisAllowJoinMsg(char[] steamId)
 
 *****************************************************************/
 
-public void AdminMenu_DisAllowJoinMsg(Handle topmenu, TopMenuAction action, TopMenuObject object_id, int param, char[] buffer, int maxlength)
+public void AdminMenu_DisAllowJoinMsg(TopMenu topmenu, TopMenuAction action, TopMenuObject object_id, int param, char[] buffer, int maxlength)
 {
 	if (action == TopMenuAction_DisplayOption)
 	{
@@ -167,20 +161,20 @@ public void AdminMenu_DisAllowJoinMsg(Handle topmenu, TopMenuAction action, TopM
 
 void DisplayDisAllowJoinMsgMenu(int client)
 {
-	Handle menu = CreateMenu(MenuHandler_DisAllowJoinMsg);
-	
+	Menu menu = CreateMenu(MenuHandler_DisAllowJoinMsg);
+
 	char title[100];
 	Format(title, sizeof(title), "%s:", "Disallow custom join message");
 	SetMenuTitle(menu, title);
 	SetMenuExitBackButton(menu, true);
-	
+
 	AddTargetsToMenu(menu, client, true, false);
-	
+
 	DisplayMenu(menu, client, MENU_TIME_FOREVER);
 }
 
 
-public int MenuHandler_DisAllowJoinMsg(Handle menu, MenuAction action, int param1, int param2)
+public int MenuHandler_DisAllowJoinMsg(Menu menu, MenuAction action, int param1, int param2)
 {
 	if (action == MenuAction_End)
 	{
@@ -199,8 +193,8 @@ public int MenuHandler_DisAllowJoinMsg(Handle menu, MenuAction action, int param
 		int userid, target;
 		char steamId[24];
 		char target_name[MAX_TARGET_LENGTH];
-		
-		
+
+
 		GetMenuItem(menu, param2, info, sizeof(info));
 		userid = StringToInt(info);
 
@@ -215,8 +209,8 @@ public int MenuHandler_DisAllowJoinMsg(Handle menu, MenuAction action, int param
 		else
 		{
 			GetClientName(target, target_name, sizeof(target_name));
-			
-			//remove allowed custom join in kv file	
+
+			//remove allowed custom join in kv file
 			if( GetClientAuthId(target, AuthId_Steam2, steamId, sizeof(steamId)) )
 			{
 				DoDisAllowJoinMsg( steamId, target_name, param1 );
@@ -226,11 +220,12 @@ public int MenuHandler_DisAllowJoinMsg(Handle menu, MenuAction action, int param
 				PrintToChat(param1, "[SM] Unable to find player's steam id");
 			}
 		}
-		
+
 		/* Re-draw the menu if they're still valid */
 		if (IsClientInGame(param1) && !IsClientInKickQueue(param1))
 		{
 			DisplayDisAllowJoinMsgMenu(param1);
 		}
 	}
+	return 0;
 }
