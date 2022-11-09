@@ -44,17 +44,7 @@
 !/left4dead2/addons/sourcemod/scripting/left4dhooks_test.sp
 !/left4dead2/addons/sourcemod/scripting/left4dhooks.sp
 
-# Geoip2 v1.1.2 (22 apr 2020)  Accelerator74
-# https://forums.alliedmods.net/showthread.php?t=311477
-# https://forums.alliedmods.net/showthread.php?p=2744192#post2744192
-!/left4dead2/addons/sourcemod/configs/geoip/
-!/left4dead2/addons/sourcemod/configs/geoip/GeoIP.dat
-!/left4dead2/addons/sourcemod/configs/geoip/*.mmdb
-!/left4dead2/addons/sourcemod/extensions/x64/geoip.ext.*
-!/left4dead2/addons/sourcemod/extensions/geoip.ext.*
-!/left4dead2/addons/sourcemod/scripting/include/geoip.inc
-!/left4dead2/cfg/sourcemod/configs/geoip/
-!/left4dead2/cfg/sourcemod/configs/geoip/*.mmdb
+
 
 # Connect Announce 1.8.2 (21-10-2020) Ja-Forces (requires Geoip2)
 # https://forums.alliedmods.net/showthread.php?p=2651148#post2651148 
