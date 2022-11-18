@@ -32,7 +32,7 @@
 # https://forums.alliedmods.net/showthread.php?p=2588686#post2588686
 # DHooks is now included with SourceMod 1.11.6820
 
-# Left 4 DHooks Direct 1.121 (06-Nov-2022)
+# Left 4 DHooks Direct 1.122 (15-Nov-2022)
 # https://forums.alliedmods.net/showthread.php?t=321696
 !/left4dead2/addons/sourcemod/data/left4dhooks.l4d1.cfg
 !/left4dead2/addons/sourcemod/data/left4dhooks.l4d2.cfg
@@ -281,7 +281,7 @@
 # https://forums.alliedmods.net/showthread.php?t=298649
 !/left4dead2/addons/sourcemod/plugins/ThirdPersonShoulder_Detect.smx
 
-# [L4D2]Survivor_Legs(1.5.2 - 20/09/20)
+# [L4D2]Survivor_Legs(ported version 17/11/2022)
 # https://forums.alliedmods.net/showthread.php?p=2536139
 !/left4dead2/addons/sourcemod/plugins/_\[L4D2]Survivor_Legs.smx
 
