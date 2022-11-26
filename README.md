@@ -11,3 +11,4 @@ Also some manual stuff afterwards:
 - Import bans:
   - left4dead2/cfg/banned_user.cfg
   - left4dead2/cfg/banned_ip.cfg
+- Accelerator MinidumpAccount
