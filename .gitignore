@@ -144,7 +144,7 @@
 !/left4dead2/addons/sourcemod/plugins/l4d2_weaponspawner.smx
 !/left4dead2/addons/sourcemod/translations/weaponspawner.phrases.txt
 
-# New, edited custom commands v1.3.8 05-24-2021 
+# New, edited custom commands v1.3.9e 16th Aug 2022  
 # https://forums.alliedmods.net/showthread.php?p=2704580#post2704580 
 !/left4dead2/addons/sourcemod/plugins/l4d2_custom_commands.smx
 !/left4dead2/addons/sourcemod/gamedata/l4d2customcmds.txt
