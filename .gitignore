@@ -46,7 +46,7 @@
 
 # Connect Announce 1.8.3 (26-09-2022) [Edited by Dosergen] Ja-Forces
 # https://forums.alliedmods.net/showthread.php?p=2651148#post2651148
-# https://github.com/Dosergen/l4d_stuff/tree/main/cannounce
+# https://github.com/Dosergen/Stuff/tree/main/cannounce/1.8.3
 !/left4dead2/addons/sourcemod/plugins/cannounce.smx
 !/left4dead2/addons/sourcemod/scripting/cannounce/
 !/left4dead2/addons/sourcemod/scripting/cannounce/**
