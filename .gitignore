@@ -285,6 +285,12 @@
 # https://forums.alliedmods.net/showthread.php?p=2536139
 !/left4dead2/addons/sourcemod/plugins/_\[L4D2]Survivor_Legs.smx
 
+# Bot Healing Values (2.1) [20-Aug-2022] (needs Source Scramble)
+# https://forums.alliedmods.net/showthread.php?t=338889
+!/left4dead2/addons/sourcemod/gamedata/l4d_bot_healing.txt
+!/left4dead2/cfg/sourcemod/l4d_bot_healing.cfg
+!/left4dead2/addons/sourcemod/plugins/l4d_bot_healing.smx
+
 ##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
 
 # Vocalize Anti-Flood 1.0.2  2014-06-29 (needs Scene Processor)
