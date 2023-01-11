@@ -168,20 +168,6 @@
 !/left4dead2/addons/sourcemod/plugins/plugin_updates_checker.smx
 !/left4dead2/cfg/sourcemod/sm_updates_checker.cfg
 
-# Updater 1.3.4 (09-Nov-2022) requires steamworks
-# https://forums.alliedmods.net/showthread.php?p=2767602#post2767602
-# Teamkiller324 fork: https://github.com/Teamkiller324/Updater
-!/left4dead2/addons/sourcemod/plugins/updater.smx
-!/left4dead2/addons/sourcemod/scripting/updater.sp
-!/left4dead2/addons/sourcemod/scripting/include/updater.inc
-!/left4dead2/addons/sourcemod/scripting/updater
-!/left4dead2/addons/sourcemod/scripting/updater/api.sp
-!/left4dead2/addons/sourcemod/scripting/updater/download.sp
-!/left4dead2/addons/sourcemod/scripting/updater/filesys.sp
-!/left4dead2/addons/sourcemod/scripting/updater/plugins.sp
-# separate download is more recent:
-!/left4dead2/addons/sourcemod/scripting/include/SteamWorks.inc
-
 # Vote Blocker 1.3.4 (06-Nov-2014)
 # https://forums.alliedmods.net/showthread.php?p=2082240?p=2082240 
 !/left4dead2/addons/sourcemod/plugins/voteblocker.smx
@@ -292,6 +278,21 @@
 !/left4dead2/addons/sourcemod/plugins/l4d_bot_healing.smx
 
 ##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
+
+# Updater 1.3.4 (09-Nov-2022) requires steamworks
+# https://forums.alliedmods.net/showthread.php?p=2767602#post2767602
+# Teamkiller324 fork: https://github.com/Teamkiller324/Updater
+!/left4dead2/addons/sourcemod/plugins/disabled/updater.smx
+!/left4dead2/addons/sourcemod/scripting/updater.sp
+!/left4dead2/addons/sourcemod/scripting/include/updater.inc
+!/left4dead2/addons/sourcemod/scripting/updater
+!/left4dead2/addons/sourcemod/scripting/updater/api.sp
+!/left4dead2/addons/sourcemod/scripting/updater/download.sp
+!/left4dead2/addons/sourcemod/scripting/updater/filesys.sp
+!/left4dead2/addons/sourcemod/scripting/updater/plugins.sp
+# separate download is more recent:
+!/left4dead2/addons/sourcemod/scripting/include/SteamWorks.inc
+
 
 # Vocalize Anti-Flood 1.0.2  2014-06-29 (needs Scene Processor)
 # https://forums.alliedmods.net/showthread.php?t=241588 
