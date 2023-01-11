@@ -95,7 +95,7 @@
 !/left4dead2/addons/sourcemod/extensions/accelerator.ext.so
 !/left4dead2/addons/sourcemod/gamedata/accelerator.games.txt
 
-# Gear Transfer 2.27 (25-Aug-2022)
+# Gear Transfer (2.28b) [07-Jan-2023] 
 # https://forums.alliedmods.net/showthread.php?p=1294082
 !/left4dead2/addons/sourcemod/plugins/l4d_gear_transfer.smx
 !/left4dead2/addons/sourcemod/translations/gear_transfer.phrases.txt
