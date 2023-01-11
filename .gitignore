@@ -240,7 +240,7 @@
 !/left4dead2/addons/sourcemod/plugins/l4d_plane_crash.smx
 !/left4dead2/cfg/sourcemod/l4d_plane_crash.cfg
 
-# Restart Empty Server 2.3
+# Restart Empty Server 2.6 (07-Jan-2023)
 # https://forums.alliedmods.net/showthread.php?t=315367 
 !/left4dead2/addons/sourcemod/data/restart_empty_maps.txt
 !/left4dead2/addons/sourcemod/plugins/sm_RestartEmpty.smx
