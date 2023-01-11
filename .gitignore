@@ -235,7 +235,7 @@
 !/left4dead2/addons/sourcemod/configs/whitelist/whitelist.txt
 !/left4dead2/cfg/sourcemod/serverwhitelistadvanced.cfg
 
-# Plane crash 1.10 (20-Sep-2022)
+# Plane crash 1.11 (10-Jan-2023)
 # https://forums.alliedmods.net/showthread.php?p=1678503
 !/left4dead2/addons/sourcemod/plugins/l4d_plane_crash.smx
 !/left4dead2/cfg/sourcemod/l4d_plane_crash.cfg
