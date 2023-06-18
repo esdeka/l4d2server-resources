@@ -173,6 +173,7 @@
 !/left4dead2/addons/sourcemod/plugins/voteblocker.smx
 #config
 !/left4dead2/cfg/sourcemod/VoteBlocker.cfg
+# maybe interesting, vote cooldown for new connections: https://forums.alliedmods.net/showthread.php?p=2790340#post2790340
 
 # Survivor Chat Select" (1.6.1.1) by DeatChaos25, Mi123456 & Merudo (fixes weapon animation bug) 
 # https://forums.alliedmods.net/showthread.php?p=2739045#post2739045 
