@@ -18,7 +18,7 @@
 
 
 
-#define PLUGIN_VERSION		"1.127"
+#define PLUGIN_VERSION		"1.132"
 
 /*=======================================================================================
 	Plugin Info:
@@ -176,7 +176,7 @@ stock void PrecacheParticle(const char[] sEffectName)
 
 
 // ====================================================================================================
-// CRAWLING TEST - Remove "INCAPPED CRAWLING WITH ANIMATION" plugin to test.
+// CRAWLING TEST - Remove "INCAPPED CRAWLING WITH ANIMATION" plugin to test
 // ====================================================================================================
 #if DEMO_ANIM
 bool g_bCrawling;
@@ -316,6 +316,120 @@ Action sm_l4dd(int client, int args)
 {
 	PrintToServer("Uncomment the things you want to test. All disabled by default.");
 	PrintToServer("Must test individual sections on their own otherwise you'll receive errors about symbols already defined..");
+
+
+
+	// int entity = GetClientAimTarget(client, false);
+	// PrintToChatAll("L4D_IsTankProp %d", L4D_IsTankProp(entity));
+
+
+
+	// PrintToChatAll("Old spawn time: %f", L4D_GetPlayerSpawnTime(client));
+	// L4D_SetPlayerSpawnTime(client, 25.0, false);
+	// PrintToChatAll("New spawn time: %f", L4D_GetPlayerSpawnTime(client));
+	// PrintToChatAll("Direct_GetSpawnTimer %f", CTimer_GetElapsedTime(L4D2Direct_GetSpawnTimer(client)));
+
+
+
+	/*
+	// Get TheNavAreas - check for connected areas
+	ArrayList aList = new ArrayList();
+	L4D_GetAllNavAreas(aList);
+
+	int size = aList.Length;
+
+	// Get random area
+	Address targ;
+	Address area = aList.Get(GetRandomInt(0, size - 1));
+	int id = L4D_GetNavAreaID(area);
+	float vPos[3], vEnd[3];
+
+	PrintToServer("Testing ID: %d Nav: (%d) area for connections in %d areas", id, area, size);
+
+	// VScript test:
+	// -----
+	char code[256];
+	char buffer[256];
+	L4D_GetNavAreaPos(area, vPos);
+	// -----
+
+	// Check against all addresses:
+	for( int i = 0; i < size; i++ )
+	{
+		targ = aList.Get(i);
+
+		// VScript test
+		// -----
+		L4D_GetNavAreaPos(targ, vEnd);
+		Format(code, sizeof(code), "ret <- NavMesh.GetNavArea(Vector(%f, %f, %f), 500.000000); tst <- NavMesh.GetNavArea(Vector(%f, %f, %f), 50.000000); if (ret && tst) <RETURN>ret.IsConnected(tst, 4)</RETURN>;", vEnd[0], vEnd[1], vEnd[2], vPos[0], vPos[1], vPos[2]);
+		buffer[0] = 0;
+		L4D2_GetVScriptOutput(code, buffer, sizeof(buffer));
+		if( buffer[0] )
+			PrintToServer("VS: [%s] - %d", buffer, targ);
+		// -----
+
+		// Native test
+		if( L4D_NavArea_IsConnected(area, targ, 4) )
+		{
+			L4D_GetNavAreaPos(targ, vEnd);
+
+			PrintToServer("Area %d (%d) is connected (dist: %f)", L4D_GetNavAreaID(targ), targ, GetVectorDistance(vPos, vEnd));
+		}
+
+		// For some reason the VScript and Native versions sometimes return true for areas that the other does not return true for.
+	}
+
+	delete aList;
+	// */
+
+
+
+
+	// L4D_WarpToValidPositionIfStuck(client);
+
+
+
+	// PrintToServer("L4D2_GetFirstSpawnClass %d", L4D2_GetFirstSpawnClass());
+	// PrintToServer("L4D2_SetFirstSpawnClass set to 1", L4D2_SetFirstSpawnClass(1));
+
+
+
+	/*
+	// Get TheNavAreas
+	ArrayList aList = new ArrayList();
+	L4D_GetAllNavAreas(aList);
+
+	int size = aList.Length;
+
+	// Print all addresses:
+	// for( int i = 0; i < size; i++ )
+	// {
+		// PrintToServer("%4d. %d (ID=%d)", i, aList.Get(i), L4D_GetNavAreaID(aList.Get(i)));
+	// }
+
+	// Get random area
+	Address area = aList.Get(GetRandomInt(0, size - 1));
+	int id = L4D_GetNavAreaID(area);
+	PrintToServer("AREA %d (ID=%d) out of %d", area, id, size);
+	PrintToServer("ID test %d == %d", id, L4D_GetNavAreaByID(id));
+
+	// Get origin
+	float vPos[3];
+	L4D_GetNavAreaPos(area, vPos);
+	PrintToServer("POS %f %f %f", vPos[0], vPos[1], vPos[2]);
+
+	// Get size
+	float vSize[3];
+	L4D_GetNavAreaSize(area, vSize);
+	PrintToServer("SIZE %f %f %f", vSize[0], vSize[1], vSize[2]);
+
+	// Get center
+	float vMid[3];
+	L4D_GetNavAreaCenter(area, vMid);
+	PrintToServer("CENTER %f %f %f", vMid[0], vMid[1], vMid[2]);
+
+	delete aList;
+	// */
 
 
 
@@ -2073,7 +2187,7 @@ public void L4D_OnSpawnSpecial_Post(int client, int zombieClass, const float vec
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D_OnSpawnSpecial_Post\" %d. %d (%N). (%f %f %f). (%f %f %f)", zombieClass, client, client, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
+		ForwardCalled("\"L4D_OnSpawnSpecial_Post\" %d. %d (%N). (%f %f %f). (%f %f %f)", zombieClass, client > 0 && client <= MaxClients ? client : 0, client > 0 && client <= MaxClients ? client : 0, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
 	}
 }
 
@@ -2085,7 +2199,7 @@ public void L4D_OnSpawnSpecial_PostHandled(int client, int zombieClass, const fl
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D_OnSpawnSpecial_PostHandled\" %d. %d (%N). (%f %f %f). (%f %f %f)", zombieClass, client, client, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
+		ForwardCalled("\"L4D_OnSpawnSpecial_PostHandled\" %d. %d (%N). (%f %f %f). (%f %f %f)", zombieClass, client > 0 && client <= MaxClients ? client : 0, client > 0 && client <= MaxClients ? client : 0, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
 	}
 }
 
@@ -2113,7 +2227,7 @@ public void L4D_OnSpawnTank_Post(int client, const float vecPos[3], const float 
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D_OnSpawnTank_Post\" %d (%N). (%f %f %f). (%f %f %f)", client, client, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
+		ForwardCalled("\"L4D_OnSpawnTank_Post\" %d (%N). (%f %f %f). (%f %f %f)", client > 0 && client <= MaxClients ? client : 0, client > 0 && client <= MaxClients ? client : 0, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
 	}
 }
 
@@ -2125,7 +2239,7 @@ public void L4D_OnSpawnTank_PostHandled(int client, const float vecPos[3], const
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D_OnSpawnTank_PostHandled\" %d (%N). (%f %f %f). (%f %f %f)", client, client, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
+		ForwardCalled("\"L4D_OnSpawnTank_PostHandled\" %d (%N). (%f %f %f). (%f %f %f)", client > 0 && client <= MaxClients ? client : 0, client > 0 && client <= MaxClients ? client : 0, vecPos[0], vecPos[1], vecPos[2], vecAng[0], vecAng[1], vecAng[2]);
 	}
 }
 
@@ -2376,6 +2490,47 @@ public void L4D_OnEnterGhostState_PostHandled(int client)
 		called++;
 
 		ForwardCalled("\"L4D_OnEnterGhostState_PostHandled\" %d", client);
+	}
+}
+
+public Action L4D_OnTakeOverBot(int client)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D_OnTakeOverBot\" %d (%N)", client, client);
+	}
+
+	// Blocks
+	// return Plugin_Handled;
+
+	return Plugin_Continue;
+}
+
+public void L4D_OnTakeOverBot_Post(int client, bool success)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D_OnTakeOverBot_Post\" %d (%N). Success: %d", client, client, success);
+	}
+}
+
+public void L4D_OnTakeOverBot_PostHandled(int client, bool success)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D_OnTakeOverBot_PostHandled\" %d (%N). Success: %d", client, client, success);
 	}
 }
 
@@ -2936,6 +3091,61 @@ public Action L4D2_OnSelectTankAttack(int client, int &sequence)
 	return Plugin_Continue;
 }
 
+public Action L4D_OnDoAnimationEvent(int client, int &event, int &variant_param)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D_OnDoAnimationEvent\" %d (%N) - (%d - %d)", client, client > 0 && client <= MaxClients ? client : 0, event, variant_param);
+	}
+
+	// WORKS
+	/*
+	if( event == 4 )
+	{
+		event = 98;
+		return Plugin_Changed;
+	}
+	// */
+
+	// WORKS
+	/*
+	if( event == 4 )
+	{
+		return Plugin_Handled;
+	}
+	// */
+
+	return Plugin_Continue;
+}
+
+public void L4D_OnDoAnimationEvent_Post(int client, int event, int variant_param)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D_OnDoAnimationEvent_Post\" %d (%N) - (%d - %d)", client, client > 0 && client <= MaxClients ? client : 0, event, variant_param);
+	}
+}
+
+public void L4D_OnDoAnimationEvent_PostHandled(int client, int event, int variant_param)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D_OnDoAnimationEvent_PostHandled\" %d (%N) - (%d - %d)", client, client > 0 && client <= MaxClients ? client : 0, event, variant_param);
+	}
+}
+
 public Action L4D2_OnSendInRescueVehicle()
 {
 	static int called;
@@ -3494,6 +3704,18 @@ public void L4D2_OnStartCarryingVictim_PostHandled(int victim, int attacker)
 	}
 }
 
+public void L4D2_OnChargerImpact(int client)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D2_OnChargerImpact\" %d (%N)", client, client);
+	}
+}
+
 public Action L4D_OnVomitedUpon(int victim, int &attacker, bool &boomerExplosion)
 {
 	static int called;
@@ -3843,7 +4065,121 @@ public void L4D_CBreakableProp_Break(int prop, int entity)
 	}
 }
 
-public void L4D2_CGasCan_EventKilled(int gascan, int inflictor, int attacker)
+public Action L4D1_FirstAidKit_StartHealing(int client, int entity)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D1_FirstAidKit_StartHealing\" %d (%N) - MedKit = %d", client, client, entity);
+	}
+
+	// WORKS - Block using
+	// return Plugin_Handled;
+
+	// Modify healing duration:
+	// FindConVar("first_aid_kit_use_duration").FloatValue = 1.0;
+
+	return Plugin_Continue;
+}
+
+public void L4D1_FirstAidKit_StartHealing_Post(int client, int entity)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D1_FirstAidKit_StartHealing_Post\" %d (%N) - MedKit = %d", client, client, entity);
+	}
+
+	// Reset healing duration:
+	// FindConVar("first_aid_kit_use_duration").FloatValue = 5.0; // Game default is "5"
+}
+
+public void L4D1_FirstAidKit_StartHealing_PostHandled(int client, int entity)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D1_FirstAidKit_StartHealing_PostHandled\" %d (%N) - MedKit = %d", client, client, entity);
+	}
+}
+
+public Action L4D2_BackpackItem_StartAction(int client, int entity)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D2_BackpackItem_StartAction\" %d (%N) - Item = %d", client, client, entity);
+	}
+
+	// WORKS - Block using
+	// return Plugin_Handled;
+
+	// Modify use duration:
+	/*
+	char sTemp[32];
+	GetEdictClassname(entity, sTemp, sizeof(sTemp));
+
+	if( strcmp(sTemp, "weapon_first_aid_kit") == 0 )					FindConVar("first_aid_kit_use_duration").FloatValue = 1.0;
+	else if( strcmp(sTemp, "weapon_defibrillator") == 0 )				FindConVar("defibrillator_use_duration").FloatValue = 5.0;
+	else if( strcmp(sTemp, "weapon_upgradepack_explosive") == 0 )		FindConVar("upgrade_pack_use_duration").FloatValue = 5.0;
+	else if( strcmp(sTemp, "weapon_upgradepack_incendiary") == 0 )		FindConVar("upgrade_pack_use_duration").FloatValue = 5.0;
+	else if( strcmp(sTemp, "weapon_cola_bottles") == 0 )				FindConVar("cola_bottles_use_duration").FloatValue = 5.0;
+	else if( strcmp(sTemp, "weapon_gascan") == 0 )						FindConVar("gas_can_use_duration").FloatValue = 5.0;
+	*/
+
+	return Plugin_Continue;
+}
+
+public void L4D2_BackpackItem_StartAction_Post(int client, int entity)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D2_BackpackItem_StartAction_Post\" %d (%N) - Item = %d", client, client, entity);
+	}
+
+	// Reset use duration:
+	/*
+	char sTemp[32];
+	GetEdictClassname(entity, sTemp, sizeof(sTemp));
+
+	if( strcmp(sTemp, "weapon_first_aid_kit") == 0 )					FindConVar("first_aid_kit_use_duration").FloatValue = 5.0;
+	else if( strcmp(sTemp, "weapon_defibrillator") == 0 )				FindConVar("defibrillator_use_duration").FloatValue = 3.0;
+	else if( strcmp(sTemp, "weapon_upgradepack_explosive") == 0 )		FindConVar("upgrade_pack_use_duration").FloatValue = 1.9;
+	else if( strcmp(sTemp, "weapon_upgradepack_incendiary") == 0 )		FindConVar("upgrade_pack_use_duration").FloatValue = 1.9;
+	else if( strcmp(sTemp, "weapon_cola_bottles") == 0 )				FindConVar("cola_bottles_use_duration").FloatValue = 1.95;
+	else if( strcmp(sTemp, "weapon_gascan") == 0 )						FindConVar("gas_can_use_duration").FloatValue = 2.0;
+	*/
+}
+
+public void L4D2_BackpackItem_StartAction_PostHandled(int client, int entity)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D2_BackpackItem_StartAction_PostHandled\" %d (%N) - Item = %d", client, client, entity);
+	}
+}
+
+public Action L4D2_CGasCan_EventKilled(int gascan, int &inflictor, int &attacker)
 {
 	static int called;
 	if( called < MAX_CALLS )
@@ -3852,6 +4188,43 @@ public void L4D2_CGasCan_EventKilled(int gascan, int inflictor, int attacker)
 		called++;
 
 		ForwardCalled("\"L4D2_CGasCan_EventKilled\" %d (Inf=%d) (Att=%d)", gascan, inflictor, attacker);
+	}
+
+	// WORKS - Block detonating
+	// return Plugin_Handled;
+
+	// WORKS - Change attacker
+	/*
+	int bot = GetRandomSurvivor(1, 1);
+	inflictor = bot;
+	attacker = bot;
+	return Plugin_Changed;
+	// */
+
+	return Plugin_Continue;
+}
+
+public void L4D2_CGasCan_EventKilled_Post(int gascan, int inflictor, int attacker)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D2_CGasCan_EventKilled_Post\" %d (Inf=%d) (Att=%d)", gascan, inflictor, attacker);
+	}
+}
+
+public void L4D2_CGasCan_EventKilled_PostHandled(int gascan, int inflictor, int attacker)
+{
+	static int called;
+	if( called < MAX_CALLS )
+	{
+		if( called == 0 ) g_iForwards++;
+		called++;
+
+		ForwardCalled("\"L4D2_CGasCan_EventKilled_PostHandled\" %d (Inf=%d) (Att=%d)", gascan, inflictor, attacker);
 	}
 }
 
@@ -4013,7 +4386,7 @@ public Action L4D_OnGetScriptValueInt(const char[] key, int &retVal)
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D_OnGetScriptValueInt\" %s. %d", key, retVal);
+		ForwardCalled("\"L4D_OnGetScriptValueInt\" \"%s\" %d", key, retVal);
 	}
 
 	// WORKS - green gascans on back from map c4m*
@@ -4045,7 +4418,7 @@ public Action L4D_OnGetScriptValueFloat(const char[] key, float &retVal)
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D_OnGetScriptValueFloat\" %s. %f", key, retVal);
+		ForwardCalled("\"L4D_OnGetScriptValueFloat\" \"%s\" %f", key, retVal);
 	}
 
 	// WORKS
@@ -4126,7 +4499,7 @@ public Action L4D2_OnGetScriptValueVoid(const char[] key, fieldtype_t &type, Var
 		if( called == 0 ) g_iForwards++;
 		called++;
 
-		ForwardCalled("\"L4D2_OnGetScriptValueVoid\" \"%s\". hScope = %d", key, hScope);
+		ForwardCalled("\"L4D2_OnGetScriptValueVoid\" \"%s\" hScope = %d", key, hScope);
 	}
 
 	// WORKS - example setting temporary health decay rate:
@@ -4907,11 +5280,11 @@ void ForwardCalled(const char[] format, any ...)
 	static char buffer[512];
 	VFormat(buffer, sizeof(buffer), format, 2);
 
-	LogAction(0, -1, "Forward %d/%d called %s", g_iForwards, g_iForwardsMax, buffer);
+	// LogAction(0, -1, "Forward %d/%d called %s", g_iForwards, g_iForwardsMax, buffer);
 
-	PrintToServer("----------");
-	PrintToServer("Forward %d/%d called %s", g_iForwards, g_iForwardsMax, buffer);
-	PrintToServer("----------");
+	// PrintToServer("----------");
+	PrintToServer("L4DD: %s", buffer);
+	// PrintToServer("----------");
 }
 
 stock bool TraceFilter(int entity, int contentsMask, int client)

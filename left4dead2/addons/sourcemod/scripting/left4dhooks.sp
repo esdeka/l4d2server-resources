@@ -18,11 +18,11 @@
 
 
 
-#define PLUGIN_VERSION		"1.127"
-#define PLUGIN_VERLONG		1127
+#define PLUGIN_VERSION		"1.132"
+#define PLUGIN_VERLONG		1132
 
 #define DEBUG				0
-// #define DEBUG			1	// Prints addresses + detour info (only use for debugging, slows server down)
+// #define DEBUG			1	// Prints addresses + detour info (only use for debugging, slows server down).
 
 #define DETOUR_ALL			0	// Only enable required detours, for public release.
 // #define DETOUR_ALL		1	// Enable all detours, for testing.
@@ -67,7 +67,7 @@
 		"Fyren" for being so awesome and inspiring me from his sdktools patch to do custom |this| calls.
 		"ivailosp" for providing the Windows addresses that needed to be patched to get player slot unlocking to work.
 		"dvander" for making sourcemod and teaching me about the mod r/m bytes.
-		"DDRKhat" for letting me use his Linux server to test this
+		"DDRKhat" for letting me use his Linux server to test this.
 		"Frustian" for being a champ and poking around random Linux sigs so I could the one native I actually needed.
 		"XBetaAlpha" for making this a team effort rather than one guy writing all the code.
 
@@ -201,10 +201,10 @@ static const char g_sModels2[][] =
 
 
 // Dynamic Detours:
-#define MAX_FWD_LEN							64		// Maximum string length of forward and signature names, used for ArrayList.
+#define MAX_FWD_LEN							64		// Maximum string length of forward and signature names, used for ArrayList
 
 // ToDo: When using extra-api.ext (or hopefully one day native SM forwards), g_aDetoursHooked will store the number of plugins using each forward
-// so we can disable when the value is 0 and not have to check all plugins just to determine if still required.
+// so we can disable when the value is 0 and not have to check all plugins just to determine if still required
 ArrayList g_aDetoursHooked;					// Identifies if the detour hook is enabled or disabled
 ArrayList g_aDetourHandles;					// Stores detour handles to enable/disable as required
 ArrayList g_aGameDataSigs;					// Stores Signature names
@@ -221,6 +221,8 @@ float g_fLoadTime;							// When the plugin was loaded, to ignore when "AP_OnPlu
 Handle g_hThisPlugin;						// Ignore checking this plugin
 GameData g_hGameData;						// GameData file - to speed up loading
 int g_iScriptVMDetourIndex;
+float g_fCvar_Adrenaline, g_fCvar_PillsDecay;
+int g_iCvar_AddonsEclipse, g_iCvar_RescueDeadTime;
 
 
 
@@ -254,7 +256,7 @@ int g_iOff_LobbyReservation;
 int g_iOff_VersusStartTimer;
 int g_iOff_m_rescueCheckTimer;
 int g_iOff_m_iszScriptId;
-int g_iOff_SpawnTimer;
+int g_iOff_m_flBecomeGhostAt;
 int g_iOff_MobSpawnTimer;
 int g_iOff_VersusMaxCompletionScore;
 int g_iOff_OnBeginRoundSetupTime;
@@ -278,10 +280,12 @@ int g_iOff_m_preIncapacitatedHealthBuffer;
 int g_iOff_m_maxFlames;
 int g_iOff_m_flow;
 int g_iOff_m_PendingMobCount;
+int g_iOff_m_nFirstClassIndex;
 int g_iOff_m_fMapMaxFlowDistance;
 int g_iOff_m_chapter;
 int g_iOff_m_attributeFlags;
 int g_iOff_m_spawnAttributes;
+int g_iOff_NavAreaID;
 // int g_iOff_m_iClrRender; // NULL PTR - METHOD (kept for demonstration)
 // int ClearTeamScore_A;
 // int ClearTeamScore_B;
@@ -307,6 +311,9 @@ int g_pScavengeMode;
 Address g_pServer;
 Address g_pDirector;
 Address g_pGameRules;
+Address g_pTheNavAreas;
+Address g_pTheNavAreas_List;
+Address g_pTheNavAreas_Size;
 Address g_pNavMesh;
 Address g_pZombieManager;
 Address g_pMeleeWeaponInfoStore;
@@ -324,6 +331,7 @@ int g_iCanBecomeGhostOffset;
 
 // Other
 Address g_pScriptId;
+int g_iPlayerResourceRef;
 int g_iAttackTimer;
 int g_iOffsetAmmo;
 int g_iPrimaryAmmoType;
@@ -553,7 +561,7 @@ public void OnPluginStart()
 	// ====================================================================================================
 	//									ANIMMATION HOOK
 	// ====================================================================================================
-	g_hAnimationActivityList = new ArrayList(ByteCountToCells(64));
+	g_hAnimationActivityList = new ArrayList(ByteCountToCells(48));
 	ParseActivityConfig();
 
 	g_iAnimationHookedClients = new ArrayList();
@@ -664,7 +672,7 @@ public void OnPluginStart()
 	// ====================================================================================================
 	//									COMMANDS
 	// ====================================================================================================
-	// When adding or removing plugins that use any detours during gameplay. To optimize forwards by disabling unused or enabling required functions that were previously unused. TODO: Not needed when using extra-api.ext.
+	// When adding or removing plugins that use any detours during gameplay. To optimize forwards by disabling unused or enabling required functions that were previously unused. TODO: Not needed when using extra-api.ext
 	RegAdminCmd("sm_l4dd_unreserve",	CmdLobby,	ADMFLAG_ROOT, "Removes lobby reservation.");
 	RegAdminCmd("sm_l4dd_reload",		CmdReload,	ADMFLAG_ROOT, "Reloads the detour hooks, enabling or disabling depending if they're required by other plugins.");
 	RegAdminCmd("sm_l4dd_detours",		CmdDetours,	ADMFLAG_ROOT, "Lists the currently active forwards and the plugins using them.");
@@ -684,15 +692,25 @@ public void OnPluginStart()
 		g_hCvar_VScriptBuffer = CreateConVar("l4d2_vscript_return", "", "Buffer used to return VScript values. Do not use.", FCVAR_DONTRECORD);
 		g_hCvar_AddonsEclipse = CreateConVar("l4d2_addons_eclipse", "-1", "Addons Manager (-1: use addonconfig; 0: disable addons; 1: enable addons.)", FCVAR_NOTIFY);
 		AutoExecConfig(true, "left4dhooks");
-		g_hCvar_AddonsEclipse.AddChangeHook(ConVarChanged_Cvars);
+
+		g_hCvar_AddonsEclipse.AddChangeHook(ConVarChanged_Addons);
+		g_iCvar_AddonsEclipse = g_hCvar_AddonsEclipse.IntValue;
 
 		g_hCvar_Adrenaline = FindConVar("adrenaline_health_buffer");
+		g_hCvar_Adrenaline.AddChangeHook(ConVarChanged_Cvars);
+		g_fCvar_Adrenaline = g_hCvar_Adrenaline.FloatValue;
 	} else {
 		g_hCvar_Revives = FindConVar("survivor_max_incapacitated_count");
 	}
 
 	g_hCvar_PillsDecay = FindConVar("pain_pills_decay_rate");
+	g_hCvar_PillsDecay.AddChangeHook(ConVarChanged_Cvars);
+	g_fCvar_PillsDecay = g_hCvar_PillsDecay.FloatValue;
+
 	g_hCvar_RescueDeadTime = FindConVar("rescue_min_dead_time");
+	g_hCvar_RescueDeadTime.AddChangeHook(ConVarChanged_Cvars);
+	g_iCvar_RescueDeadTime = g_hCvar_RescueDeadTime.IntValue;
+
 	g_hCvar_MPGameMode = FindConVar("mp_gamemode");
 	g_hCvar_MPGameMode.AddChangeHook(ConVarChanged_Mode);
 
@@ -830,6 +848,7 @@ void GetGameMode() // Forward "L4D_OnGameModeChange"
 		SDKCall(g_hSDK_CDirector_GetGameModeBase, g_pDirector, sMode, sizeof(sMode));
 
 		if( strcmp(sMode,			"coop") == 0 )		g_iCurrentMode = GAMEMODE_COOP;
+		else if( strcmp(sMode,		"realism") == 0 )	g_iCurrentMode = GAMEMODE_COOP;
 		else if( strcmp(sMode,		"survival") == 0 )	g_iCurrentMode = GAMEMODE_SURVIVAL;
 		else if( strcmp(sMode,		"versus") == 0 )	g_iCurrentMode = GAMEMODE_VERSUS;
 		else if( strcmp(sMode,		"scavenge") == 0 )	g_iCurrentMode = GAMEMODE_SCAVENGE;
@@ -1201,14 +1220,26 @@ void ColorConfig_End(SMCParser parser, bool halted, bool failed)
 public void OnConfigsExecuted()
 {
 	if( g_bLeft4Dead2 )
-		ConVarChanged_Cvars(null, "", "");
+		ConVarChanged_Addons(null, "", "");
+
+	ConVarChanged_Cvars(null, "", "");
 }
 
 bool g_bAddonsPatched;
 
 void ConVarChanged_Cvars(Handle convar, const char[] oldValue, const char[] newValue)
 {
-	if( g_hCvar_AddonsEclipse.IntValue > -1 )
+	if( g_bLeft4Dead2 )
+		g_fCvar_Adrenaline = g_hCvar_Adrenaline.FloatValue;
+	g_fCvar_PillsDecay = g_hCvar_PillsDecay.FloatValue;
+	g_iCvar_RescueDeadTime = g_hCvar_RescueDeadTime.IntValue;
+}
+
+void ConVarChanged_Addons(Handle convar, const char[] oldValue, const char[] newValue)
+{
+	g_iCvar_AddonsEclipse = g_hCvar_AddonsEclipse.IntValue;
+
+	if( g_iCvar_AddonsEclipse > -1 )
 		AddonsDisabler_Patch();
 	else
 		AddonsDisabler_Unpatch();
@@ -1256,7 +1287,7 @@ MRESReturn DTR_AddonsDisabler(int pThis, Handle hReturn, DHookParam hParams) // 
 	PrintToServer("##### DTR_AddonsDisabler");
 	#endif
 
-	int cvar = g_hCvar_AddonsEclipse.IntValue;
+	int cvar = g_iCvar_AddonsEclipse;
 	if( cvar != -1 )
 	{
 		int ptr = hParams.Get(1);
@@ -1354,6 +1385,13 @@ void CallCheckRequiredDetours(int client = 0)
 public void OnMapStart()
 {
 	g_bRoundEnded = false;
+
+
+
+	// Load PlayerResource
+	int iPlayerResource = FindEntityByClassname(-1, "terror_player_manager");
+
+	g_iPlayerResourceRef = (iPlayerResource != INVALID_ENT_REFERENCE) ? EntIndexToEntRef(iPlayerResource): INVALID_ENT_REFERENCE;
 
 
 
@@ -1522,7 +1560,7 @@ float GetTempHealth(int client)
 	float fGameTime = GetGameTime();
 	float fHealthTime = GetEntPropFloat(client, Prop_Send, "m_healthBufferTime");
 	float fHealth = GetEntPropFloat(client, Prop_Send, "m_healthBuffer");
-	fHealth -= (fGameTime - fHealthTime) * g_hCvar_PillsDecay.FloatValue;
+	fHealth -= (fGameTime - fHealthTime) * g_fCvar_PillsDecay;
 	return fHealth < 0.0 ? 0.0 : fHealth;
 }
 

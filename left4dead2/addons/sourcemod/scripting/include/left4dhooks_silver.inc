@@ -1,6 +1,6 @@
 /*
 *	Left 4 DHooks Direct - Stock Functions
-*	Copyright (C) 2022 Silvers
+*	Copyright (C) 2023 Silvers
 *
 *	This program is free software: you can redistribute it and/or modify
 *	it under the terms of the GNU General Public License as published by
@@ -278,6 +278,60 @@ stock void StopUsingMinigun(int client)
 		SetEntProp(client, Prop_Send, "m_usingMountedWeapon", 0);
 		SetEntPropEnt(client, Prop_Send, "m_hUseEntity", -1);
 	}
+}
+
+/**
+ * @brief Returns if a player is on fire
+ *
+ * @param client			Client index to check
+ *
+ * @return true on fire, false otherwise
+ */
+stock bool L4D_IsPlayerOnFire(int client)
+{
+	if( GetEntProp(client, Prop_Data, "m_fFlags") & FL_ONFIRE ) return true;
+	else return false;
+}
+
+/**
+ * @brief Returns if a player is burning
+ *
+ * @param client			Client index to check
+ *
+ * @return true on burning, false otherwise
+ */
+stock bool L4D_IsPlayerBurning(int client)
+{
+	float fBurning = GetEntPropFloat(client, Prop_Send, "m_burnPercent");
+	return (fBurning > 0.0) ? true : false;
+}
+
+/**
+ * @brief Returns true if a physics object or alarmed car can be moved by the tank
+ *
+ * @param entity			Entity index to check
+ *
+ * @return true if it can be moved, false otherwise
+ */
+stock bool L4D_IsTankProp(int entity)
+{
+	static char classname[16];
+
+	GetEdictClassname(entity, classname, sizeof(classname));
+
+	if( strcmp(classname, "prop_physics") == 0 )
+	{
+		if( GetEntProp(entity, Prop_Send, "m_hasTankGlow") )
+		{
+			return true;
+		}
+	}
+	else if( strcmp(classname, "prop_car_alarm") == 0 )
+	{
+		return true;
+	}
+
+	return false;
 }
 
 
@@ -727,7 +781,7 @@ static stock int L4D2_OffsQueuedPummelInfo()
 	static int m_hQueuedPummelVictim = -1;
 	if( m_hQueuedPummelVictim == -1 )
 		m_hQueuedPummelVictim = FindSendPropInfo("CTerrorPlayer", "m_pummelAttacker") + 4;
-	
+
 	return m_hQueuedPummelVictim;
 }
 
@@ -766,7 +820,7 @@ stock void L4D2_SetQueuedPummelStartTime(int charger, float timestamp)
 stock bool L4D2_IsInQueuedPummel(int charger)
 {
 	float flTimestamp = L4D2_GetQueuedPummelStartTime(charger);
-	
+
 	return flTimestamp != -1.0 && flTimestamp > GetGameTime();
 }
 
