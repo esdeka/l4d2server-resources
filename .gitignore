@@ -253,7 +253,7 @@
 !/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
 !/left4dead2/addons/sourcemod/extensions/sourcescramble.ext.so
 
-# [L4D2] Transition Restore Fix 1.2.3 (24-Oct-2022)
+# [L4D2] Transition Restore Fix 1.2.5 (19-May-2023)
 # needs Source Scramble and manual compile
 # https://forums.alliedmods.net/showthread.php?t=336287
 # ./left4dead2/addons/sourcemod/scripting/compile.sh transition_restore_fix.sp
