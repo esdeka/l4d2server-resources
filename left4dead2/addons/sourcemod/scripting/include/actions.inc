@@ -6,7 +6,10 @@
 
 #define ACTION_NAME_LENGTH 32
 
+#tryinclude <version>
+
 #include <actions_processors>
+// #include <actions_constructor>
 
 enum QueryResultType
 {
@@ -330,6 +333,25 @@ methodmap ActionComponent < Handle
 	}
 
 	/**
+ 	* @brief Returns component physical address
+	* 
+ 	*/
+	property any Address
+	{
+		public native get();
+	}
+
+	/**
+ 	* @brief Returns component actor
+	* @remark Returns 0 if component is inactive
+	* 
+ 	*/
+	property int Actor
+	{
+		public native get();
+	}
+	
+	/**
  	* @brief Update callback setter
 	* 
  	* @noreturn
@@ -578,7 +600,7 @@ methodmap BehaviorAction < BehaviorActionListeners
 	* @error				Invalid action passed or invalid runtime result
  	* @noreturn
  	*/
-	#pragma deprecated This functions is deprecated. Does nothing.
+	#pragma deprecated This function is deprecated. Does nothing.
 	public native void StorePendingEventResult( ActionResultType type = CONTINUE, BehaviorAction action = INVALID_ACTION, EventResultPriorityType priority = RESULT_TRY, const char[] reason = NULL_STRING );
 	
 	// ====================================================================================================
@@ -687,6 +709,8 @@ public void __ext_actions_SetNTVOptional()
 	MarkNativeAsOptional("ActionComponent.Reset");
 	MarkNativeAsOptional("ActionComponent.GetName");
 	MarkNativeAsOptional("ActionComponent.SetName");
+	MarkNativeAsOptional("ActionComponent.Address");
+	MarkNativeAsOptional("ActionComponent.Actor");
 
 	MarkNativeAsOptional("ActionResult.GetReason");
 	MarkNativeAsOptional("ActionResult.SetReason");

@@ -286,7 +286,7 @@
 !/left4dead2/addons/sourcemod/plugins/l4d2_sb_ai_improver.smx
 !/left4dead2/cfg/sourcemod/l4d2_improved_bots.cfg
 
-#  [TF2 & L4D & L4D2] Actions 	31st May 2023 
+#  [TF2 & L4D & L4D2] Actions 	7th Oct 2023  
 # https://forums.alliedmods.net/showthread.php?t=336374 https://forums.alliedmods.net/showthread.php?p=2805288#post2805288
 !/left4dead2/addons/sourcemod/extensions/actions.ext.2.l4d2.so
 !/left4dead2/addons/sourcemod/gamedata/actions.games.txt
