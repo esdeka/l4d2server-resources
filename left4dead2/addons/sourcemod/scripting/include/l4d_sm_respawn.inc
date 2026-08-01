@@ -14,7 +14,7 @@ enum SPAWN_POSITION
 {
 	SPAWN_POSITION_ORIGIN 		= 1,	// Teleports player to client's origin. If client's origin is impossible to calculate (e.g. dead or index == 0),
 										// it uses any other client's origin from the same team.
-	SPAWN_POSITION_CROSSHAIR 	= 2,	// Teleports player at client's crosshair
+	SPAWN_POSITION_CROSSHAIR 	= 2,	// Teleports player at client's crosshair. If client is not defined, the random player of same team will be used.
 	SPAWN_POSITION_VECTOR 		= 4,	// Teleports player to the provided vector.
 	SPAWN_POSITION_SAFEROOM		= 8,	// Teleports player to the saferoom.
 	SPAWN_POSITION_CONVAR 		= 16,	// Position is based on "l4d_sm_respawn_position" ConVar.

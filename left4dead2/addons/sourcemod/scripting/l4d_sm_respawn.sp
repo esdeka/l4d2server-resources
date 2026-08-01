@@ -5,7 +5,7 @@
 #include <sdktools>
 #include <adminmenu>
 
-#define PLUGIN_VERSION "3.7"
+#define PLUGIN_VERSION "3.9"
 
 #define CVAR_FLAGS	FCVAR_NOTIFY
 
@@ -214,7 +214,7 @@ public void OnPluginEnd()
 	RemoveAdminItem();
 }
 
-public void OnCvarChanged(ConVar convar, const char[] oldValue, const char[] newValue)
+void OnCvarChanged(ConVar convar, const char[] oldValue, const char[] newValue)
 {
 	if( convar == g_cvAddTopMenu )
 	{
@@ -310,7 +310,7 @@ void AddAdminItem(Handle hTopMenu, bool bRemoveItem = false)
 	}
 }
 
-public void AdminMenuSpawnHandler(Handle topmenu, TopMenuAction action, TopMenuObject object_id, int param, char[] buffer, int maxlength)
+void AdminMenuSpawnHandler(Handle topmenu, TopMenuAction action, TopMenuObject object_id, int param, char[] buffer, int maxlength)
 {
 	if( action == TopMenuAction_SelectOption )
 	{
@@ -354,7 +354,7 @@ void MenuClientsToSpawn(int client, int item = 0)
 	menu.DisplayAt(client, item, MENU_TIME_FOREVER);
 }
 
-public int MenuHandler_MenuListClients(Menu menu, MenuAction action, int param1, int param2)
+int MenuHandler_MenuListClients(Menu menu, MenuAction action, int param1, int param2)
 {
 	switch( action )
 	{
@@ -374,6 +374,10 @@ public int MenuHandler_MenuListClients(Menu menu, MenuAction action, int param1,
 			
 			if( target && IsClientInGame(target) )
 			{
+				g_iRespawnTarget[client] = target;
+				ShowTeamSelectMenu(client);
+				return 0;
+				/*
 				if( g_bVersus && GetClientTeam(target) == TEAM_SPECTATOR ) // Spectator in versus => allow to choose the desired team
 				{
 					g_iRespawnTarget[client] = target;
@@ -383,19 +387,23 @@ public int MenuHandler_MenuListClients(Menu menu, MenuAction action, int param1,
 				else {
 					vRespawnPlayer(client, target);
 				}
+				*/
+				
 			}
 			CreateTimer(0.1, Timer_DisplayMenuDelayed, GetClientUserId(client) + (menu.Selection << 16), TIMER_FLAG_NO_MAPCHANGE); // give a time for engine to kick a bot
 		}
 	}
+	return 0;
 }
 
-public Action Timer_DisplayMenuDelayed(Handle timer, int data)
+Action Timer_DisplayMenuDelayed(Handle timer, int data)
 {
 	int client = GetClientOfUserId(data & 0xFFFF); // data = UserId (UShort) + menu item position (Bit 16+)
 	if( client && IsClientInGame(client) )
 	{
 		MenuClientsToSpawn(client, data >> 16);
 	}
+	return Plugin_Continue;
 }
 
 void ShowTeamSelectMenu(int client)
@@ -407,7 +415,7 @@ void ShowTeamSelectMenu(int client)
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public int MenuHandler_MenuListTeams(Menu menu, MenuAction action, int param1, int param2)
+int MenuHandler_MenuListTeams(Menu menu, MenuAction action, int param1, int param2)
 {
 	switch( action )
 	{
@@ -421,6 +429,7 @@ public int MenuHandler_MenuListTeams(Menu menu, MenuAction action, int param1, i
 			vRespawnPlayer(client, g_iRespawnTarget[client], _, team);
 		}
 	}
+	return 0;
 }
 
 public int NATIVE_Respawn(Handle plugin, int numParams)
@@ -453,7 +462,7 @@ public int NATIVE_Respawn(Handle plugin, int numParams)
 	return vRespawnPlayer(iClient, iTarget, overridePosition, overrideTeam, vec);
 }
 
-public void Event_DeadSurvivorVisible(Event event, const char[] name, bool dontBroadcast)
+void Event_DeadSurvivorVisible(Event event, const char[] name, bool dontBroadcast)
 {
 	int iDeadBody = event.GetInt("subject");
 	int iDeadPlayer = GetClientOfUserId(event.GetInt("deadplayer"));
@@ -469,21 +478,22 @@ public Action CmdRespawnMenu(int client, int args)
 	MenuClientsToSpawn(client);
 	return Plugin_Handled;
 }
-
 public Action CmdSpec(int client, int args)
 {
 	ChangeClientTeam(client, TEAM_SPECTATOR);
+	return Plugin_Handled;
 }
 public Action CmdSur(int client, int args)
 {
 	ChangeClientTeam(client, TEAM_SURVIVORS);
+	return Plugin_Handled;
 }
 public Action CmdInf(int client, int args)
 {
 	ChangeClientTeam(client, TEAM_INFECTED);
+	return Plugin_Handled;
 }
-
-public Action CmdRespawnEx(int client, int numParams)
+Action CmdRespawnEx(int client, int numParams)
 {
 	client = iGetListenServerHost(client, g_bDedicated);
 	
@@ -546,7 +556,7 @@ public Action CmdRespawnEx(int client, int numParams)
 	return Plugin_Handled;
 }
 
-public Action CmdRespawn(int client, int args)
+Action CmdRespawn(int client, int args)
 {
 	client = iGetListenServerHost(client, g_bDedicated);
 
@@ -639,6 +649,10 @@ bool vRespawnPlayer(
 	
 	if( spawnPos & SPAWN_POSITION_CROSSHAIR )
 	{
+		if( client == 0 )
+		{
+			client = GetRandomAlivePlayer(desiredTeam, target);
+		}
 		if( client && GetSpawnEndPoint(client, desiredTeam, vec) )
 		{
 			bShouldTeleport = true;
@@ -766,8 +780,11 @@ bool vRespawnPlayer(
 			}
 			case TEAM_INFECTED:
 			{
+				/*
 				if( g_cvAsGhost.IntValue == 1 && !IsFakeClient(target) )
 				{
+					PrintToChatAll("ghosting...");
+				
 					if( g_bLeft4dead2 )
 					{
 						SDKCall(g_hSDK_StateTransition, target, 8);
@@ -776,10 +793,16 @@ bool vRespawnPlayer(
 						SDKCall(g_hSDK_GhostPlayer, target, 1);
 					}
 					else {
-						SDKCall(g_hSDK_StateTransition, target, 8);
-						SDKCall(g_hSDK_GhostPlayer, target, 6, 1);
-						SDKCall(g_hSDK_StateTransition, target, 6);
-						SDKCall(g_hSDK_GhostPlayer, target, 6, 1);
+						//SDKCall(g_hSDK_StateTransition, target, 6);
+						//L4D_BecomeGhost(target);
+						
+						//SDKCall(g_hSDK_StateTransition, target, 6);
+						//SDKCall(g_hSDK_GhostPlayer, target, 6, 1);
+						
+						//SDKCall(g_hSDK_StateTransition, target, 8);
+						//SDKCall(g_hSDK_GhostPlayer, target, 6, 1);
+						//SDKCall(g_hSDK_StateTransition, target, 6);
+						//SDKCall(g_hSDK_GhostPlayer, target, 6, 1);
 					}
 				}
 				else {
@@ -787,6 +810,12 @@ bool vRespawnPlayer(
 					SDKCall(g_hSDK_RespawnPlayer, target);
 					PatchAddress(false);
 				}
+				*/
+				
+				PatchAddress(true);
+				SDKCall(g_hSDK_RespawnPlayer, target);
+				PatchAddress(false);
+				
 			}
 		}
 	}
@@ -951,6 +980,25 @@ bool IsTeamStuckPos(int team, float vPos[3], bool bDuck = false) // check if the
 		delete hTrace;
 	}
 	return bHit;
+}
+
+int GetRandomAlivePlayer(int team, int ExcludeClient)
+{
+	int client;
+	ArrayList al = new ArrayList(ByteCountToCells(4));
+	for( int i = 1; i <= MaxClients; i++ )
+	{
+		if( i != ExcludeClient && IsClientInGame(i) && GetClientTeam(i) == team && IsPlayerAlive(i) )
+		{
+			al.Push(i);
+		}
+	}
+	if( al.Length > 0 ) // take the spot next to random player
+	{
+		client = al.Get(GetRandomInt(0, al.Length - 1));
+	}
+	delete al;
+	return client;
 }
 
 bool GetRandomSpawnPos(int client, int target, int team, float vec[3]) // returns the origin of the command issuer if he is alive, otherwise the origin of random player
