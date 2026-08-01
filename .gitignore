@@ -272,10 +272,12 @@
 !/left4dead2/addons/sourcemod/plugins/basechat.sp
 !/left4dead2/addons/sourcemod/plugins/basechat.smx
 
-# Source Scramble (memory patching and allocation natives) Peach (0.7.0) 12 Jul 2021
+# Source Scramble (memory patching and allocation natives) Peach (0.8.2.1) 5 Jun 2026
 # https://forums.alliedmods.net/showthread.php?t=317175
-!/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
 !/left4dead2/addons/sourcemod/extensions/sourcescramble.ext.so
+!/left4dead2/addons/sourcemod/plugins/sourcescramble_manager.smx
+!/left4dead2/addons/sourcemod/scripting/sourcescramble_manager.sp
+!/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
 
 # [L4D2] Transition Restore Fix 1.2.5 (19-May-2023)
 # needs Source Scramble and manual compile
