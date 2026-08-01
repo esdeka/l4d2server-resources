@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION "2.6"
+#define PLUGIN_VERSION "2.9"
 
 #pragma semicolon 1
 #pragma newdecls required
@@ -8,6 +8,8 @@
 #include <regex>
 
 #define CVAR_FLAGS			FCVAR_NOTIFY
+
+#define DEBUG 0
 
 public Plugin myinfo = 
 {
@@ -48,6 +50,7 @@ int g_iPluginRunDate;
 char g_sMapListPath[PLATFORM_MAX_PATH];
 char g_sLogPath[PLATFORM_MAX_PATH];
 Handle hPluginMe;
+Handle g_hGraceTimer;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
@@ -148,13 +151,13 @@ void InitHook()
 	{
 		if( !bHooked )
 		{
-			HookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);	
+			HookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);
 			bHooked = true;
 		}
 	} else {
 		if( bHooked )
 		{
-			UnhookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);	
+			UnhookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Pre);
 			bHooked = false;
 		}
 	}
@@ -174,6 +177,14 @@ public void OnConfigsExecuted()
 	}
 }
 
+public void OnClientPutInServer(int client)
+{
+	if( !IsFakeClient(client) )
+	{
+		delete g_hGraceTimer;
+	}
+}
+
 Action Event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast)
 {
 	int client = GetClientOfUserId(event.GetInt("userid"));
@@ -188,7 +199,8 @@ Action Event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast
 				{
 					g_ConVarHibernate.SetInt(0);
 				}
-				CreateTimer(g_fCvarDelay, Timer_CheckPlayers);
+				delete g_hGraceTimer;
+				g_hGraceTimer = CreateTimer(g_fCvarDelay, Timer_CheckPlayers);
 				return Plugin_Continue;
 			}
 		}
@@ -244,29 +256,90 @@ bool IsRebootTimeAllowed()
 	int Hour;
 	SplitSeconds(iUnix, _, Hour);
 	
+	bool allowed = false;
+	
 	if( g_iCVarLimitRebootHourStart >= g_iCVarLimitRebootHourEnd ) // 0 ... 23
 	{
 		if( Hour >= g_iCVarLimitRebootHourStart && Hour <= g_iCVarLimitRebootHourEnd )
 		{
-			return true;
+			allowed = true;
 		}
 	}
 	else // like 22 ... 3
 	{
 		if( Hour >= g_iCVarLimitRebootHourStart || Hour <= g_iCVarLimitRebootHourEnd )
 		{
-			return true;
+			allowed = true;
 		}
 	}
-	return false;
+	
+	#if DEBUG
+	if (allowed)
+	{
+		LogToFileEx(g_sLogPath,"(Verification before starting grace timer)");
+		LogToFileEx(g_sLogPath,"GetPluginWorkDurationHours (%i) >= sm_restart_empty_min_period (%i)", 
+			GetPluginWorkDurationHours(), g_iCvarMinPeriodHours);
+		LogToFileEx(g_sLogPath,"sm_restart_empty_utc_delta = %f", g_fCvarDeltaUTC);
+		LogToFileEx(g_sLogPath,"GetTime() = %i", GetTime());
+		LogToFileEx(g_sLogPath,"Unix time: %i", iUnix);
+		LogToFileEx(g_sLogPath,"Current hour: %i", Hour);
+		LogToFileEx(g_sLogPath,"sm_restart_empty_limit_hour_start = %i", g_iCVarLimitRebootHourStart);
+		LogToFileEx(g_sLogPath,"sm_restart_empty_limit_hour_end = %i", g_iCVarLimitRebootHourEnd);
+		LogClients();
+	}
+	#endif
+	
+	return allowed;
+}
+
+public void LogClients()
+{
+	LogToFileEx(g_sLogPath,"{Spectators}");
+	for( int i = 1; i <= MaxClients; i++ )
+	{
+		if( IsClientInGame(i) && GetClientTeam(i) == 1 )
+		{
+			LogToFileEx(g_sLogPath,"%i. %N", i, i);
+		}
+	}
+	LogToFileEx(g_sLogPath,"\n{Team 2}");
+	for( int i = 1; i <= MaxClients; i++ )
+	{
+		if( IsClientInGame(i) && GetClientTeam(i) == 2 )
+		{
+			LogToFileEx(g_sLogPath,"%i. %N%s%s", i, i, IsFakeClient(i) ? " (BOT)" : "", IsPlayerAlive(i) ? "" : " (DEAD)");
+		}
+	}
+	LogToFileEx(g_sLogPath,"\n{Team 3}");
+	for( int i = 1; i <= MaxClients; i++ )
+	{
+		if( IsClientInGame(i) && GetClientTeam(i) == 3 )
+		{
+			LogToFileEx(g_sLogPath,"%i. %N%s%s", i, i, IsFakeClient(i) ? " (BOT)" : "", IsPlayerAlive(i) ? "" : " (DEAD)");
+		}
+	}
+	LogToFileEx(g_sLogPath,"\n{Connected}");
+	for( int i = 1; i <= MaxClients; i++ )
+	{
+		if( IsClientConnected(i) && !IsClientInGame(i) )
+		{
+			LogToFileEx(g_sLogPath,"%i. Connected but not in game", i);
+		}
+	}
 }
 
 Action Timer_CheckPlayers(Handle timer, int UserId)
 {
 	if( !RealPlayerExist() )
 	{
+		#if DEBUG
+		LogToFileEx(g_sLogPath,"(Grace timer triggered)");
+		LogClients();
+		#endif
+		
 		StartRebootSequence();
 	}
+	g_hGraceTimer = null;
 	return Plugin_Continue;
 }
 
