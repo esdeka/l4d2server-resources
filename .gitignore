@@ -35,7 +35,7 @@
 # https://forums.alliedmods.net/showthread.php?p=2588686#post2588686
 # DHooks is now included with SourceMod 1.11.6820
 
-# Left 4 DHooks Direct (1.138) [25-Sep-2023]
+# Left 4 DHooks Direct 1.168 (18-Jun-2026)
 # https://forums.alliedmods.net/showthread.php?t=321696
 !/left4dead2/addons/sourcemod/data/left4dhooks.l4d1.cfg
 !/left4dead2/addons/sourcemod/data/left4dhooks.l4d2.cfg
@@ -44,6 +44,8 @@
 !/left4dead2/addons/sourcemod/gamedata/lux_library.txt
 !/left4dead2/addons/sourcemod/plugins/left4dhooks.smx
 !/left4dead2/addons/sourcemod/scripting/include/left4dhooks*.inc
+!/left4dead2/addons/sourcemod/scripting/l4dd/
+!/left4dead2/addons/sourcemod/scripting/l4dd/*
 !/left4dead2/addons/sourcemod/scripting/left4dhooks_test.sp
 !/left4dead2/addons/sourcemod/scripting/left4dhooks.sp
 
