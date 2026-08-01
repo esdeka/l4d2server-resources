@@ -97,7 +97,7 @@
 !/left4dead2/addons/sourcemod/scripting/include/vscript.inc
 
 
-# Mission and Weapons - Info Editor (1.24) [19-Sep-2023]
+# Mission and Weapons - Info Editor 1.30 (04-Jun-2026)
 # https://forums.alliedmods.net/showthread.php?t=310586
 # Enables katana on all maps, mari!
 !/left4dead2/addons/sourcemod/data/l4d_info_editor_mission.cfg
