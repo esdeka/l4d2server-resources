@@ -361,7 +361,7 @@
 #!/left4dead2/addons/sourcemod/plugins/l4d2_storm.smx
 !/left4dead2/addons/sourcemod/data/l4d2_storm.cfg
 
-# Zombie Character Select" (0.9.6) by XBetaAlpha
+# Zombie Character Select" 03/10/2023 - Version 0.9.7
 # https://forums.alliedmods.net/showthread.php?t=121461 https://forums.alliedmods.net/showpost.php?p=2666755&postcount=345 ?
 !/left4dead2/addons/sourcemod/plugins/disabled/l4d2_zcs.smx
 !/left4dead2/addons/sourcemod/gamedata/l4d2_zcs.txt
