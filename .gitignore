@@ -289,9 +289,10 @@
 !/left4dead2/addons/sourcemod/plugins/transition_restore_fix.smx
 !/left4dead2/addons/sourcemod/scripting/compiled/transition_restore_fix.smx
 
-# [L4D/L4D2]ThirdPersonShoulder_Detect(1.5.3 - 08/06/2020)
-# https://forums.alliedmods.net/showthread.php?t=298649
+# [L4D/L4D2]ThirdPersonShoulder_Detect 1.6.3 patched by C0ll3n (27th Jul 2026)
+# https://forums.alliedmods.net/showthread.php?t=298649 https://forums.alliedmods.net/showthread.php?p=2845455#post2845455
 !/left4dead2/addons/sourcemod/plugins/ThirdPersonShoulder_Detect.smx
+!/left4dead2/addons/sourcemod/scripting/include/ThirdPersonShoulder_Detect.inc
 
 # [L4D2]Survivor_Legs(ported version 17/11/2022)
 # https://forums.alliedmods.net/showthread.php?p=2536139
