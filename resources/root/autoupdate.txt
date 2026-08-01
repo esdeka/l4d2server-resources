@@ -1,0 +1,6 @@
+@ShutdownOnFailedCommand 1
+@NoPromptForPassword 1
+login anonymous
+force_install_dir $SRCDS_SRV_DIR
+app_update $SRCDS_APP_ID
+quit

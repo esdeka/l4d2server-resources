@@ -1,5 +1,15 @@
 *
 
+# Docker resources
+!/resources/
+!/resources/root/
+!/resources/root/autoupdate.txt
+!/resources/root/runServer_.sh
+!/resources/root/start.sh
+!/resources/root/workshop.py
+!docker-compose.yml
+!Dockerfile
+
 # https://github.com/EsDeKa/l4d2server-resources
 # These are the custom plugins and config that should be versioned
 
