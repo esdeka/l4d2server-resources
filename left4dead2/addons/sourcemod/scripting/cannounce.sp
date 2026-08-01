@@ -23,9 +23,8 @@
  *
  */
 
-
-#pragma newdecls required
 #pragma semicolon 1
+#pragma newdecls required
 
 #include <sourcemod>
 #include <sdktools>
@@ -45,12 +44,12 @@
 
 *****************************************************************/
 
-TopMenu hTopMenu = null;
+TopMenu hTopMenu;
 
-char g_fileset[128];
-char g_filesettings[128];
+char g_fileset[PLATFORM_MAX_PATH];
+char g_filesettings[PLATFORM_MAX_PATH];
 
-ConVar g_CvarConnectDisplayType = null;
+ConVar g_CvarConnectDisplayType;
 
 /*****************************************************************
 
@@ -80,7 +79,7 @@ public Plugin myinfo =
 	description = "Replacement of default player connection message, allows for custom connection messages",
 	version = VERSION,
 	url = "http://forums.alliedmods.net/showthread.php?t=77306"
-};
+}
 
 /*****************************************************************
 
@@ -99,12 +98,11 @@ public void OnPluginStart()
 
 	g_CvarConnectDisplayType = CreateConVar("sm_ca_connectdisplaytype", "1", "[1|0] if 1 then displays connect message after admin check and allows the {PLAYERTYPE} placeholder. If 0 displays connect message on client auth (earlier) and disables the {PLAYERTYPE} placeholder");
 
-	BuildPath(Path_SM, g_fileset, 128, "data/cannounce_messages.txt");
-	BuildPath(Path_SM, g_filesettings, 128, "data/cannounce_settings.txt");
+	BuildPath(Path_SM, g_fileset, sizeof(g_fileset), "data/cannounce_messages.txt");
+	BuildPath(Path_SM, g_filesettings, sizeof(g_filesettings), "data/cannounce_settings.txt");
 
 	//event hooks
 	HookEvent("player_disconnect", event_PlayerDisconnect, EventHookMode_Pre);
-
 
 	//country show
 	SetupCountryShow();
@@ -121,9 +119,7 @@ public void OnPluginStart()
 	//Account for late loading
 	TopMenu topmenu;
 	if (LibraryExists("adminmenu") && ((topmenu = GetAdminTopMenu()) != null))
-	{
 		OnAdminMenuReady(topmenu);
-	}
 
 	//create config file if not exists
 	AutoExecConfig(true, "cannounce");
@@ -133,31 +129,25 @@ public void OnLibraryRemoved(const char[] name)
 {
 	//remove this menu handle if adminmenu plugin unloaded
 	if (StrEqual(name, "adminmenu"))
-	{
 		hTopMenu = null;
-	}
 }
 
 public void OnMapStart()
 {
 	//get, precache and set downloads for player custom sound files
 	LoadSoundFilesCustomPlayer();
-
 	//precahce and set downloads for sounds files for all players
 	LoadSoundFilesAll();
-
-
 	OnMapStart_JoinMsg();
 }
 
 public void OnClientAuthorized(int client, const char[] auth)
 {
-	if(GetConVarInt(g_CvarConnectDisplayType) == 0)
+	if (!g_CvarConnectDisplayType.BoolValue)
 	{
-		if(!IsFakeClient(client) && GetClientCount(true) < MaxClients)
+		if (!IsFakeClient(client) && GetClientCount(true) < MaxClients)
 		{
 			OnPostAdminCheck_CountryShow(client);
-
 			OnPostAdminCheck_JoinMsg(auth);
 		}
 	}
@@ -166,15 +156,12 @@ public void OnClientAuthorized(int client, const char[] auth)
 public void OnClientPostAdminCheck(int client)
 {
 	char auth[32];
-
-	if(GetConVarInt(g_CvarConnectDisplayType) == 1)
+	if (g_CvarConnectDisplayType.BoolValue)
 	{
 		GetClientAuthId(client, AuthId_Steam2, auth, sizeof(auth));
-
-		if(!IsFakeClient(client) && GetClientCount(true) < MaxClients)
+		if (!IsFakeClient(client) && GetClientCount(true) < MaxClients)
 		{
 			OnPostAdminCheck_CountryShow(client);
-
 			OnPostAdminCheck_JoinMsg(auth);
 		}
 	}
@@ -183,23 +170,17 @@ public void OnClientPostAdminCheck(int client)
 public void OnPluginEnd()
 {
 	OnPluginEnd_JoinMsg();
-
 	OnPluginEnd_CountryShow();
 }
 
 public void OnAdminMenuReady(Handle aTopMenu)
 {
 	TopMenu topmenu = TopMenu.FromHandle(aTopMenu);
-
 	//Block us from being called twice
 	if (topmenu == hTopMenu)
-	{
 		return;
-	}
-
 	//Save the Handle
 	hTopMenu = topmenu;
-
 	OnAdminMenuReady_JoinMsg();
 }
 
@@ -211,18 +192,14 @@ public void OnAdminMenuReady(Handle aTopMenu)
 
 ****************************************************************/
 
-public Action event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast)
+Action event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast)
 {
-	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-
-	if(client && !IsFakeClient(client) && !dontBroadcast)
+	int client = GetClientOfUserId(event.GetInt("userid"));
+	if (client && !IsFakeClient(client) && !dontBroadcast)
 	{
 		event_PlayerDisc_CountryShow(event, name, dontBroadcast);
-
 		OnClientDisconnect_JoinMsg();
 	}
-
-
 	return event_PlayerDisconnect_Suppress(event, name, dontBroadcast);
 }
 
@@ -239,56 +216,41 @@ bool IsLanIP(char src[16])
 {
 	char ip4[4][4];
 	int ipnum;
-
-	if(ExplodeString(src, ".", ip4, 4, 4) == 4)
+	if (ExplodeString(src, ".", ip4, 4, 4) == 4)
 	{
 		ipnum = StringToInt(ip4[0])*65536 + StringToInt(ip4[1])*256 + StringToInt(ip4[2]);
-
-		if((ipnum >= 655360 && ipnum < 655360+65535) || (ipnum >= 11276288 && ipnum < 11276288+4095) || (ipnum >= 12625920 && ipnum < 12625920+255))
-		{
+		if ((ipnum >= 655360 && ipnum < 655360+65535) || (ipnum >= 11276288 && ipnum < 11276288+4095) || (ipnum >= 12625920 && ipnum < 12625920+255))
 			return true;
-		}
 	}
-
 	return false;
 }
 
 void PrintFormattedMessageToAll(char rawmsg[301], int client)
 {
 	char message[301];
-
 	GetFormattedMessage(rawmsg, client, message, sizeof(message));
-
 	CPrintToChatAll("%s", message);
 }
 
 void PrintFormattedMessageToAdmins(char rawmsg[301], int client)
 {
 	char message[301];
-
 	GetFormattedMessage(rawmsg, client, message, sizeof(message));
-
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if(IsClientInGame(i) && CheckCommandAccess( i, "", ADMFLAG_GENERIC, true))
-		{
+		if (IsClientInGame(i) && CheckCommandAccess( i, "", ADMFLAG_GENERIC, true))
 			CPrintToChat(i, "%s", message);
-		}
 	}
 }
 
 void PrintFormattedMsgToNonAdmins(char rawmsg[301], int client)
 {
 	char message[301];
-
 	GetFormattedMessage(rawmsg, client, message, sizeof(message));
-
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if(IsClientInGame(i) && !CheckCommandAccess( i, "", ADMFLAG_GENERIC, true))
-		{
+		if (IsClientInGame(i) && !CheckCommandAccess( i, "", ADMFLAG_GENERIC, true))
 			CPrintToChat(i, "%s", message);
-		}
 	}
 }
 
@@ -305,105 +267,61 @@ void GetFormattedMessage(char rawmsg[301], int client, char [] outbuffer, int ou
 	char sPlayerAdmin[32];
 	char sPlayerPublic[32];
 	bool bIsLanIp;
-
 	AdminId aid;
-
-	if(client > -1)
+	if (client > -1)
 	{
 		GetClientIP(client, ip, sizeof(ip));
-
 		//detect LAN ip
 		bIsLanIp = IsLanIP(ip);
-
-		// Using GeoIP extension
+		//using GeoIP extension
 		{
-			if(!GeoipCity(ip, city, sizeof(city)))
+			if (!GeoipCity(ip, city, sizeof(city)))
 			{
-				if(bIsLanIp)
-				{
+				if (bIsLanIp)
 					Format(city, sizeof(city), "%T", "LAN City Desc", LANG_SERVER);
-				}
 				else
-				{
 					Format(city, sizeof(city), "%T", "Unknown City Desc", LANG_SERVER);
-				}
 			}
-
-			if(!GeoipRegion(ip, region, sizeof(region)))
+			if (!GeoipRegion(ip, region, sizeof(region)))
 			{
-				if(bIsLanIp)
-				{
+				if (bIsLanIp)
 					Format(region, sizeof(region), "%T", "LAN Region Desc", LANG_SERVER);
-				}
 				else
-				{
 					Format(region, sizeof(region), "%T", "Unknown Region Desc", LANG_SERVER);
-				}
 			}
-
-			if(!GeoipCountry(ip, country, sizeof(country)))
+			if (!GeoipCountry(ip, country, sizeof(country)))
 			{
-				if(bIsLanIp)
-				{
+				if (bIsLanIp)
 					Format(country, sizeof(country), "%T", "LAN Country Desc", LANG_SERVER);
-				}
 				else
-				{
 					Format(country, sizeof(country), "%T", "Unknown Country Desc", LANG_SERVER);
-				}
 			}
-
-			if(!GeoipCode2(ip, ccode))
+			if (!GeoipCode2(ip, ccode))
 			{
-				if(bIsLanIp)
-				{
+				if (bIsLanIp)
 					Format(ccode, sizeof(ccode), "%T", "LAN Country Short", LANG_SERVER);
-				}
 				else
-				{
 					Format(ccode, sizeof(ccode), "%T", "Unknown Country Short", LANG_SERVER);
-				}
 			}
-
-			if(!GeoipCode3(ip, ccode3))
+			if (!GeoipCode3(ip, ccode3))
 			{
-				if(bIsLanIp)
-				{
+				if (bIsLanIp)
 					Format(ccode3, sizeof(ccode3), "%T", "LAN Country Short 3", LANG_SERVER);
-				}
 				else
-				{
 					Format(ccode3, sizeof(ccode3), "%T", "Unknown Country Short 3", LANG_SERVER);
-				}
 			}
 		}
-
 		// Fallback for unknown/empty location strings
-		if(StrEqual(city, ""))
-		{
+		if (StrEqual(city, ""))
 			Format(city, sizeof(city), "%T", "Unknown City Desc", LANG_SERVER);
-		}
-
-		if(StrEqual(region, ""))
-		{
+		if (StrEqual(region, ""))
 			Format(region, sizeof(region), "%T", "Unknown Region Desc", LANG_SERVER);
-		}
-
-		if(StrEqual(country, ""))
-		{
+		if (StrEqual(country, ""))
 			Format(country, sizeof(country), "%T", "Unknown Country Desc", LANG_SERVER);
-		}
-
-		if(StrEqual(ccode, ""))
-		{
+		if (StrEqual(ccode, ""))
 			Format(ccode, sizeof(ccode), "%T", "Unknown Country Short", LANG_SERVER);
-		}
-
-		if(StrEqual(ccode3, ""))
-		{
+		if (StrEqual(ccode3, ""))
 			Format(ccode3, sizeof(ccode3), "%T", "Unknown Country Short 3", LANG_SERVER);
-		}
-
 		// Add "The" in front of certain countries
 		if (StrContains(country, "United", false) != -1 ||
 			StrContains(country, "Republic", false) != -1 ||
@@ -418,53 +336,31 @@ void GetFormattedMessage(char rawmsg[301], int client, char [] outbuffer, int ou
 		{
 			Format(country, sizeof(country), "The %s", country);
 		}
-
 		if (StrContains(rawmsg, "{PLAYERNAME}") != -1)
 		{
 			GetClientName(client, buffer, sizeof(buffer));
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERNAME}", buffer);
 		}
-
 		if (StrContains(rawmsg, "{STEAMID}") != -1)
 		{
 			GetClientAuthId(client, AuthId_Steam2, buffer, sizeof(buffer));
 			ReplaceString(rawmsg, sizeof(rawmsg), "{STEAMID}", buffer);
 		}
-		
 		if (StrContains(rawmsg, "{PLAYERCOUNTRY}") != -1)
-		{
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERCOUNTRY}", country);
-		}
-
 		if (StrContains(rawmsg, "{PLAYERCOUNTRYSHORT}") != -1)
-		{
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERCOUNTRYSHORT}", ccode);
-		}
-		
 		if (StrContains(rawmsg, "{PLAYERCOUNTRYSHORT3}") != -1)
-		{
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERCOUNTRYSHORT3}", ccode3);
-		}
-
 		if (StrContains(rawmsg, "{PLAYERCITY}") != -1)
-		{
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERCITY}", city);
-		}
-
 		if (StrContains(rawmsg, "{PLAYERREGION}") != -1)
-		{
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERREGION}", region);
-		}
-
 		if (StrContains(rawmsg, "{PLAYERIP}") != -1)
-		{
 			ReplaceString(rawmsg, sizeof(rawmsg), "{PLAYERIP}", ip);
-		}
-
-		if (StrContains(rawmsg, "{PLAYERTYPE}") != -1 && GetConVarInt(g_CvarConnectDisplayType) == 1)
+		if (StrContains(rawmsg, "{PLAYERTYPE}") != -1 && g_CvarConnectDisplayType.BoolValue)
 		{
 			aid = GetUserAdmin(client);
-
 			if (GetAdminFlag(aid, Admin_Generic))
 			{
 				Format(sPlayerAdmin, sizeof(sPlayerAdmin), "%T", "CA Admin", LANG_SERVER);
@@ -477,6 +373,5 @@ void GetFormattedMessage(char rawmsg[301], int client, char [] outbuffer, int ou
 			}
 		}
 	}
-
 	Format(outbuffer, outbuffersize, "%s", rawmsg);
 }

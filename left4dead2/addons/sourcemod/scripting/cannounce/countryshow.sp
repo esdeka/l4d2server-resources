@@ -6,11 +6,11 @@
 
 *****************************************************************/
 
-ConVar g_CvarShowConnect = null;
-ConVar g_CvarShowDisconnect = null;
-ConVar g_CvarShowEnhancedToAdmins = null;
+KeyValues hKVCountryShow;
 
-Handle hKVCountryShow = null;
+ConVar g_CvarShowConnect;
+ConVar g_CvarShowDisconnect;
+ConVar g_CvarShowEnhancedToAdmins;
 
 /*****************************************************************
 
@@ -27,12 +27,10 @@ void SetupCountryShow()
 	g_CvarShowEnhancedToAdmins = CreateConVar("sm_ca_showenhancedadmins", "0", "displays a different enhanced message to admin players (ADMFLAG_GENERIC)");
 
 	//prepare kv for countryshow
-	hKVCountryShow = CreateKeyValues("CountryShow");
+	hKVCountryShow = new KeyValues("CountryShow");
 
-	if(!FileToKeyValues(hKVCountryShow, g_filesettings))
-	{
-		KeyValuesToFile(hKVCountryShow, g_filesettings);
-	}
+	if (!hKVCountryShow.ImportFromFile(g_filesettings))
+		hKVCountryShow.ExportToFile(g_filesettings);
 
 	SetupDefaultMessages();
 }
@@ -41,44 +39,38 @@ void OnPostAdminCheck_CountryShow(int client)
 {
 	char rawmsg[301];
 	char rawadmmsg[301];
-
 	//if enabled, show message
-	if(GetConVarInt(g_CvarShowConnect))
+	if (g_CvarShowConnect.BoolValue)
 	{
-		KvRewind(hKVCountryShow);
-
+		hKVCountryShow.Rewind();
 		//get message admins will see (if sm_ca_showenhancedadmins)
-		if(KvJumpToKey(hKVCountryShow, "messages_admin", false))
+		if (hKVCountryShow.JumpToKey("messages_admin", false))
 		{
-			KvGetString(hKVCountryShow, "playerjoin", rawadmmsg, sizeof(rawadmmsg), "");
+			hKVCountryShow.GetString("playerjoin", rawadmmsg, sizeof(rawadmmsg), "");
 			Format(rawadmmsg, sizeof(rawadmmsg), "%c%s", 1, rawadmmsg);
-			KvRewind(hKVCountryShow);
+			hKVCountryShow.Rewind();
 		}
-
 		//get message all players will see
-		if(KvJumpToKey(hKVCountryShow, "messages", false))
+		if (hKVCountryShow.JumpToKey("messages", false))
 		{
-			KvGetString(hKVCountryShow, "playerjoin", rawmsg, sizeof(rawmsg), "");
+			hKVCountryShow.GetString("playerjoin", rawmsg, sizeof(rawmsg), "");
 			Format(rawmsg, sizeof(rawmsg), "%c%s", 1, rawmsg);
-			KvRewind(hKVCountryShow);
+			hKVCountryShow.Rewind();
 		}
-
 		//if sm_ca_showenhancedadmins - show diff messages to admins
-		if(GetConVarInt(g_CvarShowEnhancedToAdmins))
+		if (g_CvarShowEnhancedToAdmins.BoolValue)
 		{
 			PrintFormattedMessageToAdmins(rawadmmsg, client);
 			PrintFormattedMsgToNonAdmins(rawmsg, client);
 		}
 		else
-		{
 			PrintFormattedMessageToAll(rawmsg, client);
-		}
 	}
 }
 
 void OnPluginEnd_CountryShow()
 {
-	CloseHandle(hKVCountryShow);
+	delete hKVCountryShow;
 }
 
 /****************************************************************
@@ -94,63 +86,49 @@ public void event_PlayerDisc_CountryShow(Event event, const char[] name, bool do
 	char rawmsg[301];
 	char rawadmmsg[301];
 	char reason[65];
-
-	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-
+	int client = GetClientOfUserId(event.GetInt("userid"));
 	//if enabled, show message
-	if(GetConVarInt(g_CvarShowDisconnect))
+	if (g_CvarShowDisconnect.BoolValue)
 	{
-		GetEventString(event, "reason", reason, sizeof(reason));
-
-		KvRewind(hKVCountryShow);
-
+		event.GetString("reason", reason, sizeof(reason));
+		hKVCountryShow.Rewind();
 		//get message admins will see (if sm_ca_showenhancedadmins)
-		if(KvJumpToKey(hKVCountryShow, "messages_admin", false))
+		if (hKVCountryShow.JumpToKey("messages_admin", false))
 		{
-			KvGetString(hKVCountryShow, "playerdisc", rawadmmsg, sizeof(rawadmmsg), "");
+			hKVCountryShow.GetString("playerdisc", rawadmmsg, sizeof(rawadmmsg), "");
 			Format(rawadmmsg, sizeof(rawadmmsg), "%c%s", 1, rawadmmsg);
-			KvRewind(hKVCountryShow);
-
+			hKVCountryShow.Rewind();
 			//first replace disconnect reason if applicable
 			if (StrContains(rawadmmsg, "{DISC_REASON}") != -1)
 			{
 				ReplaceString(rawadmmsg, sizeof(rawadmmsg), "{DISC_REASON}", reason);
-
 				//strip carriage returns, replace with space
 				ReplaceString(rawadmmsg, sizeof(rawadmmsg), "\n", " ");
-
 			}
 		}
-
 		//get message all players will see
-		if(KvJumpToKey(hKVCountryShow, "messages", false))
+		if (hKVCountryShow.JumpToKey("messages", false))
 		{
-			KvGetString(hKVCountryShow, "playerdisc", rawmsg, sizeof(rawmsg), "");
+			hKVCountryShow.GetString("playerdisc", rawmsg, sizeof(rawmsg), "");
 			Format(rawmsg, sizeof(rawmsg), "%c%s", 1, rawmsg);
-			KvRewind(hKVCountryShow);
-
+			hKVCountryShow.Rewind();
 			//first replace disconnect reason if applicable
 			if (StrContains(rawmsg, "{DISC_REASON}") != -1)
 			{
 				ReplaceString(rawmsg, sizeof(rawmsg), "{DISC_REASON}", reason);
-
 				//strip carriage returns, replace with space
 				ReplaceString(rawmsg, sizeof(rawmsg), "\n", " ");
 			}
 		}
-
 		//if sm_ca_showenhancedadmins - show diff messages to admins
-		if(GetConVarInt(g_CvarShowEnhancedToAdmins))
+		if (g_CvarShowEnhancedToAdmins.BoolValue)
 		{
 			PrintFormattedMessageToAdmins(rawadmmsg, client);
 			PrintFormattedMsgToNonAdmins(rawmsg, client);
 		}
 		else
-		{
 			PrintFormattedMessageToAll(rawmsg, client);
-		}
-
-		KvRewind(hKVCountryShow);
+		hKVCountryShow.Rewind();
 	}
 }
 
@@ -164,27 +142,22 @@ public void event_PlayerDisc_CountryShow(Event event, const char[] name, bool do
 
 void SetupDefaultMessages()
 {
-	if(!KvJumpToKey(hKVCountryShow, "messages"))
+	if (!hKVCountryShow.JumpToKey("messages"))
 	{
-		KvJumpToKey(hKVCountryShow, "messages", true);
-		KvSetString(hKVCountryShow, "playerjoin", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> connected from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}), IP {GREEN}{PLAYERIP}");
-		KvSetString(hKVCountryShow, "playerdisc", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}) disconnected from IP {GREEN}{PLAYERIP}{GREEN}reason: {DEFAULT}{DISC_REASON}");
-
-		KvRewind(hKVCountryShow);
-		KeyValuesToFile(hKVCountryShow, g_filesettings);	
+		hKVCountryShow.JumpToKey("messages", true);
+		hKVCountryShow.SetString("playerjoin", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> connected from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}), IP {GREEN}{PLAYERIP}");
+		hKVCountryShow.SetString("playerdisc", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}) disconnected from IP {GREEN}{PLAYERIP}{GREEN}reason: {DEFAULT}{DISC_REASON}");
+		hKVCountryShow.Rewind();
+		hKVCountryShow.ExportToFile(g_filesettings);	
 	}
-
-	KvRewind(hKVCountryShow);
-
-	if(!KvJumpToKey(hKVCountryShow, "messages_admin"))
+	hKVCountryShow.Rewind();
+	if (!hKVCountryShow.JumpToKey("messages_admin"))
 	{
-		KvJumpToKey(hKVCountryShow, "messages_admin", true);
-		KvSetString(hKVCountryShow, "playerjoin", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> connected from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}), IP {GREEN}{PLAYERIP}");
-		KvSetString(hKVCountryShow, "playerdisc", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}) disconnected from IP {GREEN}{PLAYERIP}{GREEN}reason: {DEFAULT}{DISC_REASON}");
-
-		KvRewind(hKVCountryShow);
-		KeyValuesToFile(hKVCountryShow, g_filesettings);	
+		hKVCountryShow.JumpToKey("messages_admin", true);
+		hKVCountryShow.SetString("playerjoin", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> connected from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}), IP {GREEN}{PLAYERIP}");
+		hKVCountryShow.SetString("playerdisc", "{PLAYERTYPE} {GREEN}{PLAYERNAME} {DEFAULT}<{LIGHTGREEN}{STEAMID}{DEFAULT}> from country {GREEN}{PLAYERCOUNTRY} {DEFAULT}({LIGHTGREEN}{PLAYERCOUNTRYSHORT}{DEFAULT}) disconnected from IP {GREEN}{PLAYERIP}{GREEN}reason: {DEFAULT}{DISC_REASON}");
+		hKVCountryShow.Rewind();
+		hKVCountryShow.ExportToFile(g_filesettings);	
 	}
-
-	KvRewind(hKVCountryShow);
+	hKVCountryShow.Rewind();
 }

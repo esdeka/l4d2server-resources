@@ -6,8 +6,8 @@
 
 *****************************************************************/
 
-ConVar g_CvarShowConnectionMsg = null;
-ConVar g_CvarShowDisonnectionMsg = null;
+ConVar g_CvarShowConnectionMsg;
+ConVar g_CvarShowDisonnectionMsg;
 
 /*****************************************************************
 
@@ -24,10 +24,8 @@ void SetupSuppress()
 
 	//player_connect_client replaced player_connect but the old event is still required for some older games.
 	//lets try the new event first then fallback if it dont worky
-	if(HookEventEx("player_connect_client", event_PlayerConnectClient, EventHookMode_Pre) == false)
-	{
+	if (HookEventEx("player_connect_client", event_PlayerConnectClient, EventHookMode_Pre) == false)
 		HookEventEx("player_connect", event_PlayerConnect, EventHookMode_Pre);
-	}
 }
 
 /****************************************************************
@@ -41,70 +39,58 @@ void SetupSuppress()
 //For the newer event player_connect_client
 public Action event_PlayerConnectClient(Event event, const char[] name, bool dontBroadcast)
 {
-    if (!dontBroadcast && !GetConVarInt(g_CvarShowConnectionMsg))
-    {
-        char clientName[33], networkID[22];
-        GetEventString(event, "name", clientName, sizeof(clientName));
-        GetEventString(event, "networkid", networkID, sizeof(networkID));
-
-        Handle newEvent = CreateEvent("player_connect_client", true);
-        SetEventString(newEvent, "name", clientName);
-        SetEventInt(newEvent, "index", GetEventInt(event, "index"));
-        SetEventInt(newEvent, "userid", GetEventInt(event, "userid"));
-        SetEventString(newEvent, "networkid", networkID);
-
-        FireEvent(newEvent, true);
-
-        return Plugin_Handled;
-    }
-
-    return Plugin_Continue;
+	if (!dontBroadcast && !g_CvarShowConnectionMsg.BoolValue)
+	{
+		char clientName[33], networkID[22];
+		event.GetString("name", clientName, sizeof(clientName));
+		event.GetString("networkid", networkID, sizeof(networkID));
+		Event newEvent = CreateEvent("player_connect_client", true);
+		newEvent.SetString("name", clientName);
+		newEvent.SetInt("index", event.GetInt("index"));
+		newEvent.SetInt("userid", event.GetInt("userid"));
+		newEvent.SetString("networkid", networkID);
+		newEvent.Fire(true);
+		return Plugin_Handled;
+	}
+	return Plugin_Continue;
 }
 
 //For the older event player_connect
 public Action event_PlayerConnect(Event event, const char[] name, bool dontBroadcast)
 {
-    if (!dontBroadcast && !GetConVarInt(g_CvarShowConnectionMsg))
-    {
-        char clientName[33], networkID[22], address[32];
-        GetEventString(event, "name", clientName, sizeof(clientName));
-        GetEventString(event, "networkid", networkID, sizeof(networkID));
-        GetEventString(event, "address", address, sizeof(address));
-
-        Handle newEvent = CreateEvent("player_connect", true);
-        SetEventString(newEvent, "name", clientName);
-        SetEventInt(newEvent, "index", GetEventInt(event, "index"));
-        SetEventInt(newEvent, "userid", GetEventInt(event, "userid"));
-        SetEventString(newEvent, "networkid", networkID);
-        SetEventString(newEvent, "address", address);
-
-        FireEvent(newEvent, true);
-
-        return Plugin_Handled;
-    }
-
-    return Plugin_Continue;
+	if (!dontBroadcast && !g_CvarShowConnectionMsg.BoolValue)
+	{
+		char clientName[33], networkID[22], address[32];
+		event.GetString("name", clientName, sizeof(clientName));
+		event.GetString("networkid", networkID, sizeof(networkID));
+		event.GetString("address", address, sizeof(address));
+		Event newEvent = CreateEvent("player_connect", true);
+		newEvent.SetString("name", clientName);
+		newEvent.SetInt("index", event.GetInt("index"));
+		newEvent.SetInt("userid", event.GetInt("userid"));
+		newEvent.SetString("networkid", networkID);
+		newEvent.SetString("address", address);
+		newEvent.Fire(true);
+		return Plugin_Handled;
+	}
+	return Plugin_Continue;
 }
 
 public Action event_PlayerDisconnect_Suppress(Event event, const char[] name, bool dontBroadcast)
 {
-    if (!dontBroadcast && !GetConVarInt(g_CvarShowDisonnectionMsg))
-    {
-        char clientName[33], networkID[22], reason[65];
-        GetEventString(event, "name", clientName, sizeof(clientName));
-        GetEventString(event, "networkid", networkID, sizeof(networkID));
-        GetEventString(event, "reason", reason, sizeof(reason));
-
-        Handle newEvent = CreateEvent("player_disconnect", true);
-        SetEventInt(newEvent, "userid", GetEventInt(event, "userid"));
-        SetEventString(newEvent, "reason", reason);
-        SetEventString(newEvent, "name", clientName);
-        SetEventString(newEvent, "networkid", networkID);
-
-        FireEvent(newEvent, true);
-
-        return Plugin_Handled;
-    }
-
-    return Plugin_Continue;
+	if (!dontBroadcast && !g_CvarShowDisonnectionMsg.BoolValue)
+	{
+		char clientName[33], networkID[22], reason[65];
+		event.GetString("name", clientName, sizeof(clientName));
+		event.GetString("networkid", networkID, sizeof(networkID));
+		event.GetString("reason", reason, sizeof(reason));
+		Event newEvent = CreateEvent("player_disconnect", true);
+		newEvent.SetInt("userid", event.GetInt("userid"));
+		newEvent.SetString("reason", reason);
+		newEvent.SetString("name", clientName);
+		newEvent.SetString("networkid", networkID);
+		newEvent.Fire(true);
+		return Plugin_Handled;
+	}
+	return Plugin_Continue;
 }
