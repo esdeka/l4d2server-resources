@@ -45,6 +45,31 @@
 				"windows"	"323"
 				"linux"		"324"
 			}
+			
+			// Credits to BHaType for these offsets
+			"IBody::AimHeadTowards(Vector)"
+            {
+                "linux" "48"
+                "windows" "48"
+            }
+			
+            "IBody::AimHeadTowards(CBaseEntity)"
+            {
+                "linux" "49"
+                "windows" "47"
+            }
+			
+			"CBaseEntity::MyNextBotPointer"
+			{
+				"linux" "82"
+				"windows" "81"
+			}    
+			
+			"INextBot::GetBodyInterface"
+			{
+				"linux" "49"
+				"windows" "48"
+			} 
 		}
 
 		"Signatures"
@@ -71,14 +96,6 @@
 				"linux"		"@_ZN14CBaseAnimating15GetBonePositionEiR6VectorR6QAngle"
 				"mac"		"@_ZN14CBaseAnimating15GetBonePositionEiR6VectorR6QAngle"
 				"windows"	"\x2A\x2A\x2A\x2A\x2A\x2A\xA1\x2A\x2A\x2A\x2A\x33\x2A\x89\x2A\x2A\x53\x8B\x2A\x2A\x56\x8B\x2A\x83\x2A\x2A\x2A\x2A\x2A\x2A\x57"
-			}
-
-			"CPhysicsProp::GetMass"
-			{
-				"library"	"server"
-				"linux"		"@_ZNK12CPhysicsProp7GetMassEv"
-				"mac"		"@_ZNK12CPhysicsProp7GetMassEv"
-				"windows"	"\x55\x8B\xEC\x51\x8B\x89\x24\x02\x00\x00"
 			}
 
 			"CTerrorPlayer::FindUseEntity"
