@@ -182,6 +182,7 @@
 # Weapons Skins RNG [v1.0.5 | 10-November-2020] 
 # https://forums.alliedmods.net/showthread.php?p=2719546 
 # edit to be <10% chance on line 458: if (GetRandomInt(0, 100) > 15) return;   // 15% chance to randomize skin
+# last update is 1.1.1 (05-February-2024)
 !/left4dead2/addons/sourcemod/plugins/l4d2_wskin_rng_edit15.smx
 
 # Plugin Updates Checker 1.6 (14-Jul-2022) requires steamworks
@@ -200,6 +201,7 @@
 # https://forums.alliedmods.net/showthread.php?p=2739045#post2739045 
 !/left4dead2/addons/sourcemod/plugins/survivor_chat_select.smx
 !/left4dead2/cfg/sourcemod/l4dscs.cfg
+# https://forums.alliedmods.net/showthread.php?p=2824437#post2824437 might be some new fixes
 
 # The Passing CSM Fix 2.0 	04-02-2016 
 # https://forums.alliedmods.net/showthread.php?p=2407497#post2407497
