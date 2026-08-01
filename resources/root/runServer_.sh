@@ -50,8 +50,16 @@ echo hostname \"${SERVER_NAME:-SDK}\" > left4dead2/cfg/private_env.cfg
 # Run Server
 
 echo "-----------steamcmd update -----------"
-/home/steam/steamcmd/steamcmd.sh +login anonymous   \
+/home/steam/steamcmd/steamcmd.sh                    \
         +force_install_dir ${SRCDS_SRV_DIR}         \
+        +login anonymous                            \
+        +@sSteamCmdForcePlatformType windows        \
+        +app_update ${SRCDS_APP_ID}                 \
+        +quit
+/home/steam/steamcmd/steamcmd.sh                    \
+        +force_install_dir ${SRCDS_SRV_DIR}         \
+        +login anonymous                            \
+        +@sSteamCmdForcePlatformType linux          \
         +app_update ${SRCDS_APP_ID}                 \
         +quit
 
