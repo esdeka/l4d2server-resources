@@ -18,15 +18,18 @@
 !/left4dead2/addons/workshop/
 !/left4dead2/addons/workshop/workshop.py
 
-# Left4DToolZ 1.0.0.9h 07-06-2013 
+# Left4DToolZ fork lakwash 2.5.1 (31-May-2026)
 # https://forums.alliedmods.net/showthread.php?p=1984946#post1984946 
-!/left4dead2/addons/l4dtoolz/
-!/left4dead2/addons/l4dtoolz/l4dtoolz_mm.dll
-!/left4dead2/addons/l4dtoolz/l4dtoolz_mm.so
-!/left4dead2/addons/metamod/l4dtoolz.vdf
+# !/left4dead2/addons/l4dtoolz/
+# !/left4dead2/addons/l4dtoolz/l4dtoolz_mm.dll
+# !/left4dead2/addons/l4dtoolz/l4dtoolz_mm.so
+# !/left4dead2/addons/metamod/l4dtoolz.vdf
 # Updated signatures for L4D2 Jun '21 update 
 # https://forums.alliedmods.net/showthread.php?p=2750255#post2750255
-!/left4dead2/addons/l4dtoolz/l4dtoolz_mm_i486.so
+# !/left4dead2/addons/l4dtoolz/l4dtoolz_mm_i486.so
+!/left4dead2/addons/l4dtoolz.so
+!/left4dead2/addons/l4dtoolz.dll
+!/left4dead2/addons/l4dtoolz.vdf
 
 # DHooks 2.2.0-detours16 - 28.01.2021 (Experimental Dynamic Detour support) dhooks-2.2.0-detours16-sm110.zip
 # https://forums.alliedmods.net/showthread.php?p=2588686#post2588686
@@ -88,7 +91,7 @@
 !/left4dead2/addons/sourcemod/scripting/l4d_info_editor_weapons.sp
 !/left4dead2/addons/sourcemod/scripting/l4d_info_editor.sp
 
-# Accelerator crashlog 2.5.0-cd575aa
+# Accelerator crashlog 2.5.0-cd575aa (tried to update to 2.6.0 and 2.7.1 fork, didn't load, GLIBCXX not found)
 # https://forums.alliedmods.net/showthread.php?t=277703
 !/left4dead2/addons/sourcemod/configs/test-crash-dump-generation
 !/left4dead2/addons/sourcemod/extensions/accelerator.autoload
