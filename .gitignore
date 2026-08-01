@@ -148,7 +148,7 @@
 # https://forums.alliedmods.net/showthread.php?t=322661
 !/left4dead2/addons/sourcemod/plugins/l4d_exploit_fixes.smx
 
-# Defib_fix 2.0.1 05-11-2020 (requires DHooks) 
+# Defib_fix 2.0.1? 28-Feb-2023 (requires DHooks) 
 # https://forums.alliedmods.net/showthread.php?t=315483 
 !/left4dead2/addons/sourcemod/gamedata/defib_fix.txt
 !/left4dead2/addons/sourcemod/plugins/Defib_Fix.smx
