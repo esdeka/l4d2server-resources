@@ -336,7 +336,11 @@
 !/left4dead2/addons/sourcemod/scripting/ib/voc_cmd.sp
 !/left4dead2/cfg/sourcemod/l4d2_improved_bots.cfg
 
-
+# L4D1/2 Drop Secondary (2.9-2026/7/25) by HarryPotter
+# https://forums.alliedmods.net/showthread.php?p=2771623#post2771623
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/drop_secondary
+!/left4dead2/addons/sourcemod/plugins/drop_secondary.smx
+!/left4dead2/addons/sourcemod/gamedata/drop_secondary.txt
 
 
 ##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
