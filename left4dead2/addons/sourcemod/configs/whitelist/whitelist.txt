@@ -12,3 +12,4 @@ STEAM_1:1:68859885			; Tack
 STEAM_1:1:60112949
 ;[U:1:2345678] ; SteamId
 ;876543210 ; this would be a small SteamGroupId (< 2^31); every member/officer will be whitelisted
+46235123
