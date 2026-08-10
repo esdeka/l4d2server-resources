@@ -59,6 +59,12 @@
 !/left4dead2/addons/sourcemod/scripting/left4dhooks_test.sp
 !/left4dead2/addons/sourcemod/scripting/left4dhooks.sp
 
+# Remove Lobby Reservation (When Full) v1.7h (2025-5-12)
+# https://forums.alliedmods.net/showthread.php?t=94415
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d_unreservelobby
+!/left4dead2/addons/sourcemod/plugins/l4d_unreservelobby.smx
+!/left4dead2/addons/sourcemod/scripting/l4d_unreservelobby.sp
+
 # Connect Announce (Still) 1.8.3(?) (14-Dec-2024) [Edited by Dosergen] Ja-Forces
 # https://forums.alliedmods.net/showthread.php?p=2651148#post2651148
 # https://github.com/Dosergen/Stuff/tree/main/cannounce/1.8.3
