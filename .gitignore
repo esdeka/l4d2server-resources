@@ -98,6 +98,30 @@
 # https://forums.alliedmods.net/showthread.php?p=2768266#post2768266 ?
 # 6th Sep 2022. Reason: Updated to Version 0.1.99
 
+# Source Scramble (memory patching and allocation natives) Peach (0.8.2.1) 5 Jun 2026
+# https://forums.alliedmods.net/showthread.php?t=317175
+!/left4dead2/addons/sourcemod/extensions/sourcescramble.ext.so
+!/left4dead2/addons/sourcemod/plugins/sourcescramble_manager.smx
+!/left4dead2/addons/sourcemod/scripting/sourcescramble_manager.sp
+!/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
+
+# [L4D2] Transition Restore Fix 1.2.5 (19-May-2023)
+# needs Source Scramble and manual compile
+# https://forums.alliedmods.net/showthread.php?t=336287
+# ./left4dead2/addons/sourcemod/scripting/compile.sh transition_restore_fix.sp
+# cd ./left4dead2/addons/sourcemod/scripting; ./spcomp64 transition_restore_fix.sp -ocompiled/transition_restore_fix.smx
+!/left4dead2/addons/sourcemod/gamedata/transition_restore_fix.txt
+!/left4dead2/addons/sourcemod/scripting/transition_restore_fix.sp
+!/left4dead2/addons/sourcemod/plugins/transition_restore_fix.smx
+!/left4dead2/addons/sourcemod/scripting/compiled/transition_restore_fix.smx
+
+# Defib_fix 2.0.1? 28-Feb-2023 (requires DHooks) 
+# https://forums.alliedmods.net/showthread.php?t=315483 
+!/left4dead2/addons/sourcemod/gamedata/defib_fix.txt
+!/left4dead2/addons/sourcemod/plugins/Defib_Fix.smx
+!/left4dead2/addons/sourcemod/scripting/include/Defib_Fix.inc
+!/left4dead2/addons/sourcemod/scripting/Defib_Fix.sp
+
 # Dev Cmds 1.55 (06-Jun-2026)
 # https://forums.alliedmods.net/showthread.php?t=187566
 !/left4dead2/addons/sourcemod/plugins/sm_dev_cmds.smx
@@ -167,13 +191,6 @@
 # Various Exploit Fixes (requires DHooks) 2.1 (10-May-2020) 
 # https://forums.alliedmods.net/showthread.php?t=322661
 !/left4dead2/addons/sourcemod/plugins/l4d_exploit_fixes.smx
-
-# Defib_fix 2.0.1? 28-Feb-2023 (requires DHooks) 
-# https://forums.alliedmods.net/showthread.php?t=315483 
-!/left4dead2/addons/sourcemod/gamedata/defib_fix.txt
-!/left4dead2/addons/sourcemod/plugins/Defib_Fix.smx
-!/left4dead2/addons/sourcemod/scripting/include/Defib_Fix.inc
-!/left4dead2/addons/sourcemod/scripting/Defib_Fix.sp
 
 # [L4D2]hunter_pounce_alignment_fix (2.0) by Lux
 # https://forums.alliedmods.net/showthread.php?p=2711955
@@ -292,23 +309,6 @@
 !/left4dead2/addons/sourcemod/plugins/basechat.sp
 !/left4dead2/addons/sourcemod/plugins/basechat.smx
 
-# Source Scramble (memory patching and allocation natives) Peach (0.8.2.1) 5 Jun 2026
-# https://forums.alliedmods.net/showthread.php?t=317175
-!/left4dead2/addons/sourcemod/extensions/sourcescramble.ext.so
-!/left4dead2/addons/sourcemod/plugins/sourcescramble_manager.smx
-!/left4dead2/addons/sourcemod/scripting/sourcescramble_manager.sp
-!/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
-
-# [L4D2] Transition Restore Fix 1.2.5 (19-May-2023)
-# needs Source Scramble and manual compile
-# https://forums.alliedmods.net/showthread.php?t=336287
-# ./left4dead2/addons/sourcemod/scripting/compile.sh transition_restore_fix.sp
-# cd ./left4dead2/addons/sourcemod/scripting; ./spcomp64 transition_restore_fix.sp -ocompiled/transition_restore_fix.smx
-!/left4dead2/addons/sourcemod/gamedata/transition_restore_fix.txt
-!/left4dead2/addons/sourcemod/scripting/transition_restore_fix.sp
-!/left4dead2/addons/sourcemod/plugins/transition_restore_fix.smx
-!/left4dead2/addons/sourcemod/scripting/compiled/transition_restore_fix.smx
-
 # [L4D/L4D2]ThirdPersonShoulder_Detect 1.6.3 patched by C0ll3n (27th Jul 2026)
 # https://forums.alliedmods.net/showthread.php?t=298649 https://forums.alliedmods.net/showthread.php?p=2845455#post2845455
 !/left4dead2/addons/sourcemod/plugins/ThirdPersonShoulder_Detect.smx
@@ -342,6 +342,35 @@
 !/left4dead2/addons/sourcemod/plugins/drop_secondary.smx
 !/left4dead2/addons/sourcemod/gamedata/drop_secondary.txt
 
+# "[L4D1/2] Heartbeat (Revive & BW Fix)" (1.2h-2025/12/4) by SilverShot, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d_heartbeat
+!/left4dead2/addons/sourcemod/plugins/l4d_heartbeat.smx
+
+# "LMC_Black_and_White_Notifier" (1.3h-2026/4/4) by Lux, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/LMC_Black_and_White_Notifier
+!/left4dead2/addons/sourcemod/plugins/LMC_Black_and_White_Notifier.smx
+!/left4dead2/addons/sourcemod/translations/LMC_Black_and_White_Notifier.phrases.txt
+
+# "rescue_glow" (1.0h-2024/8/15) by little_froy, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/rescue_glow
+!/left4dead2/addons/sourcemod/plugins/rescue_glow.smx
+
+# "Upgrade Pack Fixes" (1.0h-2024/3/27) by bullet28, V10, Silvers, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/lfd_both_fixUpgradePack
+!/left4dead2/addons/sourcemod/plugins/lfd_both_fixUpgradePack.smx
+!/left4dead2/addons/sourcemod/gamedata/lfd_both_fixUpgradePack.txt
+
+# "[L4D2] Voice Announce + Show MIC Hat." (1.9) by SupermenCJ & Harry Potter 
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/show_mic
+!/left4dead2/addons/sourcemod/plugins/show_mic.smx
+!/left4dead2/addons/sourcemod/translations/show_mic.phrases.txt
+!/left4dead2/cfg/sourcemod/show_mic.cfg
+
+# "Skill Detection (skeets, crowns, levels) Improved" (2.2h-2026/1/7) by Tabun & zonde306, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d2_skill_detect
+!/left4dead2/addons/sourcemod/plugins/l4d2_skill_detect.smx
+!/left4dead2/addons/sourcemod/translations/l4d2_skill_detect.phrases.txt
+!/left4dead2/cfg/sourcemod/l4d2_skill_detect.cfg
 
 ##### DISABLED plugins ###### (can be enabled through the ingame "plugin manager" plugin)
 
