@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - master
+    paths:
+      - .gitignore
+      - Dockerfile
+      - docker-compose.yml
+      - resources/root/autoupdate.txt
+      - resources/root/runServer_.sh
+      - resources/root/start.sh
+      - resources/root/workshop.py
   workflow_dispatch:
 
 jobs:
@@ -30,10 +38,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image tags
+        id: tags
+        run: echo "image_date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/esdeka/l4d2serverresources:latest
+          tags: |
+            ghcr.io/esdeka/l4d2serverresources:latest
+            ghcr.io/esdeka/l4d2serverresources:${{ steps.tags.outputs.image_date }}
