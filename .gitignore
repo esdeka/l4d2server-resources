@@ -8,6 +8,7 @@
 !/resources/root/start.sh
 !/resources/root/workshop.py
 !docker-compose.yml
+!.env.example
 !Dockerfile
 !.github/
 !.github/workflows/

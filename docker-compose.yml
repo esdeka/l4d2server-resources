@@ -1,73 +1,28 @@
-#!/bin/bash
+services:
+  L4D2:
+    container_name: L4D2
+    env_file:
+      - .env
+    environment:
+        - TZ=${TZ:-Europe/Brussels}
+        - COLLECTIONS=${COLLECTIONS:-2787147130 2805134338}
+        - SERVER_NAME=${SERVER_NAME:-Left4Friends 1 - Be Kind}
+        - SRCDS_PORT=${SRCDS_PORT:-27025}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+        - HOST_LEFT4DEAD2_PATH=${HOST_LEFT4DEAD2_PATH:-/opt/docker/L4D2}   
 
-cd ${SRCDS_SRV_DIR}
-
-# Check if MetaMod needs to be downloaded
-if [ ! -d "left4dead2/addons/metamod" ] || [ ! -f "mm-version" ] || [ "${METAMOD_VERSION_MAJOR}.${METAMOD_VERSION_MINOR}-${METAMOD_BUILD}" != $(head -n 1 mm-version) ]; then
-    echo "Downloading MetaMod"
-    curl -sSL https://mms.alliedmods.net/mmsdrop/$METAMOD_VERSION_MAJOR/mmsource-$METAMOD_VERSION_MAJOR.$METAMOD_VERSION_MINOR-git$METAMOD_BUILD-linux.tar.gz \
-        -o /tmp/metamod.tar.gz
-    mkdir /tmp/metamod
-    tar -xzvf /tmp/metamod.tar.gz --directory /tmp/metamod
-    chmod +777 -R /tmp/metamod
-    cp -pR /tmp/metamod/* $SRCDS_SRV_DIR/left4dead2
-    rm -R /tmp/metamod*
-    echo "${METAMOD_VERSION_MAJOR}.${METAMOD_VERSION_MINOR}-${METAMOD_BUILD}" > mm-version
-fi
-
-getSourceMod="false"
-# Check if SourceMod needs to be downloaded
-if [ ! -d "left4dead2/addons/sourcemod" ] || [ ! -f "sm-version" ] || [ "${SOURCEMOD_VERSION_MAJOR}.${SOURCEMOD_VERSION_MINOR}-${SOURCEMOD_BUILD}" != $(head -n 1 sm-version) ]; then
-    getSourceMod="true"
-    echo "Downloading SourceMod"
-    curl -sSL https://sm.alliedmods.net/smdrop/$SOURCEMOD_VERSION_MAJOR/sourcemod-$SOURCEMOD_VERSION_MAJOR.$SOURCEMOD_VERSION_MINOR-git$SOURCEMOD_BUILD-linux.tar.gz \
-        -o /tmp/sourcemod.tar.gz
-    mkdir /tmp/sourcemod
-    tar -xzvf /tmp/sourcemod.tar.gz --directory /tmp/sourcemod
-    chmod +777 -R /tmp/sourcemod
-    cp -pR /tmp/sourcemod/* $SRCDS_SRV_DIR/left4dead2
-    rm -R /tmp/sourcemod*
-    echo "${SOURCEMOD_VERSION_MAJOR}.${SOURCEMOD_VERSION_MINOR}-${SOURCEMOD_BUILD}" > sm-version
-fi
-
-# Pull EsDeKa resources
-if [ "$getSourceMod" = "true" ]; then
-    echo "Cloning resources:"
-    git clone https://github.com/EsDeKa/l4d2server-resources.git
-    cp -R l4d2server-resources/. .
-    rm -R --interactive=never l4d2server-resources/
-fi
-
-# Disable plugins
-if [ -f "left4dead2/addons/sourcemod/plugins/nextmap.smx" ];then
-    echo "Disabling useless nextmap.smx"
-    mv left4dead2/addons/sourcemod/plugins/nextmap.smx left4dead2/addons/sourcemod/plugins/disabled/
-fi
-
-# Configure server name in separate cfg file
-echo hostname \"${SERVER_NAME:-SDK}\" > left4dead2/cfg/private_env.cfg
-
-# Run Server
-
-echo "-----------steamcmd update -----------"
-/home/steam/steamcmd/steamcmd.sh +login anonymous   \
-        +force_install_dir ${SRCDS_SRV_DIR}         \
-        +app_update ${SRCDS_APP_ID}                 \
-        +quit
-
-if [ -v COLLECTIONS ]; then
-    echo "-----------Syncing with workshop.py-----------"
-    python3 /home/steam/workshop.py                     \
-        -o ~/left4dead2/left4dead2/addons/workshop/     \
-        ${COLLECTIONS}
-fi
-        
-echo "-----------Starting srcds_run-----------"
-./srcds_run                                         \
-    -game left4dead2                                \
-    -console                                        \
-    -usercon                                        \
-    -steam_dir /home/steam/steamcmd                 \
-    -steamcmd_script /home/steam/autoupdate.txt     \
-    -port ${SRCDS_PORT}                             \
-    $@
+    # ports:
+    #   - 27025:27025
+    #   - 27025:27025/udp
+    network_mode: host
+    image: ghcr.io/esdeka/l4d2serverresources:latest
+    restart: unless-stopped
+    volumes:
+      - ${HOST_LEFT4DEAD2_PATH}:/home/steam/left4dead2:rw
+    stdin_open: true # docker run -i
+    tty:        true # docker run -t
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
+    # entrypoint: /bin/bash   #debugging
+networks: {}
