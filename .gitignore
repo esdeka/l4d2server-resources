@@ -85,6 +85,13 @@
 # config
 !/left4dead2/cfg/sourcemod/cannounce.cfg
 !/left4dead2/addons/sourcemod/data/cannounce_settings.txt
+# Connect Announce" (2.0) by pa4H
+# https://github.com/pa4H/L4D2-pa4H-Plugins/tree/main/L4D2-Plugins/ConnectAnnounce
+!/left4dead2/addons/sourcemod/scripting/include/colors.inc
+!/left4dead2/addons/sourcemod/scripting/include/morecolors.inc
+!/left4dead2/addons/sourcemod/scripting/compiled/\[pa4H\]ConnectAnnounce.smx
+!/left4dead2/addons/sourcemod/plugins/\[pa4H\]ConnectAnnounce.smx
+!/left4dead2/addons/sourcemod/translations/pa4HConAnnounce.phrases.txt
 
 # REST in Pawn (1.3.2): Provides HTTP and JSON natives for plugins
 # https://forums.alliedmods.net/showthread.php?t=298024

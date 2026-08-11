@@ -1,0 +1,21 @@
+"Phrases"
+{
+	"PlayerLoading"
+	{
+	    "#format"	    "{1:s}"
+		"en"			"Player {lightgreen}{1} {default}is connecting..."	
+		"ru"			"Игрок {lightgreen}{1} {default}присоединяется..."
+	}
+	"PlayerJoin"
+	{
+		"#format"	    "{1:s},{2:s},{3:s},{4:s}"
+		"en"			"Player {lightgreen}{1} {default}({green}{2}, {3}{default}) connected! {green}{4}{default}h"	
+		"ru"			"Игрок {lightgreen}{1} {default}({green}{2}, {3}{default}) подключился! {green}{4}{default}ч"
+	}
+	"PlayerDisconnect"
+	{
+		"#format"	   	"{1:s},{2:s}"
+		"en"			"Player {lightgreen}{1} {default}disconnected ({2})"	
+		"ru"			"Игрок {lightgreen}{1} {default}отключился ({2})"
+	}
+}
