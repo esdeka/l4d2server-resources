@@ -1,0 +1,156 @@
+"Phrases"
+{
+	"Plugin_Prefix"
+	{
+		"en"		"[SCS]"
+		"ru"		"[SCS]"
+		"es"		"[SCS]"
+		"fr"		"[SCS]"
+		"de"		"[SCS]"
+		"uz"		"[SCS]"
+	}
+	"Must_Be_Survivor"
+	{
+		"en"		"You must be a survivor to use this command!"
+		"ru"		"Вы должны быть выжившим, чтобы использовать эту команду!"
+		"es"		"¡Debes ser un superviviente para usar este comando!"
+		"fr"		"Vous devez être un survivant pour utiliser cette commande !"
+		"de"		"Du musst ein Überlebender sein, um diesen Befehl zu verwenden!"
+		"uz"		"Bu buyruqni ishlatish uchun omon qolgan bo‘lishingiz kerak!"
+	}
+	"Default_Character_Set"
+	{
+		"en"		"Your default character is now set to %s."
+		"ru"		"Ваш умолчательный персонаж теперь установлен на %s."
+		"es"		"Tu personaje predeterminado ahora está establecido en %s."
+		"fr"		"Votre personnage par défaut est maintenant défini sur %s."
+		"de"		"Dein Standardcharakter ist jetzt auf %s gesetzt."
+		"uz"		"Sizning standart personajingiz endi %s ga o‘rnatildi."
+	}
+	"Menu_Only_Ingame"
+	{
+		"en"		"[SCS] Character selection menu is only available in-game."
+		"ru"		"[SCS] Меню выбора персонажа доступно только в игре."
+		"es"		"[SCS] El menú de selección de personajes solo está disponible en el juego."
+		"fr"		"[SCS] Le menu de sélection des personnages n'est disponible qu'en jeu."
+		"de"		"[SCS] Das Charakterauswahlmenü ist nur im Spiel verfügbar."
+		"uz"		"[SCS] Personaj tanlash menyusi faqat o‘yinda mavjud."
+	}
+	"Menu_Only_Survivors"
+	{
+		"en"		"[SCS] Character selection menu is only available for survivors."
+		"ru"		"[SCS] Меню выбора персонажа доступно только для выживших."
+		"es"		"[SCS] El menú de selección de personajes solo está disponible para sobrevivientes."
+		"fr"		"[SCS] Le menu de sélection des personnages n'est disponible que pour les survivants."
+		"de"		"[SCS] Das Charakterauswahlmenü ist nur für Überlebende verfügbar."
+		"uz"		"[SCS] Personaj tanlash menyusi faqat omon qolganlar uchun mavjud."
+	}
+	"Must_Be_Alive"
+	{
+		"en"		"[SCS] You must be alive to use the character selection menu!"
+		"ru"		"[SCS] Вы должны быть живы, чтобы использовать меню выбора персонажа!"
+		"es"		"[SCS] ¡Debes estar vivo para usar el menú de selección de personajes!"
+		"fr"		"[SCS] Vous devez être en vie pour utiliser le menu de sélection des personnages !"
+		"de"		"[SCS] Du musst lebendig sein, um das Charakterauswahlmenü zu verwenden!"
+		"uz"		"[SCS] Personaj tanlash menyusini ishlatish uchun tirik bo‘lishingiz kerak!"
+	}
+	"Admins_Only"
+	{
+		"en"		"[SCS] Character selection menu is only available to admins."
+		"ru"		"[SCS] Меню выбора персонажа доступно только администраторам."
+		"es"		"[SCS] El menú de selección de personajes solo está disponible para administradores."
+		"fr"		"[SCS] Le menu de sélection des personnages n'est disponible que pour les administrateurs."
+		"de"		"[SCS] Das Charakterauswahlmenü ist nur für Administratoren verfügbar."
+		"uz"		"[SCS] Personaj tanlash menyusi faqat administratorlar uchun mavjud."
+	}
+	"Failed_To_Load_Default"
+	{
+		"en"		"Failed to load your default character. Type !csm to select your default character."
+		"ru"		"Не удалось загрузить ваш умолчательный персонаж. Наберите !csm чтобы выбрать ваш умолчательный персонаж."
+		"es"		"No se pudo cargar tu personaje predeterminado. Escribe !csm para seleccionar tu personaje predeterminado."
+		"fr"		"Échec du chargement de votre personnage par défaut. Tapez !csm pour sélectionner votre personnage par défaut."
+		"de"		"Dein Standardcharakter konnte nicht geladen werden. Gib !csm ein, um deinen Standardcharakter auszuwählen."
+		"uz"		"Standart personajingizni yuklab bo‘lmadi. Standart personajni tanlash uchun !csm ni kiriting."
+	}
+	"Choose_Character"
+	{
+		"en"		"Choose a character:"
+		"ru"		"Выберите персонажа:"
+		"es"		"Elige un personaje:"
+		"fr"		"Choisissez un personnage :"
+		"de"		"Wähle einen Charakter:"
+		"uz"		"Personajni tanlang:"
+	}
+	"Character_Nick"
+	{
+		"en"		"Nick"
+		"ru"		"Ник"
+		"es"		"Nick"
+		"fr"		"Nick"
+		"de"		"Nick"
+		"uz"		"Nik"
+	}
+	"Character_Rochelle"
+	{
+		"en"		"Rochelle"
+		"ru"		"Рошель"
+		"es"		"Rochelle"
+		"fr"		"Rochelle"
+		"de"		"Rochelle"
+		"uz"		"Rochelle"
+	}
+	"Character_Coach"
+	{
+		"en"		"Coach"
+		"ru"		"Коуч"
+		"es"		"Coach"
+		"fr"		"Coach"
+		"de"		"Coach"
+		"uz"		"Murabbiy"
+	}
+	"Character_Ellis"
+	{
+		"en"		"Ellis"
+		"ru"		"Эллис"
+		"es"		"Ellis"
+		"fr"		"Ellis"
+		"de"		"Ellis"
+		"uz"		"Ellis"
+	}
+	"Character_Bill"
+	{
+		"en"		"Bill"
+		"ru"		"Билл"
+		"es"		"Bill"
+		"fr"		"Bill"
+		"de"		"Bill"
+		"uz"		"Bill"
+	}
+	"Character_Zoey"
+	{
+		"en"		"Zoey"
+		"ru"		"Зои"
+		"es"		"Zoey"
+		"fr"		"Zoey"
+		"de"		"Zoey"
+		"uz"		"Zoe"
+	}
+	"Character_Francis"
+	{
+		"en"		"Francis"
+		"ru"		"Фрэнсис"
+		"es"		"Francis"
+		"fr"		"Francis"
+		"de"		"Francis"
+		"uz"		"Frensis"
+	}
+	"Character_Louis"
+	{
+		"en"		"Louis"
+		"ru"		"Луис"
+		"es"		"Louis"
+		"fr"		"Louis"
+		"de"		"Louis"
+		"uz"		"Luis"
+	}
+}

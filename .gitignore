@@ -122,6 +122,69 @@
 !/left4dead2/addons/sourcemod/scripting/include/Defib_Fix.inc
 !/left4dead2/addons/sourcemod/scripting/Defib_Fix.sp
 
+# "LMCCore" (1.0h-2025/11/02) by Lux
+# "LMCL4D2CDeathHandler" (1.0h-2025/11/02) by Lux
+# "LMCL4D2SetTransmit" (1.0h-2025/11/02) by Lux
+# "LMCEDeathHandler" (1.0h-2025/11/02) by Lux
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/Luxs-Model-Changer https://forums.alliedmods.net/showthread.php?t=286987
+!/left4dead2/addons/sourcemod/plugins/LMCCore.smx               
+# LMCCore: Core of LMC, manages overlay models
+!/left4dead2/addons/sourcemod/plugins/LMC_SharedCvars.smx       
+# LMCSharedCvars: Modules that share cvars are put in here
+!/left4dead2/addons/sourcemod/plugins/LMCL4D2SetTransmit.smx    
+# LMCL4D2SetTransmit: Manages transmitting models to clients
+!/left4dead2/addons/sourcemod/plugins/LMCEDeathHandler.smx      
+# LMCEDeathHandler: Manages deaths regarding lmc for entities ragdolls, module required to handle (witch & common deaths)
+!/left4dead2/addons/sourcemod/plugins/LMCL4D2CDeathHandler.smx  
+# LMCL4D2CDeathHandler: Manages deaths regarding lmc, overlay deathmodels and ragdolls, and fixes clonesurvivors deathmodels teleporting around.
+# !/left4dead2/addons/sourcemod/plugins/LMC_L4D2_Menu_Choosing.smx  # LMC_L4D2_Menu_Choosing: Allows players to type !lmc to choose LMC model with cookie saving
+# !/left4dead2/addons/sourcemod/plugins/LMC_L4D2_RandomSpawns.smx  # LMC_L4D2_RandomSpawns: Makes lmc models random for players and AI
+!/left4dead2/addons/sourcemod/translations/lmc.phrases.txt
+!/left4dead2/addons/sourcemod/data/LMC_L4D_Model_Data.cfg
+# !/left4dead2/cfg/sourcemod/LMCCore.cfg
+# !/left4dead2/cfg/sourcemod/LMCSharedCvars.cfg
+
+# "Survivor Chat Character Select Menu" (1.7.1) by DeatChaos25, Mi123456, & Merudo modded by Huckster,Nico_Okasi
+# https://forums.alliedmods.net/showthread.php?p=2845530#post2845530
+!/left4dead2/addons/sourcemod/plugins/survivor_chat_csm.smx
+!/left4dead2/addons/sourcemod/translations/survivor_chat_select.phrases.txt
+!/left4dead2/addons/sourcemod/data/survivor_chat_csm_data.cfg
+
+# "Finale rescue vehicle fix for 5+ survivors" (1.2h-2026/8/4) by sorallll, edshot99, V10, CanadaRox, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d2_rescue_vehicle_multi https://forums.alliedmods.net/showthread.php?p=2845575#post2845575
+!/left4dead2/addons/sourcemod/plugins/l4d2_rescue_vehicle_multi.smx
+!/left4dead2/addons/sourcemod/gamedata/l4d2_rescue_vehicle_multi.txt
+
+# "[L4D1/2] Survivor Identity Fix for 5+ Survivors" (1.9.3) by Merudo, Shadowysn
+# https://forums.alliedmods.net/showthread.php?p=2845516#post2845516
+!/left4dead2/addons/sourcemod/plugins/l4d_survivor_identity_fix.smx
+!/left4dead2/addons/sourcemod/gamedata/l4d_survivor_identity_fix.txt
+
+# "[L4D2] Team Kill Reactions" by DeathChaos25 & HarryPotter
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d2_team_kill_reactions
+!/left4dead2/addons/sourcemod/plugins/l4d2_team_kill_reactions.smx
+
+# "[L4D2] Survivor Mourn Fix" (1.0h-2026/2/4) by DeathChaos25, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d2_survivor_mourn_fix
+!/left4dead2/addons/sourcemod/plugins/l4d2_survivor_mourn_fix.smx
+
+# "Voice based on model" (1.0h-2026/1/27) by TBK Duy, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d2_vocalizebasedmodel
+!/left4dead2/addons/sourcemod/plugins/l4d2_vocalizebasedmodel.smx
+!/left4dead2/addons/sourcemod/gamedata/l4d2_vocalizebasedmodel.txt
+
+# "Survivor Set Trigger Fix" (1.0h-2026/1/27) by gabuch2, Harry
+# https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4d2_trigger_flow_fix
+!/left4dead2/addons/sourcemod/plugins/l4d2_trigger_flow_fix.smx
+
+
+
+
+
+
+
+
+
 # Dev Cmds 1.55 (06-Jun-2026)
 # https://forums.alliedmods.net/showthread.php?t=187566
 !/left4dead2/addons/sourcemod/plugins/sm_dev_cmds.smx

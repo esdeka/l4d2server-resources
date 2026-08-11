@@ -1,0 +1,825 @@
+/*
+	支援以下顏色:
+	 - {default}	(白色)
+	 - {green}		(橘色)
+	 - {olive}		(綠色)
+	 - {lightgreen}	(淺綠色)
+	 - {red}		(紅色) - 特感隊伍要有人或bot在才會顯示紅色，否則顯示橘色
+	 - {blue}		(藍色) - 人類隊伍要有人或bot在才會顯示藍色，否則顯示橘色
+	 注意事項: 藍色, 紅色, 淺綠色，這三種顏色的其中任意兩種不可出現在同一句話裡
+*/
+
+/*
+	Following named colors are supported:
+	 - {default}	(whilte)
+	 - {green}		(olive color)
+	 - {olive}		(green color)
+	 - {lightgreen}	(light green)
+	 - {red}		(red) - There must be at least one player or bot in infected team，or red will turn into {green} color
+	 - {blue}		(blue) - There must be at least one player or bot in survivor team，or blue will turn into {green} color 
+	 Warning:  2 of (Blue, Red, Lightgreen) colors can not be used together in one sentence
+*/
+
+/*
+https://github.com/dragokas								- Dragokas		"Russian - ru"
+https://github.com/dragokas								- Dragokas		"Ukrainian - ua"
+https://steamcommunity.com/profiles/76561198084609796/	- Midna			"Spanish - es"
+https://github.com/Jackyline 							- Jacke			"Swedish - sv"
+https://github.com/Ladis92								- Ladis			"Hungarian - hu"
+https://github.com/Timocop								- Timocop		"German - de"
+https://steamcommunity.com/profiles/76561198177484650/	- Sixx			"Italian - it"
+https://steamcommunity.com/profiles/76561198131405443/	- Wallace		"French - fr"
+https://github.com/rikka0w0								- Rikka0w0		"Chinese (Simplified) - chi"
+https://steamcommunity.com/profiles/76561198026443750/ (discord: Frizk#5596)	- frizk		"Polish - pl"
+https://steamcommunity.com/profiles/76561198400423296/	- Mart			"Brazilian Portuguese - pt"
+http://steamcommunity.com/profiles/76561198026784913	- HarryPotter	"Traditional Chinese - zho"
+*/
+
+/*
+Sourcemod's default supported languanges.
+"Languages"
+{
+	"en"		"English"
+	"ar"		"Arabic"		// (17) Arabic
+	"pt"		"Brazilian"		// (24) Brazilian Portuguese
+	"bg"		"Bulgarian"		// (38) Bulgarian
+	"cze"		"Czech"		// (34) Czech
+	"da"		"Danish"		// (28) Danish
+	"nl"		"Dutch"		// (7) Dutch
+	"fi"		"Finnish"		// (31) Finnish
+	"fr"		"French"		// (11) French
+	"de"		"German"		// (4) German
+	"el"		"Greek"		// (41) Greek
+	"he"		"Hebrew"		// (35) Hebrew
+	"hu"		"Hungarian"		// (18) Hungarian
+	"it"		"Italian"		// (27) Italian
+	"jp"		"Japanese"		// (37) Japanese
+	"ko"		"KoreanA"		// (15) Korean
+	"ko"		"Korean"		// (15) Korean
+	"lv"		"Latvian"		// (32) Latvian
+	"lt"		"Lithuanian"		// (25) Lithuanian
+	"no"		"Norwegian"		// (22) Norwegian
+	"pl"		"Polish"		// (20) Polish
+	"pt_p"		"Portuguese"		// (40) Portuguese
+	"ro"		"Romanian"		// (16) Romanian
+	"ru"		"Russian"		// (12) Russian
+	"chi"		"SChinese"		// (13) Chinese (Simplified)
+	"sk"		"Slovak"		// (21) Slovak
+	"es"		"Spanish"		// (2) Spanish
+	"sv"		"Swedish"		// (19) Swedish
+	"zho"		"TChinese"		// (14) Chinese (Traditional)
+	"th"		"Thai"		// (39) Thai
+	"tr"		"Turkish"		// (23) Turkish
+	"ua"		"Ukrainian"		// (42) Ukrainian
+}
+
+To add your own translations you need to input you language tag as ab example we use russian("ru")
+
+For each key example key:"Lux's Model Changer" you add your language tag with the translation on the same line, 
+you are limited to 191 characters for the translation of each key translation(i'm not sure about multibyte characters).
+
+"Lux's Model Changer"
+{
+	"en"		"Lux's Model Changer"
+	"ru"		"Смена персонажа (от Lux)"
+	"zho"		"Lux的角色模型修改器"
+	"chi"		"Lux的角色模型修改器"
+}
+
+And Repeat for each key.
+*/
+
+"Phrases"
+{
+	"In-game only"
+	{
+		"en"		"[LMC] Menu is in-game only."
+		"chi"		"[LMC] 这个菜单只能在游戏中使用"
+		"zho"		"[LMC] 這個選項菜單只能在遊戲中使用"
+		"ru"		"[LMC] Меню доступно только в игре."
+		"ua"		"[LMC] Меню доступне тільки у грі."
+		"sv"		"[LMC] Menyn är endast tillgänlig i spelet."
+		"es"		"[LMC] El menú solo funciona dentro del juego."
+		"hu"		"[LMC] A menü csak játékon belül használható."
+		"de"		"[LMC] Das Menu is nur im Spiel verfügbar."
+		"it"		"[LMC] il Menu è solo in-game."
+		"fr"		"[LMC] Le menu est en jeu uniqement."
+		"pl"		"[LMC] Menu dostepne tylko w grze."
+		"pt"		"[LMC] O menu funciona apenas dentro do jogo."
+	}
+	"Admin only"
+	{
+		"en"		"{green}[LMC] {lightgreen}Model Changer is only available to admins."
+		"chi"		"{green}[LMC] {lightgreen}只有管理员可以修改人物皮肤模型."
+		"zho"		"{green}[LMC] {lightgreen}只有管理員可以更換角色模型."
+		"ru"		"{green}[LMC] {lightgreen}Смена модели доступна только для админов."
+		"ua"		"{green}[LMC] {lightgreen}Зміна моделі доступна тільки для адмінів."
+		"sv"		"{green}[LMC] {lightgreen}Byta modell är endast tillgängligt för admins."
+		"es"		"{green}[LMC] {lightgreen}Cambio de modelo solo disponible para administradores."
+		"hu"		"{green}[LMC] {lightgreen}A Modell váltás csak az adminoknak elérhető."
+		"de"		"{green}[LMC] {lightgreen}Modellwechsler steht nur Administratoren zur verfügung."
+		"it"		"{green}[LMC] {lightgreen}il Model Changer è solo disponibile per gli admins."
+		"fr"		"{green}[LMC] {lightgreen}Changeur de Modèle est disponible uniquement pour les admins."
+		"pl"		"{green}[LMC] {lightgreen}Zmiana Modeli dostepna tylko dla adminów."
+		"pt"		"{green}[LMC] {lightgreen}A alteração de modelo é apenas para administradores."
+	}
+	"Alive only"
+	{
+		"en"		"{green}[LMC] {lightgreen}Pick a Model to be Applied NextSpawn"
+		"chi"		"{green}[LMC] {lightgreen}请选择下次重生之后的皮肤模型"
+		"zho" 		"{green}[LMC] {lightgreen}請選擇下次復活之後的角色模型"
+		"ru"		"{green}[LMC] {lightgreen}Сменить модель можно при следующем возрождении"
+		"ua"		"{green}[LMC] {lightgreen}Змінити модель можна з наступним відродженням"
+		"sv"		"{green}[LMC] {lightgreen}Välj en modell som ska tillämpas nästa gång du spawnar"
+		"es"		"{green}[LMC] {lightgreen}Elige un modelo para aplicarlo al reaparecer"
+		"hu"		"{green}[LMC] {lightgreen}Válasz egy modellt hogy újjászületésnél azt alkalmazzuk"
+		"de"		"{green}[LMC] {lightgreen}Wähle ein model aus, dass beim nächsten Spawnen angewendet wird"
+		"it"		"{green}[LMC] {lightgreen}Scegli un modello da applicare NextSpawn"
+		"fr"		"{green}[LMC] {lightgreen}Choisissez un modèle pour le prochain spawn"
+		"pl"		"{green}[LMC] {lightgreen}Wybierz Model, bedzie zastosowany przy nastepnym odrodzeniu"
+		"pt"		"{green}[LMC] {lightgreen}Escolha um modelo para aplicar quando reviver"
+	}
+	"Lux's Model Changer"
+	{
+		"en"		"Lux's Model Changer"
+		"chi"		"Lux的皮肤模型修改器"
+		"zho" 		"Lux的角色模型修改器"
+		"ru"		"Смена персонажа (от Lux)"
+		"ua"		"Зміна персонажу (від Lux)"
+		"sv"		"Lux's modelländrare"
+		"es"		"Cambiador de Modelo (de Lux)"
+		"hu"		"Lux Modell Váltója"
+		"de"		"Lux's Modellwechsler"
+		"it"		"Il Model Changer di Lux"
+		"fr"		"Changeur de Modèle de Lux"
+		"pl"		"Zmiana Modeli od Luxa"
+		"pt"		"Alterador de Modelo (feito por Lux)"
+	}
+	"Normal Models"
+	{
+		"en"		"Normal Models"
+		"chi"		"正常模型"
+		"zho"		"正常模型"
+		"ru"		"Обычные модели"
+		"ua"		"Звичайні моделі"
+		"sv"		"Vanliga modeller"
+		"es"		"Modelos Normales"
+		"hu"		"Normál modellek"
+		"de"		"Normale Modelle"
+		"it"		"Modelli normali"
+		"fr"		"Modèles normeaux"
+		"pl"		"Normalne Modele"
+		"pt"		"Modelo Padrão"
+	}
+
+	"Witch"
+	{
+		"en"		"Witch"
+		"chi"		"女巫"
+		"zho"		"Witch"
+		"ru"		"Ведьма"
+		"ua"		"Відьма"
+		"sv"		"Häxa"
+		"es"		"Bruja"
+		"hu"		"Boszorka"
+		"de"		"Witch"
+		"it"		"Witch"
+		"fr"		"Sorcière"
+		"pl"		"Wiedzma"
+		"pt"		"Witch"
+	}
+	"Witch Bride"
+	{
+		"en"		"Witch Bride"
+		"chi"		"新娘女巫"
+		"zho"		"新娘Witch"
+		"ru"		"Ведьма-невеста"
+		"ua"		"Відьма-наречена"
+		"sv"		"Gift Häxa"
+		"es"		"Bruja (Novia)"
+		"hu"		"Boszorka menyasszony"
+		"de"		"Witch Braut"
+		"it"		"Witch sposa"
+		"fr"		"Sorcière Mariée"
+		"pl"		"Panna Mloda Wiedzma"
+		"pt"		"Witch (noiva)"
+	}
+	"Boomer"
+	{
+		"en"		"Boomer"
+		"chi"		"胖子"
+		"zho"		"Boomer"
+		"ru"		"Толстяк"
+		"ua"		"Товстун"
+		"sv"		"Boomer"
+		"es"		"Boomer"
+		"hu"		"Pukkancs"
+		"de"		"Boomer"
+		"it"		"Boomer"
+		"fr"		"Boomer"
+		"pl"		"Boomer"
+		"pt"		"Boomer"
+	}
+	"Boomette"
+	{
+		"en"		"Boomette"
+		"chi"		"Boomette(女胖子)"
+		"zho"		"女Boomer"
+		"ru"		"Толстушка"
+		"ua"		"Товстуха"
+		"sv"		"Boomette"
+		"es"		"Boomette"
+		"hu"		"Pukkancsné"
+		"de"		"Boomette"
+		"it"		"Boomette"
+		"fr"		"Boomette"
+		"pl"		"Boometka"
+		"pt"		"Boomette"
+	}
+	"Hunter"
+	{
+		"en"		"Hunter"
+		"chi"		"猎人"
+		"zho"		"Hunter"
+		"ru"		"Охотник"
+		"ua"		"Мисливець"
+		"sv"		"Jägare"
+		"es"		"Hunter"
+		"hu"		"Vadász"
+		"de"		"Hunter"
+		"it"		"Hunter"
+		"fr"		"Chasseur"
+		"pl"		"Lowcy"
+		"pt"		"Hunter"
+	}
+	"Smoker"
+	{
+		"en"		"Smoker"
+		"chi"		"舌头"
+		"zho"		"Smoker"
+		"ru"		"Курильщик"
+		"ua"		"Курець"
+		"sv"		"Rökare"
+		"es"		"Smoker"
+		"hu"		"Füstös"
+		"de"		"Smoker"
+		"it"		"Smoker"
+		"fr"		"Fumeur"
+		"pl"		"Smoker"
+		"pt"		"Smoker"
+	}
+	"Riot Cop"
+	{
+		"en"		"Riot Cop"
+		"chi"		"防暴警察"
+		"zho"		"防暴警察"
+		"ru"		"Спецназ"
+		"ua"		"Спецназ"
+		"sv"		"Kravallpolis"
+		"es"		"Antidisturbios"
+		"hu"		"Rohamrendőr"
+		"de"		"Bereitschaftspolizist"
+		"it"		"Poliziotto antisommossa"
+		"fr"		"Flic anti-émeute"
+		"pl"		"Zamieszkowy glina"
+		"pt"		"Policial"
+	}
+	"MudMan"
+	{
+		"en"		"MudMan"
+		"chi"		"泥人"
+		"zho"		"沼澤泥人"
+		"ru"		"Грязевик"
+		"ua"		"Грязьовик"
+		"sv"		"Lerman"
+		"es"		"Embarrados"
+		"hu"		"MudMan"
+		"de"		"Schlammmann"
+		"it"		"UomoFango"
+		"fr"		"Homme de boue"
+		"pl"		"Blociarz"
+		"pt"		"Homem Lamacento"
+	}
+	"Chopper Pilot"
+	{
+		"en"		"Chopper Pilot"
+		"chi"		"直升机飞行员"
+		"zho"		"直升機飛行員"
+		"ru"		"Пилот вертолёта"
+		"ua"		"Пілот гелікоптера"
+		"sv"		"Helikopter Pilot"
+		"es"		"Piloto"
+		"hu"		"Helikopter pilóta"
+		"de"		"Helikopterpilot"
+		"it"		"Pilota di Elicottero"
+		"fr"		"Pilote d'hélico"
+		"pl"		"Pilot helikoptera"
+		"pt"		"Piloto de Helicóptero"
+	}
+	"CEDA"
+	{
+		"en"		"CEDA"
+		"chi"		"CEDA防化人员"
+		"zho"		"CEDA生化人員"
+		"ru"		"Агент АЧС"
+		"ua"		"Агент CEDA"
+		"sv"		"CEDA"
+		"es"		"Agente de la CEDA"
+		"hu"		"CEDA"
+		"de"		"CEDA Agent"
+		"it"		"CEDA"
+		"fr"		"CEDA"
+		"pl"		"CEDA"
+		"pt"		"Agente da CEDA"
+	}
+	"Clown"
+	{
+		"en"		"Clown"
+		"chi"		"小丑僵尸"
+		"zho"		"小丑"
+		"ru"		"Клоун"
+		"ua"		"Клоун"
+		"sv"		"Clown"
+		"es"		"Payaso"
+		"hu"		"Bohóc"
+		"de"		"Clown"
+		"it"		"Pagliaccio"
+		"fr"		"Clown"
+		"pl"		"Klaun"
+		"pt"		"Palhaço"
+	}
+	"Jimmy Gibs"
+	{
+		"en"		"Jimmy Gibs"
+		"chi"		"赛车手僵尸"
+		"zho"		"Jimmy Gibs 賽車手"
+		"ru"		"Джимми Гибс"
+		"ua"		"Джиммі Гібс"
+		"sv"		"Jimmy Gibs"
+		"es"		"Jimmy Gibs"
+		"hu"		"Jimmy Gibs"
+		"de"		"Jimmy Gibs"
+		"it"		"Jimmy Gibs"
+		"fr"		"Jimmy Gibs"
+		"pl"		"Jimmy Gibs"
+		"pt"		"Jimmy Gibs"
+	}
+	"Fallen Survivor"
+	{
+		"en"		"Fallen Survivor"
+		"chi"		"堕落幸存者"
+		"zho"		"墮落倖存者"
+		"ru"		"Падший выживший"
+		"ua"		"Павший, що вижив"
+		"sv"		"Stupad Överlevare"
+		"es"		"Superviviente caído"
+		"hu"		"Bukott túlélő"
+		"de"		"Gefallener Überlebender"
+		"it"		"Survivor Caduto"
+		"fr"		"Survivant Décédé"
+		"pl"		"Upadly Ocalaly"
+		"pt"		"Sobrevivente Caído"
+	}
+	"Nick"
+	{
+		"en"		"Nick"
+		"chi"		"Nick"
+		"zho"		"Nick"
+		"ru"		"Ник"
+		"ua"		"Нік"
+		"sv"		"Nick"
+		"es"		"Nick"
+		"hu"		"Nick"
+		"de"		"Nick"
+		"it"		"Nick"
+		"fr"		"Nick"
+		"pl"		"Nick"
+		"pt"		"Nick"
+	}
+	"Rochelle"
+	{
+		"en"		"Rochelle"
+		"chi"		"Rochelle"
+		"zho"		"Rochelle"
+		"ru"		"Рошель"
+		"ua"		"Рошель"
+		"sv"		"Rochelle"
+		"es"		"Rochelle"
+		"hu"		"Rochelle"
+		"de"		"Rochelle"
+		"it"		"Rochelle"
+		"fr"		"Rochelle"
+		"pl"		"Rochelle"
+		"pt"		"Rochelle"
+	}
+	"Coach"
+	{
+		"en"		"Coach"
+		"chi"		"Coach"
+		"zho"		"Coach"
+		"ru"		"Тренер"
+		"ua"		"Тренер"
+		"sv"		"Tränare"
+		"es"		"Coach"
+		"hu"		"Edző"
+		"de"		"Coach"
+		"it"		"Coach"
+		"fr"		"Coach"
+		"pl"		"Trener"
+		"pt"		"Coach"
+	}
+	"Ellis"
+	{
+		"en"		"Ellis"
+		"chi"		"Ellis"
+		"zho"		"Ellis"
+		"ru"		"Эллис"
+		"ua"		"Еліс"
+		"sv"		"Ellis"
+		"es"		"Ellis"
+		"hu"		"Ellis"
+		"de"		"Ellis"
+		"it"		"Ellis"
+		"fr"		"Ellis"
+		"pl"		"Ellis"
+		"pt"		"Ellis"
+	}
+	"Bill"
+	{
+		"en"		"Bill"
+		"chi"		"Bill"
+		"zho"		"Bill"
+		"ru"		"Билл"
+		"ua"		"Біл"
+		"sv"		"Bill"
+		"es"		"Bill"
+		"hu"		"Bill"
+		"de"		"Bill"
+		"it"		"Bill"
+		"fr"		"Bill"
+		"pl"		"Bill"
+		"pt"		"Bill"
+	}
+	"Zoey"
+	{
+		"en"		"Zoey"
+		"chi"		"Zoey"
+		"zho"		"Zoey"
+		"ru"		"Зой"
+		"ua"		"Зой"
+		"sv"		"Zoey"
+		"es"		"Zoey"
+		"hu"		"Zoey"
+		"de"		"Zoey"
+		"it"		"Zoey"
+		"fr"		"Zoey"
+		"pl"		"Zoey"
+		"pt"		"Zoey"
+	}
+	"Francis"
+	{
+		"en"		"Francis"
+		"chi"		"Francis"
+		"zho"		"Francis"
+		"ru"		"Френсис"
+		"ua"		"Френсіс"
+		"sv"		"Francis"
+		"es"		"Francis"
+		"hu"		"Francis"
+		"de"		"Francis"
+		"it"		"Francis"
+		"fr"		"Francis"
+		"pl"		"Francis"
+		"pt"		"Francis"
+	}
+	"Louis"
+	{
+		"en"		"Louis"
+		"chi"		"Louis"
+		"zho"		"Louis"
+		"ru"		"Луис"
+		"ua"		"Луіс"
+		"sv"		"Louis"
+		"es"		"Louis"
+		"hu"		"Louis"
+		"de"		"Louis"
+		"it"		"Louis"
+		"fr"		"Louis"
+		"pl"		"Louis"
+		"pt"		"Louis"
+	}
+	"Tank"
+	{
+		"en"		"Tank"
+		"chi"		"坦克"
+		"zho"		"Tank"
+		"ru"		"Танк"
+		"ua"		"Танк"
+		"sv"		"Tank"
+		"es"		"Tank"
+		"hu"		"Tank"
+		"de"		"Tank"
+		"it"		"Tank"
+		"fr"		"Tank"
+		"pl"		"Tank"
+		"pt"		"Tank"
+	}
+	"Tank DLC"
+	{
+		"en"		"Tank DLC"
+		"chi"		"DLC坦克"
+		"zho"		"Tank DLC"
+		"ru"		"Танк DLC"
+		"ua"		"Танк DLC"
+		"sv"		"Tank DLC"
+		"es"		"Tank DLC"
+		"hu"		"Tank DLC"
+		"de"		"Tank DLC"
+		"it"		"Tank DLC"
+		"fr"		"Tank du DLC"
+		"pl"		"Tank DLC"
+		"pt"		"Tank DLC"
+	}
+	"Disabled_Models_Smoker"
+	{
+		"en"		"{green}[LMC] {lightgreen}Server Has Disabled Models for {green}Smoker"
+		"chi"		"{green}[LMC] {lightgreen}服务器已经禁用了{green}Smoker(烟鬼){lightgreen}的模型"
+		"zho"		"{green}[LMC] {lightgreen}伺服器已禁用{green}Smoker{lightgreen}的模型"
+		"ru"		"{green}[LMC] {lightgreen}На сервере отключены модели для {green}Курильщика"
+		"ua"		"{green}[LMC] {lightgreen}На сервері вимкнені моделі для {green}Курця"
+		"sv"		"{green}[LMC] {lightgreen}Server har inaktiverat modellen för {green}Rökare"
+		"es"		"{green}[LMC] {lightgreen}El servidor ha deshabilitado los modelos de {green}Smoker"
+		"hu"		"{green}[LMC] {lightgreen}A szerveren ki van kapcsolva a modell a {green}Füstös {lightgreen}számára"
+		"de"		"{green}[LMC] {lightgreen}Der Server hat Modelle für {green}Smoker {lightgreen}deaktiviert"
+		"it"		"{green}[LMC] {lightgreen}Il Server ha Disabilitato i Modelli per {green}Smoker"
+		"fr"		"{green}[LMC] {lightgreen}Le serveur a désactivé les modèles de{green}Fumeur"
+		"pl"		"{green}[LMC] {lightgreen}Server wylaczyl modele dla {green}Smokera"
+		"pt"		"{green}[LMC] {lightgreen}O servidor desabilitou a alteração de modelo para {green}Smoker"
+	}
+	"Disabled_Models_Boomer"
+	{
+		"en"		"{green}[LMC] {lightgreen}Server Has Disabled Models for {green}Boomer"
+		"chi"		"{green}[LMC] {lightgreen}服务器已经禁用了{green}Boomer(胖子){lightgreen}的模型"
+		"zho"		"{green}[LMC] {lightgreen}伺服器已禁用{green}Boomer{lightgreen}的模型"
+		"ru"		"{green}[LMC] {lightgreen}На сервере отключены модели для {green}Толстяка"
+		"ua"		"{green}[LMC] {lightgreen}На сервері вимкнені моделі для {green}Товстуна"
+		"sv"		"{green}[LMC] {lightgreen}Server har inaktiverat modellen för {green}Boomer"
+		"es"		"{green}[LMC] {lightgreen}El servidor ha deshabilitado los modelos de {green}Boomer"
+		"hu"		"{green}[LMC] {lightgreen}A szerveren ki van kapcsolva a modell a {green}Pukkancs {lightgreen}számára"
+		"de"		"{green}[LMC] {lightgreen}Der Server hat Modelle für {green}Boomer {lightgreen}deaktiviert"
+		"it"		"{green}[LMC] {lightgreen}Il Server ha Disabilitato i Modelli per {green}Boomer"
+		"fr"		"{green}[LMC] {lightgreen}Le serveur a désactivé les modèles de {green}Boomer"
+		"pl"		"{green}[LMC] {lightgreen}Server wylaczyl modele dla {green}Boomera"
+		"pt"		"{green}[LMC] {lightgreen}O servidor desabilitou a alteração de modelo para {green}Boomer"
+	}
+	"Disabled_Models_Hunter"
+	{
+		"en"		"{green}[LMC] {lightgreen}Server Has Disabled Models for {green}Hunter"
+		"chi"		"{green}[LMC] {lightgreen}服务器已经禁用了{green}Hunter(猎人/跳跳){lightgreen}的模型"
+		"zho"		"{green}[LMC] {lightgreen}伺服器已禁用{green}Hunter{lightgreen}的模型"
+		"ru"		"{green}[LMC] {lightgreen}На сервере отключены модели для {green}Охотника"
+		"ua"		"{green}[LMC] {lightgreen}На сервері вимкнені моделі для {green}Мисливця"
+		"sv"		"{green}[LMC] {lightgreen}Server har inaktiverat modellen för {green}Jägare"
+		"es"		"{green}[LMC] {lightgreen}El servidor ha deshabilitado los modelos de {green}Hunter"
+		"hu"		"{green}[LMC] {lightgreen}A szerveren ki van kapcsolva a modell a {green}Vadász {lightgreen}számára"
+		"de"		"{green}[LMC] {lightgreen}Der Server hat Modelle für {green}Hunter {lightgreen}deaktiviert"
+		"it"		"{green}[LMC] {lightgreen}Il Server ha Disabilitato i Modelli per {green}Hunter"
+		"fr"		"{green}[LMC] {lightgreen}Le serveur a désactivé les modèles de {green}Chasseur"
+		"pl"		"{green}[LMC] {lightgreen}Server wylaczyl modele dla {green}Lowcy"
+		"pt"		"{green}[LMC] {lightgreen}O servidor desabilitou a alteração de modelo para {green}Hunter"
+	}
+	"Disabled_Models_Tank"
+	{
+		"en"		"{green}[LMC] {lightgreen}Server Has Disabled Models for {green}Tank"
+		"chi"		"{green}[LMC] {lightgreen}服务器已经禁用了{green}坦克{lightgreen}的模型"
+		"zho"		"{green}[LMC] {lightgreen}伺服器已禁用{green}Tank{lightgreen}的模型"
+		"ru"		"{green}[LMC] {lightgreen}На сервере отключены модели для {green}Танка"
+		"ua"		"{green}[LMC] {lightgreen}На сервері вимкнені моделі для {green}Танка"
+		"sv"		"{green}[LMC] {lightgreen}Server har inaktiverat modellen för {green}Tank"
+		"es"		"{green}[LMC] {lightgreen}El servidor ha deshabilitado los modelos de {green}Tank"
+		"hu"		"{green}[LMC] {lightgreen}A szerveren ki van kapcsolva a modell a {green}Tank {lightgreen}számára"
+		"de"		"{green}[LMC] {lightgreen}Der Server hat Modelle für {green}Tanks {lightgreen}deaktiviert"
+		"it"		"{green}[LMC] {lightgreen}Il Server ha Disabilitato i Modelli per {green}Tank"
+		"fr"		"{green}[LMC] {lightgreen}Le serveur a désactivé les modèles de {green}Tank"
+		"pl"		"{green}[LMC] {lightgreen}Server wylaczyl modele dla {green}Tanka"
+		"pt"		"{green}[LMC] {lightgreen}O servidor desabilitou a alteração de modelo para {green}Tank"
+	}
+	"Disabled_Models_Survivors"
+	{
+		"en"		"{green}[LMC] {lightgreen}Server Has Disabled Models for {green}Survivors"
+		"chi"		"{green}[LMC] {lightgreen}服务器已经禁用了{green}幸存者{lightgreen}的模型"
+		"zho"		"{green}[LMC] {lightgreen}伺服器已禁用{green}倖存者們{lightgreen}的模型"
+		"ru"		"{green}[LMC] {lightgreen}На сервере отключены модели для {green}Выживших"
+		"ua"		"{green}[LMC] {lightgreen}На сервері вимкнені моделі для {green}персонажів, що вижили"
+		"sv"		"{green}[LMC] {lightgreen}Server har inaktiverat modellen för {green}Överlevare"
+		"es"		"{green}[LMC] {lightgreen}El servidor ha deshabilitado los modelos de {green}Supervivientes"
+		"hu"		"{green}[LMC] {lightgreen}A szerveren ki van kapcsolva a modell a {green}Túlélők {lightgreen}számára"
+		"de"		"{green}[LMC] {lightgreen}Der Server hat Modelle für {green}Überlebende {lightgreen}deaktiviert"
+		"it"		"{green}[LMC] {lightgreen}Il Server ha Disabilitato i Modelli per {green}Tank"
+		"fr"		"{green}[LMC] {lightgreen}Le serveur a désactivé les modèles de {green}Survivants"
+		"pl"		"{green}[LMC] {lightgreen}Server wylaczyl modele dla {green}Ocalalych"
+		"pt"		"{green}[LMC] {lightgreen}O servidor desabilitou a alteração de modelo para {green}Sobreviventes"
+	}
+	"Default_Models"
+	{
+		"en"		"{green}[LMC] {lightgreen}Models will be default"
+		"chi"		"{green}[LMC] {lightgreen}使用默认模型"
+		"zho"		"{green}[LMC] {lightgreen}使用默認模型"
+		"ru"		"{green}[LMC] {lightgreen}Выбрана стандартная модель"
+		"ua"		"{green}[LMC] {lightgreen}Обрана стандартна модель"
+		"sv"		"{green}[LMC] {lightgreen}Modellerna kommer vara standard"
+		"es"		"{green}[LMC] {lightgreen}Los modelos serán por defecto"
+		"hu"		"{green}[LMC] {lightgreen}A modellek alapértelmezettek lesznek"
+		"de"		"{green}[LMC] {lightgreen}Modelle standardmäßig verwenden"
+		"it"		"{green}[LMC] {lightgreen}I Modelli saranno default {green}REPLACEME"
+		"fr"		"{green}[LMC] {lightgreen}Les modèles seront par défaut"
+		"pl"		"{green}[LMC] {lightgreen}Modele beda{green}zwykle"
+		"pt"		"{green}[LMC] {lightgreen}Alterado para o modelo padrão"
+	}
+	"Unsupported_Spitter"
+	{
+		"en"		"{green}[LMC] {lightgreen}Models Don't Work for {green}Spitter"
+		"chi"		"{green}[LMC] {green}Spitter(口水){lightgreen}无法使用这个模型"
+		"zho"		"{green}[LMC] {green}Spitter{lightgreen} 模型無法使用"
+		"ru"		"{green}[LMC] {lightgreen}Модели не работают для {green}Плевальщицы"
+		"ua"		"{green}[LMC] {lightgreen}Моделі не працюють для {green}Плювальниці"
+		"sv"		"{green}[LMC] {lightgreen}Modellerna fungerar ej för {green}Spitter"
+		"es"		"{green}[LMC] {lightgreen}Los modelos no funcionan para {green}Spitter"
+		"hu"		"{green}[LMC] {lightgreen}A modellek nem működnek a {green}Köpködőn"
+		"de"		"{green}[LMC] {lightgreen}Modelle für {green}Spitter {lightgreen}werden nicht unterstützt"
+		"it"		"{green}[LMC] {lightgreen}I Modelli non Funzionano per {green}Spitter"
+		"fr"		"{green}[LMC] {lightgreen}Les modèles ne fonctionnent pas pour {green}Cracheuse"
+		"pl"		"{green}[LMC] {lightgreen}Model nie dziala na {green}Spitter"
+		"pt"		"{green}[LMC] {lightgreen}A alteração de modelo não funciona para {green}Spitter"
+	}
+	"Unsupported_Jockey"
+	{
+		"en"		"{green}[LMC] {lightgreen}Models Don't Work for {green}Jockey"
+		"chi"		"{green}[LMC] {green}Jockey(猴子){lightgreen}无法使用这个模型"
+		"zho"		"{green}[LMC] {green}Jockey{lightgreen} 模型無法使用"
+		"ru"		"{green}[LMC] {lightgreen}Модели не работают для {green}Жокея"
+		"ua"		"{green}[LMC] {lightgreen}Моделі не працюють для {green}Жокею"
+		"sv"		"{green}[LMC] {lightgreen}Modellerna funger ej för {green}Jockey"
+		"es"		"{green}[LMC] {lightgreen}Los modelos no funcionan para {green}Jockey"
+		"hu"		"{green}[LMC] {lightgreen}A modellek nem működnek a {green}Zsokén"
+		"de"		"{green}[LMC] {lightgreen}Modelle für {green}Jockey {lightgreen}werden nicht unterstützt"
+		"it"		"{green}[LMC] {lightgreen}I Modelli non Funzionano per {green}Jockey"
+		"fr"		"{green}[LMC] {lightgreen}Les modèles ne fonctionnent pas pour {green}Jockey"
+		"pl"		"{green}[LMC] {lightgreen}Model nie dziala na {green}Jockey"
+		"pt"		"{green}[LMC] {lightgreen}A alteração de modelo não funciona para {green}Jockey"
+	}
+	"Unsupported_Charger"
+	{
+		"en"		"{green}[LMC] {lightgreen}Models Don't Work for {green}Charger"
+		"chi"		"{green}[LMC] {green}Charger(牛){lightgreen}无法使用这个模型"
+		"zho"		"{green}[LMC] {green}Charger{lightgreen} 模型無法使用"
+		"ru"		"{green}[LMC] {lightgreen}Модели не работают для {green}Громилы"
+		"ua"		"{green}[LMC] {lightgreen}Моделі не працюють для {green}Громили"
+		"sv"		"{green}[LMC] {lightgreen}Modellerna fungerar ej för {green}Charger"
+		"es"		"{green}[LMC] {lightgreen}Los modelos no funcionan para {green}Charger"
+		"hu"		"{green}[LMC] {lightgreen}A modellek nem működnek a {green}Rohanón"
+		"de"		"{green}[LMC] {lightgreen}Modelle für {green}Charger {lightgreen}werden nicht unterstützt"
+		"it"		"{green}[LMC] {lightgreen}I Modelli non Funzionano per {green}Charger"
+		"fr"		"{green}[LMC] {lightgreen}Les modèles ne fonctionnent pas pour {green}Chargeur"
+		"pl"		"{green}[LMC] {lightgreen}Model nie dziala na {green}Czarger"
+		"pt"		"{green}[LMC] {lightgreen}A alteração de modelo não funciona para {green}Charger"
+	}
+	"Change_Model_Help_Chat (C)"
+	{
+		"en"		"{green}[LMC] {lightgreen}To Change Model use chat Command {green}!lmc"
+		"chi"		"{green}[LMC] {lightgreen}使用{green}!lmc{lightgreen}来选择皮肤模型"
+		"zho"		"{green}[LMC] {lightgreen}使用 {green}!lmc{lightgreen} 選擇角色模型"
+		"ru"		"{green}[LMC] {lightgreen}Для смены модели введите в чат {green}!lmc"
+		"ua"		"{green}[LMC] {lightgreen}Для зміни моделі введіть у чат {green}!lmc"
+		"sv"		"{green}[LMC] {lightgreen}För att ändra modell, använd chattkommandot {green}!lmc"
+		"es"		"{green}[LMC] {lightgreen}Para cambiar el modelo use el Comando en el chat {green}!lmc"
+		"hu"		"{green}[LMC] {lightgreen}Modell váltáshoz használd a chat parancsot {green}!lmc"
+		"de"		"{green}[LMC] {lightgreen}Benutze den Chat-Befehl {green}!lmc {lightgreen}um dein Modell zu ändern"
+		"it"		"{green}[LMC] {lightgreen}Per Cambiare Modello usa il Comando chat {green}!lmc"
+		"fr"		"{green}[LMC] {lightgreen}Pour changer le modèle, utilisez la commande chat{green}!lmc"
+		"pl"		"{green}[LMC] {lightgreen}Zeby zmienic swój model, w czacie wpisz {green}!lmc"
+		"pt"		"{green}[LMC] {lightgreen}Para mudar o modelo do personagem use o comando {green}!lmc no chat"
+	}
+	
+	"Change_Model_Help_Chat"
+	{
+		"en"		"{[LMC] To Change Model use chat Command !lmc"
+		"chi"		"[LMC] 使用!lmc来选择皮肤模型"
+		"zho"		"[LMC] 使用!lmc選擇角色模型"
+		"ru"		"[LMC] Для смены модели введите в чат !lmc"
+		"ua"		"[LMC] Для зміни моделі введіть у чат !lmc"
+		"sv"		"[LMC] För att ändra modell, använd chattkommandot !lmc"
+		"es"		"[LMC] Para cambiar el modelo use el Comando en el chat !lmc"
+		"hu"		"[LMC] Modell váltáshoz használd a chat parancsot !lmc"
+		"de"		"[LMC] Benutze den Chat-Befehl !lmc um dein Modell zu ändern"
+		"it"		"[LMC] Per Cambiare Modello usa il Comando chat !lmc"
+		"fr"		"[LMC] Pour changer le modèle, utilisez la commande chat !lmc"
+		"pl"		"[LMC] Zeby zmienic swój model, w czacie wpisz !lmc"
+		"pt"		"[LMC] Para mudar o modelo do personagem use o comando !lmc no chat"
+	}
+
+	"Riot Cop (L4D1)"
+	{
+		"en"		"Riot Cop (L4D1)"
+		"chi"		"防暴警察 (L4D1)"
+		"zho"		"防暴警察 (L4D1)"
+	}
+	"MudMan (L4D1)"
+	{
+		"en"		"MudMan (L4D1)"
+		"chi"		"泥人 (L4D1)"
+		"zho"		"沼澤泥人 (L4D1)"
+	}
+	"CEDA (L4D1)"
+	{
+		"en"		"CEDA (L4D1)"
+		"chi"		"CEDA防化人员 (L4D1)"
+		"zho"		"CEDA生化人員 (L4D1)"
+	}
+	"Fallen Survivor (L4D1)"
+	{
+		"en"		"Fallen Survivor (L4D1)"
+		"chi"		"堕落幸存者 (L4D1)"
+		"zho"		"墮落倖存者 (L4D1)"
+	}	
+	"Fallen Survivor (parachutist)"
+	{
+		"en"		"Fallen Survivor (parachutist)"
+		"chi"		"堕落幸存者 (降落傘)"
+		"zho"		"墮落倖存者 (降落伞)"
+	}
+	"Road Crew"
+	{
+		"en"		"Road Crew"
+		"chi"		"施工工人"
+		"zho"		"施工工人"
+	}
+	"Road Crew (Rain)"
+	{
+		"en"		"Road Crew (Rain)"
+		"chi"		"施工工人 (服裝2)"
+		"zho"		"施工工人 (服装2)"
+	}
+	"Road Crew (L4D1)"
+	{
+		"en"		"Road Crew (L4D1)"
+		"chi"		"施工工人 (服装3)"
+		"zho"		"施工工人 (服装3)"
+	}
+	"Road Crew (baggagehandler)"
+	{
+		"en"		"Road Crew (baggagehandler)"
+		"chi"		"施工工人 (服装4)"
+		"zho"		"施工工人 (服装4)"
+	}	
+	
+	"Boomer (L4D1)"
+	{
+		"en"		"Boomer (L4D1)"
+		"chi"		"胖子 (L4D1)"
+		"zho"		"Boomer (L4D1)"
+	}
+	
+	"Hunter (L4D1)"
+	{
+		"en"		"Hunter (L4D1)"
+		"chi"		"Hunter (L4D1)"
+		"zho"		"Hunter (L4D1)"
+	}	
+	
+	"Smoker (L4D1)"
+	{
+		"en"		"Smoker (L4D1)"
+		"chi"		"舌头 (L4D1)"
+		"zho"		"Smoker (L4D1)"
+	}
+	
+	"Tank (L4D1)"
+	{
+		"en"		"Tank (L4D1)"
+		"chi"		"坦克 (L4D1)"
+		"zho"		"Tank (L4D1)"
+	}
+	
+	"Common Infected"
+	{
+		"en"		"Common Infected"
+		"chi"		"普通感染者"
+		"zho"		"普通感染者"
+	}
+	
+	"Random Model"
+	{
+		"en"		"Random Model"
+		"chi"		"随机模型"
+		"zho"		"隨機模型"
+	}
+	
+	"Model_Set"
+	{
+		"#format"		"{1:s}"
+		"en"		"{green}[LMC] {lightgreen}Model is {green}{1}"
+		"chi"		"{green}[LMC] {lightgreen}模型变为: {green}{1}"
+		"zho"		"{green}[LMC] {lightgreen}模型變為: {green}{1}"
+	}
+}
