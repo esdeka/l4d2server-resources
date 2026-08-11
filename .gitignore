@@ -105,6 +105,22 @@
 !/left4dead2/addons/sourcemod/scripting/sourcescramble_manager.sp
 !/left4dead2/addons/sourcemod/scripting/include/sourcescramble.inc
 
+# [L4D2] Interactive Survivor Groups [Nov 23, 2023]
+# https://forums.alliedmods.net/showthread.php?t=344249
+!/left4dead2/addons/sourcemod/configs/sourcescramble
+!/left4dead2/addons/sourcemod/configs/sourcescramble/sourcescramble_manager.cfg
+!/left4dead2/addons/sourcemod/gamedata/interactive_survivor_groups.txt
+# imatchext-sm1.12-oldlinux-c384bcc
+!/left4dead2/addons/sourcemod/extensions/imatchext.autoload
+!/left4dead2/addons/sourcemod/extensions/imatchext.ext.2.l4d2.so
+!/left4dead2/addons/sourcemod/extensions/imatchext.ext.2.l4d.so
+!/left4dead2/addons/sourcemod/translations/imatchext.phrases.txt
+!/left4dead2/addons/sourcemod/scripting/test_imatchext.sp
+!/left4dead2/addons/sourcemod/scripting/include/imatchext.inc
+!/left4dead2/addons/sourcemod/gamedata/imatchext.txt
+# langparser-sm1.11-linux-b5da630
+!/left4dead2/addons/sourcemod/extensions/langparser.ext.2.l4d2.so
+
 # [L4D2] Transition Restore Fix 1.2.5 (19-May-2023)
 # needs Source Scramble and manual compile
 # https://forums.alliedmods.net/showthread.php?t=336287
@@ -137,7 +153,8 @@
 # LMCEDeathHandler: Manages deaths regarding lmc for entities ragdolls, module required to handle (witch & common deaths)
 !/left4dead2/addons/sourcemod/plugins/LMCL4D2CDeathHandler.smx  
 # LMCL4D2CDeathHandler: Manages deaths regarding lmc, overlay deathmodels and ragdolls, and fixes clonesurvivors deathmodels teleporting around.
-# !/left4dead2/addons/sourcemod/plugins/LMC_L4D2_Menu_Choosing.smx  # LMC_L4D2_Menu_Choosing: Allows players to type !lmc to choose LMC model with cookie saving
+!/left4dead2/addons/sourcemod/plugins/LMC_L4D2_Menu_Choosing.smx  
+# LMC_L4D2_Menu_Choosing: Allows players to type !lmc to choose LMC model with cookie saving
 # !/left4dead2/addons/sourcemod/plugins/LMC_L4D2_RandomSpawns.smx  # LMC_L4D2_RandomSpawns: Makes lmc models random for players and AI
 !/left4dead2/addons/sourcemod/translations/lmc.phrases.txt
 !/left4dead2/addons/sourcemod/data/LMC_L4D_Model_Data.cfg
