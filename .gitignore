@@ -69,11 +69,12 @@
 !/left4dead2/addons/sourcemod/plugins/l4d_unreservelobby.smx
 !/left4dead2/addons/sourcemod/scripting/l4d_unreservelobby.sp
 
-# Connect Announce (Still) 1.8.3(?) (14-Dec-2024) [Edited by Dosergen] Ja-Forces
+# Connect Announce (Still) 1.8.3(?) (14-Dec-2024) [Edited by Dosergen] Ja-Forces (disabled, replaced by 2.0)
 # https://forums.alliedmods.net/showthread.php?p=2651148#post2651148
 # https://github.com/Dosergen/Stuff/tree/main/cannounce/1.8.3
 # needs addons/sourcemod/configs/geoip/GeoLite2-City.mmdb
 !/left4dead2/addons/sourcemod/plugins/cannounce.smx
+!/left4dead2/addons/sourcemod/plugins/disabled/cannounce.smx
 !/left4dead2/addons/sourcemod/scripting/cannounce/
 !/left4dead2/addons/sourcemod/scripting/cannounce/**
 !/left4dead2/addons/sourcemod/scripting/include/multicolors
