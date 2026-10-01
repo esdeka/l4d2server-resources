@@ -249,9 +249,10 @@
 !/left4dead2/addons/sourcemod/scripting/l4d_info_editor_weapons.sp
 !/left4dead2/addons/sourcemod/scripting/l4d_info_editor.sp
 
-# Accelerator crashlog 2.5.0-cd575aa (tried to update to 2.6.0 and 2.7.1 fork, didn't load, GLIBCXX not found)
+# Accelerator (2.6.0-manual): SRCDS Crash Handler
 # https://forums.alliedmods.net/showthread.php?t=277703
 !/left4dead2/addons/sourcemod/configs/test-crash-dump-generation
+!/left4dead2/addons/sourcemod/configs/core.cfg
 !/left4dead2/addons/sourcemod/extensions/accelerator.autoload
 !/left4dead2/addons/sourcemod/extensions/accelerator.ext.so
 !/left4dead2/addons/sourcemod/gamedata/accelerator.games.txt

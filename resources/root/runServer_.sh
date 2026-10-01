@@ -70,6 +70,13 @@ if [ -v COLLECTIONS ]; then
         ${COLLECTIONS}
 fi
         
+echo "-----------Removing outdated libraries (for accelerator-----------"
+rm /home/steam/left4dead2/bin/libstdc++.so.6
+rm /home/steam/left4dead2/bin/dedicated/libstdc++.so.6
+rm /home/steam/left4dead2/bin/libgcc_s.so.1
+rm /home/steam/left4dead2/bin/dedicated/libgcc_s.so.1
+
+        
 echo "-----------Starting srcds_run-----------"
 ./srcds_run                                         \
     -game left4dead2                                \
