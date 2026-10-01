@@ -47,6 +47,9 @@ fi
 # Configure server name in separate cfg file
 echo hostname \"${SERVER_NAME:-SDK}\" > left4dead2/cfg/private_env.cfg
 
+# Reset saved Survivor Chat Select characters (temporary per server run)
+printf '"SurvivorChatCSM"\n{\n}\n' > left4dead2/addons/sourcemod/data/survivor_chat_csm_data.cfg
+
 # Run Server
 
 echo "-----------steamcmd update -----------"
