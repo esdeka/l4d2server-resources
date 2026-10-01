@@ -14,6 +14,9 @@
 !.github/workflows/
 !.github/workflows/docker-publish.yml
 
+# Claude Code project docs
+!CLAUDE.md
+
 # https://github.com/EsDeKa/l4d2server-resources
 # These are the custom plugins and config that should be versioned
 
