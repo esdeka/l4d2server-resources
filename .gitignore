@@ -155,22 +155,28 @@
 !/left4dead2/addons/sourcemod/scripting/include/Defib_Fix.inc
 !/left4dead2/addons/sourcemod/scripting/Defib_Fix.sp
 
-# "LMCCore" (1.0h-2025/11/02) by Lux
+# "LMCCore" (1.0h-2025/11/02) by Lux   (disabled to avoid crashes? and menu cookies)
 # "LMCL4D2CDeathHandler" (1.0h-2025/11/02) by Lux
 # "LMCL4D2SetTransmit" (1.0h-2025/11/02) by Lux
 # "LMCEDeathHandler" (1.0h-2025/11/02) by Lux
 # https://github.com/fbef0102/L4D1_2-Plugins/tree/master/Luxs-Model-Changer https://forums.alliedmods.net/showthread.php?t=286987
 !/left4dead2/addons/sourcemod/plugins/LMCCore.smx               
+!/left4dead2/addons/sourcemod/plugins/disabled/LMCCore.smx               
 # LMCCore: Core of LMC, manages overlay models
 !/left4dead2/addons/sourcemod/plugins/LMC_SharedCvars.smx       
+!/left4dead2/addons/sourcemod/plugins/disabled/LMC_SharedCvars.smx       
 # LMCSharedCvars: Modules that share cvars are put in here
 !/left4dead2/addons/sourcemod/plugins/LMCL4D2SetTransmit.smx    
+!/left4dead2/addons/sourcemod/plugins/disabled/LMCL4D2SetTransmit.smx    
 # LMCL4D2SetTransmit: Manages transmitting models to clients
 !/left4dead2/addons/sourcemod/plugins/LMCEDeathHandler.smx      
+!/left4dead2/addons/sourcemod/plugins/disabled/LMCEDeathHandler.smx      
 # LMCEDeathHandler: Manages deaths regarding lmc for entities ragdolls, module required to handle (witch & common deaths)
 !/left4dead2/addons/sourcemod/plugins/LMCL4D2CDeathHandler.smx  
+!/left4dead2/addons/sourcemod/plugins/disabled/LMCL4D2CDeathHandler.smx  
 # LMCL4D2CDeathHandler: Manages deaths regarding lmc, overlay deathmodels and ragdolls, and fixes clonesurvivors deathmodels teleporting around.
 !/left4dead2/addons/sourcemod/plugins/LMC_L4D2_Menu_Choosing.smx  
+!/left4dead2/addons/sourcemod/plugins/disabled/LMC_L4D2_Menu_Choosing.smx  
 # LMC_L4D2_Menu_Choosing: Allows players to type !lmc to choose LMC model with cookie saving
 # !/left4dead2/addons/sourcemod/plugins/LMC_L4D2_RandomSpawns.smx  # LMC_L4D2_RandomSpawns: Makes lmc models random for players and AI
 !/left4dead2/addons/sourcemod/translations/lmc.phrases.txt
