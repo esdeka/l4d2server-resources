@@ -469,9 +469,10 @@
 !/left4dead2/addons/sourcemod/translations/l4d2_skill_detect.phrases.txt
 !/left4dead2/cfg/sourcemod/l4d2_skill_detect.cfg
 
-# "[Any] SM Translator" (1.8h-2025/10/1) by Franc1sco franug, HarryPotter
+# "[Any] SM Translator" (1.8h-2025/10/1) by Franc1sco franug, HarryPotter (disabled because it's spammy, maybe vibecode a better version)
 # https://github.com/fbef0102/Sourcemod-Plugins/tree/main/sm_translator
 !/left4dead2/addons/sourcemod/plugins/sm_translator.smx
+!/left4dead2/addons/sourcemod/plugins/disabled/sm_translator.smx
 !/left4dead2/addons/sourcemod/translations/sm_translator.phrases.txt
 !/left4dead2/addons/sourcemod/scripting/sm_translator.sp
 !/left4dead2/cfg/sourcemod/sm_translator.cfg
