@@ -324,9 +324,10 @@
 !/left4dead2/addons/sourcemod/plugins/plugin_updates_checker.smx
 !/left4dead2/cfg/sourcemod/sm_updates_checker.cfg
 
-# Vote Blocker 1.3.4 (06-Nov-2014)
+# Vote Blocker 1.3.4 (06-Nov-2014) (disabled until figure out for friends only)
 # https://forums.alliedmods.net/showthread.php?p=2082240?p=2082240 
 !/left4dead2/addons/sourcemod/plugins/voteblocker.smx
+!/left4dead2/addons/sourcemod/plugins/disabled/voteblocker.smx
 #config
 !/left4dead2/cfg/sourcemod/VoteBlocker.cfg
 # maybe interesting, vote cooldown for new connections: https://forums.alliedmods.net/showthread.php?p=2790340#post2790340
